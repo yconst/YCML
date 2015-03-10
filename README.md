@@ -70,7 +70,8 @@ A more advanced example, using cross-validation (Objective-C):
     YCMatrix *cvOutput       = [cvData getRow:13];
     YCMatrix *cvInput        = [cvData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
-    trainer.settings[@"C"]   = @0.5E-9;
+    trainer.settings[@"C"]   = @8;
+    trainer.settings[@"Hidden Layer Size"] = @1000
 
     YCFFN *model = (YCFFN *)[trainer train:nil
     inputMatrix:trainingInput
@@ -93,7 +94,8 @@ The last example written in Swift:
     var cvOutput = cvData.getRow(13)
     var cvInput = cvData.removeRow(13)
     var trainer = YCELMTrainer()
-    trainer.settings["C"] = 0.5E-9
+    trainer.settings["C"] = 8
+    trainer.settings["Hidden Layer Size"] = 1000
 
     var model = trainer.train(nil, inputMatrix: trainingInput, outputMatrix: trainingOutput)
 

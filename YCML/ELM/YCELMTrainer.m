@@ -59,8 +59,8 @@
     self = [super init];
     if (self)
     {
-        self.settings[@"Hidden Layer Size"] = @700;
-        self.settings[@"C"]                 = @1E-6;
+        self.settings[@"Hidden Layer Size"] = @800;
+        self.settings[@"C"]                 = @1;
     }
     return self;
 }
@@ -102,7 +102,8 @@
     
     // Step III. Calculating output weights
     // outW = ( eye(nHiddenNeurons)/C + H * H') \ H * targets';
-    Matrix *oneOverC      = [Matrix matrixOfRows:hiddenSize Columns:hiddenSize Value:1.0/C];
+    Matrix *oneOverC      = [Matrix identityOfRows:hiddenSize Columns:hiddenSize];
+    [oneOverC multiplyWithScalar:1.0/C];
     [oneOverC add:[H matrixByTransposingAndMultiplyingWithLeft:H]];
     Matrix *invA          = [oneOverC pseudoInverse];
     

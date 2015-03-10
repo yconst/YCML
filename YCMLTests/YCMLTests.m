@@ -83,6 +83,8 @@
     Matrix *trainingOutput = [trainingData getRow:13];
     Matrix *trainingInput  = [trainingData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
+    trainer.settings[@"C"]   = @8;
+    trainer.settings[@"Hidden Layer Size"] = @1000;
     
     YCFFN *model = (YCFFN *)[trainer train:nil
                                inputMatrix:trainingInput
@@ -102,14 +104,15 @@
     // Simple training + cross-validation
     Matrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
     [trainingData shuffleColumns];
-    Matrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 20, 19)];
-    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 20)];
+    Matrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 30, 29)];
+    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 30)];
     Matrix *trainingOutput = [trainingData getRow:13];
     Matrix *trainingInput  = [trainingData removeRow:13];
     Matrix *cvOutput       = [cvData getRow:13];
     Matrix *cvInput        = [cvData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
-    trainer.settings[@"C"]   = @0.5E-9;
+    trainer.settings[@"C"]   = @8;
+    trainer.settings[@"Hidden Layer Size"] = @1000;
     
     YCFFN *model = (YCFFN *)[trainer train:nil
                                inputMatrix:trainingInput
@@ -121,7 +124,7 @@
     [predictedOutput elementWiseMultiply:predictedOutput];
     double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
     CleanLog(@"RMSE: %f", RMSE);
-    XCTAssertLessThan(RMSE, 9.0, @"RMSE above threshold");
+    XCTAssertLessThan(RMSE, 6.0, @"RMSE above threshold");
 }
 
 - (Matrix *)matrixWithCSVName:(NSString *)path removeFirst:(BOOL)removeFirst
