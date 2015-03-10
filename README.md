@@ -27,13 +27,17 @@ I found that Cocoapods is riddled with frequent changes that break the API, and 
 the information online useless. As such, I decided not to spend more time with it and went with git
 submodules.
 
+##Getting Help
+
+YCML documentation is compiled using Appledoc. 
+
 ##Example Usage
 
 YCML models and trainers make use of the YCMatrix class to define
 input and output datasets. Both for input as well as for output,
 each matrix column defines a single training example.
 
-It is planned to implement a proper dataframe class in the future, in
+There are plans to implement a proper dataframe class in the future, in
 addition to the matrix class, as part of the library.
 
 Basic training and activation, taken from the YCML unit tests:
@@ -50,9 +54,7 @@ Basic training and activation, taken from the YCML unit tests:
     YCMatrix *trainingInput  = [trainingData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
 
-    YCFFN *model = (YCFFN *)[trainer train:nil
-    inputMatrix:trainingInput
-    outputMatrix:trainingOutput];
+    YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
     
