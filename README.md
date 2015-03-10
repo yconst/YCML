@@ -1,7 +1,7 @@
 
 #YCML
 
-YCML is a Machine Learning framework in Objective-C (and soon Swift!).
+YCML is a Machine Learning framework in Objective-C and Swift.
 Currently, it only implements the basic Extreme Learning Machines (ELM) algorithm, as 
 it is described in [1].
 
@@ -41,7 +41,7 @@ each matrix column defines a single training example.
 There are plans to implement a proper dataframe class in the future, in
 addition to the matrix class, as part of the library.
 
-Basic training and activation, taken from the YCML unit tests:
+Basic training and activation, taken from the YCML unit tests (Objective-C):
 
     #import "YCML/YCML.h"
     #import "YCMatrix/YCMatrix.h"
@@ -59,7 +59,7 @@ Basic training and activation, taken from the YCML unit tests:
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
 
-A more advanced example, using cross-validation:
+A more advanced example, using cross-validation (Objective-C):
 
     YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
     [trainingData shuffleColumns];
@@ -81,6 +81,29 @@ A more advanced example, using cross-validation:
     [predictedOutput subtract:cvOutput];
     [predictedOutput elementWiseMultiply:predictedOutput];
     double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
+
+The last example written in Swift:
+
+    var trainingData = self.matrixWithCSVName("housing", removeFirst: true)
+    trainingData.shuffleColumns()
+    var cvData = trainingData.matrixWithColumnsInRange(NSMakeRange(trainingData.columns-20, 19))
+    trainingData = trainingData.matrixWithColumnsInRange(NSMakeRange(0, trainingData.columns-20))
+    var trainingOutput = trainingData.getRow(13)
+    var trainingInput = trainingData.removeRow(13)
+    var cvOutput = cvData.getRow(13)
+    var cvInput = cvData.removeRow(13)
+    var trainer = YCELMTrainer()
+    trainer.settings["C"] = 0.5E-9
+
+    var model = trainer.train(nil, inputMatrix: trainingInput, outputMatrix: trainingOutput)
+
+    var predictedOutput = model.activateWithMatrix(cvInput)
+
+    predictedOutput.subtract(cvOutput)
+    predictedOutput.elementWiseMultiply(predictedOutput)
+    var RMSE = sqrt(1.0 / Double(predictedOutput.columns) * predictedOutput.sum)
+    NSLog("%@", RMSE)
+    XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
     
 ##File Structure
 
