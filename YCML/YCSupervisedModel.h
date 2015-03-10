@@ -1,9 +1,11 @@
 //
-//  YCML.h
+//  YCSupervisedModel.h
 //  YCML
 //
 //  Created by Ioannis Chatzikonstantinou on 2/3/15.
 //  Copyright (c) 2015 Yannis Chatzikonstantinou. All rights reserved.
+//
+// This file is part of YCML.
 //
 // YCML is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,17 +20,36 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
+@import Foundation;
+@class YCMatrix;
 
-//! Project version number for YCML.
-FOUNDATION_EXPORT double YCMLVersionNumber;
+@interface YCSupervisedModel : NSObject <NSCopying, NSCoding>
 
-//! Project version string for YCML.
-FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
+/**
+ Allocates and initializes a new instance of the receiver class.
+ 
+ @return The new instance.
+ */
++ (instancetype)model;
 
-// In this header, you should import all the public headers of your framework using statements like #import <YCML/PublicHeader.h>
+/**
+ Activates the receiver using the passed matrix.
+ 
+ @param matrix The matrix to use as input for the activation.
+ 
+ @return The output matrix resulting from the prediction.
+ */
+- (YCMatrix *)activateWithMatrix:(YCMatrix *)matrix;
 
-#import "YCSupervisedModel.h"
-#import "YCSupervisedTrainer.h"
-#import "YCFFN.h"
-#import "YCELMTrainer.h"
+/**
+ Holds statistics about the model, usually as a result
+ of the learning process.
+ */
+@property NSMutableDictionary *statistics;
+
+/**
+ Holds model settings.
+ */
+@property NSMutableDictionary *settings;
+
+@end

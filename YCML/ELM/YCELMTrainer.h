@@ -1,9 +1,11 @@
 //
-//  YCML.h
+//  ELMTrainer.h
 //  YCML
 //
 //  Created by Ioannis Chatzikonstantinou on 2/3/15.
 //  Copyright (c) 2015 Yannis Chatzikonstantinou. All rights reserved.
+//
+// This file is part of YCML.
 //
 // YCML is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,17 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
-
-//! Project version number for YCML.
-FOUNDATION_EXPORT double YCMLVersionNumber;
-
-//! Project version string for YCML.
-FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <YCML/PublicHeader.h>
-
-#import "YCSupervisedModel.h"
 #import "YCSupervisedTrainer.h"
-#import "YCFFN.h"
-#import "YCELMTrainer.h"
+
+@interface YCELMTrainer : YCSupervisedTrainer
+
+@end

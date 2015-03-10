@@ -7,9 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB9695631AAEEB64003BAE48 /* YCML.h in Headers */ = {isa = PBXBuildFile; fileRef = CB9695621AAEEB64003BAE48 /* YCML.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB9695691AAEEB64003BAE48 /* YCML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB96955D1AAEEB64003BAE48 /* YCML.framework */; };
 		CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96956F1AAEEB64003BAE48 /* YCMLTests.m */; };
+		CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96957C1AAEEBDB003BAE48 /* YCML.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB9695821AAEEBE5003BAE48 /* YCSupervisedModel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96957E1AAEEBE5003BAE48 /* YCSupervisedModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB9695831AAEEBE5003BAE48 /* YCSupervisedModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96957F1AAEEBE5003BAE48 /* YCSupervisedModel.m */; };
+		CB9695841AAEEBE5003BAE48 /* YCSupervisedTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB9695801AAEEBE5003BAE48 /* YCSupervisedTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB9695851AAEEBE5003BAE48 /* YCSupervisedTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */; };
+		CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB9695871AAEEBF0003BAE48 /* YCELMTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB96958D1AAEEBF0003BAE48 /* YCELMTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9695881AAEEBF0003BAE48 /* YCELMTrainer.m */; };
+		CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96958A1AAEEBF0003BAE48 /* YCFFN.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96958B1AAEEBF0003BAE48 /* YCFFN.m */; };
+		CB9695921AAEECA8003BAE48 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
+		CB96959D1AAEEFE4003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
+		CB9695A01AAEF02D003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,15 +31,49 @@
 			remoteGlobalIDString = CB96955C1AAEEB64003BAE48;
 			remoteInfo = YCML;
 		};
+		CB9695981AAEEFC8003BAE48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CBBE02AC178F215000744F77;
+			remoteInfo = YCMatrix;
+		};
+		CB96959A1AAEEFC8003BAE48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CBBE02C4178F215100744F77;
+			remoteInfo = YCMatrixTests;
+		};
+		CB96959E1AAEEFE8003BAE48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CBBE02AB178F215000744F77;
+			remoteInfo = YCMatrix;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		CB96955D1AAEEB64003BAE48 /* YCML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9695611AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB9695621AAEEB64003BAE48 /* YCML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YCML.h; sourceTree = "<group>"; };
 		CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB96956E1AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB96956F1AAEEB64003BAE48 /* YCMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YCMLTests.m; sourceTree = "<group>"; };
+		CB9695791AAEEB96003BAE48 /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
+		CB96957A1AAEEBAA003BAE48 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		CB96957B1AAEEBB3003BAE48 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CB96957C1AAEEBDB003BAE48 /* YCML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCML.h; sourceTree = "<group>"; };
+		CB96957E1AAEEBE5003BAE48 /* YCSupervisedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSupervisedModel.h; sourceTree = "<group>"; };
+		CB96957F1AAEEBE5003BAE48 /* YCSupervisedModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSupervisedModel.m; sourceTree = "<group>"; };
+		CB9695801AAEEBE5003BAE48 /* YCSupervisedTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSupervisedTrainer.h; sourceTree = "<group>"; };
+		CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSupervisedTrainer.m; sourceTree = "<group>"; };
+		CB9695871AAEEBF0003BAE48 /* YCELMTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCELMTrainer.h; sourceTree = "<group>"; };
+		CB9695881AAEEBF0003BAE48 /* YCELMTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCELMTrainer.m; sourceTree = "<group>"; };
+		CB96958A1AAEEBF0003BAE48 /* YCFFN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCFFN.h; sourceTree = "<group>"; };
+		CB96958B1AAEEBF0003BAE48 /* YCFFN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFFN.m; sourceTree = "<group>"; };
+		CB9695911AAEECA8003BAE48 /* housing.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = housing.csv; sourceTree = "<group>"; };
+		CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YCMatrix.xcodeproj; path = yconst/YCMatrix/YCMatrix.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB96959D1AAEEFE4003BAE48 /* YCMatrix.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9695A01AAEF02D003BAE48 /* YCMatrix.framework in Frameworks */,
 				CB9695691AAEEB64003BAE48 /* YCML.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,7 +102,11 @@
 			children = (
 				CB96955F1AAEEB64003BAE48 /* YCML */,
 				CB96956C1AAEEB64003BAE48 /* YCMLTests */,
+				CB96959C1AAEEFCD003BAE48 /* Frameworks */,
 				CB96955E1AAEEB64003BAE48 /* Products */,
+				CB9695791AAEEB96003BAE48 /* AppledocSettings.plist */,
+				CB96957B1AAEEBB3003BAE48 /* README.md */,
+				CB96957A1AAEEBAA003BAE48 /* COPYING */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,7 +122,13 @@
 		CB96955F1AAEEB64003BAE48 /* YCML */ = {
 			isa = PBXGroup;
 			children = (
-				CB9695621AAEEB64003BAE48 /* YCML.h */,
+				CB96957C1AAEEBDB003BAE48 /* YCML.h */,
+				CB96957E1AAEEBE5003BAE48 /* YCSupervisedModel.h */,
+				CB96957F1AAEEBE5003BAE48 /* YCSupervisedModel.m */,
+				CB9695801AAEEBE5003BAE48 /* YCSupervisedTrainer.h */,
+				CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */,
+				CB9695861AAEEBF0003BAE48 /* ELM */,
+				CB9695891AAEEBF0003BAE48 /* FFN */,
 				CB9695601AAEEB64003BAE48 /* Supporting Files */,
 			);
 			path = YCML;
@@ -88,6 +145,7 @@
 		CB96956C1AAEEB64003BAE48 /* YCMLTests */ = {
 			isa = PBXGroup;
 			children = (
+				CB9695901AAEEC9E003BAE48 /* Datasets */,
 				CB96956F1AAEEB64003BAE48 /* YCMLTests.m */,
 				CB96956D1AAEEB64003BAE48 /* Supporting Files */,
 			);
@@ -102,6 +160,49 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		CB9695861AAEEBF0003BAE48 /* ELM */ = {
+			isa = PBXGroup;
+			children = (
+				CB9695871AAEEBF0003BAE48 /* YCELMTrainer.h */,
+				CB9695881AAEEBF0003BAE48 /* YCELMTrainer.m */,
+			);
+			path = ELM;
+			sourceTree = "<group>";
+		};
+		CB9695891AAEEBF0003BAE48 /* FFN */ = {
+			isa = PBXGroup;
+			children = (
+				CB96958A1AAEEBF0003BAE48 /* YCFFN.h */,
+				CB96958B1AAEEBF0003BAE48 /* YCFFN.m */,
+			);
+			path = FFN;
+			sourceTree = "<group>";
+		};
+		CB9695901AAEEC9E003BAE48 /* Datasets */ = {
+			isa = PBXGroup;
+			children = (
+				CB9695911AAEECA8003BAE48 /* housing.csv */,
+			);
+			name = Datasets;
+			sourceTree = "<group>";
+		};
+		CB9695941AAEEFC7003BAE48 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */,
+				CB96959B1AAEEFC8003BAE48 /* YCMatrixTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB96959C1AAEEFCD003BAE48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -109,7 +210,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB9695631AAEEB64003BAE48 /* YCML.h in Headers */,
+				CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */,
+				CB9695821AAEEBE5003BAE48 /* YCSupervisedModel.h in Headers */,
+				CB9695841AAEEBE5003BAE48 /* YCSupervisedTrainer.h in Headers */,
+				CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */,
+				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +233,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CB96959F1AAEEFE8003BAE48 /* PBXTargetDependency */,
 			);
 			name = YCML;
 			productName = YCML;
@@ -179,6 +285,12 @@
 			mainGroup = CB9695531AAEEB64003BAE48;
 			productRefGroup = CB96955E1AAEEB64003BAE48 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CB9695941AAEEFC7003BAE48 /* Products */;
+					ProjectRef = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				CB96955C1AAEEB64003BAE48 /* YCML */,
@@ -186,6 +298,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = YCMatrix.framework;
+			remoteRef = CB9695981AAEEFC8003BAE48 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CB96959B1AAEEFC8003BAE48 /* YCMatrixTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = YCMatrixTests.xctest;
+			remoteRef = CB96959A1AAEEFC8003BAE48 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CB96955B1AAEEB64003BAE48 /* Resources */ = {
@@ -199,6 +328,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9695921AAEECA8003BAE48 /* housing.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +339,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */,
+				CB9695831AAEEBE5003BAE48 /* YCSupervisedModel.m in Sources */,
+				CB96958D1AAEEBF0003BAE48 /* YCELMTrainer.m in Sources */,
+				CB9695851AAEEBE5003BAE48 /* YCSupervisedTrainer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +361,11 @@
 			isa = PBXTargetDependency;
 			target = CB96955C1AAEEB64003BAE48 /* YCML */;
 			targetProxy = CB96956A1AAEEB64003BAE48 /* PBXContainerItemProxy */;
+		};
+		CB96959F1AAEEFE8003BAE48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = YCMatrix;
+			targetProxy = CB96959E1AAEEFE8003BAE48 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
