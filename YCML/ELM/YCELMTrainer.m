@@ -63,7 +63,7 @@
     if (self)
     {
         self.settings[@"Hidden Layer Size"] = @700;
-        self.settings[@"C"]                 = @0.5E-9;
+        self.settings[@"C"]                 = @1E-6;
     }
     return self;
 }

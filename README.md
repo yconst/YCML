@@ -2,7 +2,8 @@
 #YCML
 
 YCML is a Machine Learning framework in Objective-C (and soon Swift!).
-Currently, it only implements the basic Extreme Learning Machines (ELM) algorithm.
+Currently, it only implements the basic Extreme Learning Machines (ELM) algorithm, as 
+it is described in [1].
 
 ELMs are Feed-Forward Networks with a single hidden layer. Their hidden layer weights
 are initialized randomly, and the output linear weights are determined analytically.
@@ -58,7 +59,28 @@ Basic training and activation, taken from the YCML unit tests:
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
 
-A more advanced example, using cross-validation for testing:
+A more advanced example, using cross-validation:
+
+    YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
+    [trainingData shuffleColumns];
+    YCMatrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 20, 19)];
+    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 20)];
+    YCMatrix *trainingOutput = [trainingData getRow:13];
+    YCMatrix *trainingInput  = [trainingData removeRow:13];
+    YCMatrix *cvOutput       = [cvData getRow:13];
+    YCMatrix *cvInput        = [cvData removeRow:13];
+    YCELMTrainer *trainer    = [YCELMTrainer trainer];
+    trainer.settings[@"C"]   = @0.5E-9;
+
+    YCFFN *model = (YCFFN *)[trainer train:nil
+    inputMatrix:trainingInput
+    outputMatrix:trainingOutput];
+
+    YCMatrix *predictedOutput = [model activateWithMatrix:cvInput];
+
+    [predictedOutput subtract:cvOutput];
+    [predictedOutput elementWiseMultiply:predictedOutput];
+    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
 
 YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
 YCMatrix *trainingOutput = [trainingData getRow:13];
@@ -75,6 +97,10 @@ YCSupervisedModel       Base class for all supervised models
 YCSupervisedTrainer     Base class for all supervised model trainers
 YCFFN                   General Feed-Forward Network class
 YCELMTrainer            Basic Extreme Learning Machines trainer
+
+##References
+
+[1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang, "Extreme Learning Machine for Regression andMulticlass Classification", IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics,  vol. 42, no. 2, pp. 513-529, 2012.
 
 ##License
 

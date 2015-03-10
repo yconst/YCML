@@ -535,6 +535,7 @@
 				CB9695751AAEEB64003BAE48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CB9695761AAEEB64003BAE48 /* Build configuration list for PBXNativeTarget "YCMLTests" */ = {
 			isa = XCConfigurationList;
@@ -543,6 +544,7 @@
 				CB9695781AAEEB64003BAE48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
