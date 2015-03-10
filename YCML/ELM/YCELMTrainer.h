@@ -2,8 +2,8 @@
 //  ELMTrainer.h
 //  YCML
 //
-//  Created by Ioannis Chatzikonstantinou on 2/3/15.
-//  Copyright (c) 2015 Yannis Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
+//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
