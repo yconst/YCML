@@ -27,6 +27,9 @@
 #import "YCMatrix/YCMatrix+Manipulate.h"
 #import "YCMatrix/YCMatrix+Advanced.h"
 
+// Convenience logging function (without date/object)
+#define CleanLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+
 @interface YCMLTests : XCTestCase
 
 @end
@@ -92,6 +95,7 @@
 {
     // Simple training + testing, no cross-validation
     YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
+    [trainingData shuffleColumns];
     YCMatrix *trainingOutput = [trainingData getRow:13];
     YCMatrix *trainingInput  = [trainingData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
@@ -104,8 +108,35 @@
     
     [predictedOutput subtract:trainingOutput];
     [predictedOutput elementWiseMultiply:predictedOutput];
-    double MSE = (1.0/[predictedOutput count]) * [predictedOutput sum];
-    XCTAssertLessThan(MSE, 0.1, @"RMSE above threshold");
+    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
+    CleanLog(@"RMSE: %f", RMSE);
+    XCTAssertLessThan(RMSE, 4.0, @"RMSE above threshold");
+}
+
+- (void)testELMHousingCV
+{
+    // Simple training + testing, no cross-validation
+    YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
+    [trainingData shuffleColumns];
+    YCMatrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 20, 19)];
+    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 20)];
+    YCMatrix *trainingOutput = [trainingData getRow:13];
+    YCMatrix *trainingInput  = [trainingData removeRow:13];
+    YCMatrix *cvOutput       = [cvData getRow:13];
+    YCMatrix *cvInput        = [cvData removeRow:13];
+    YCELMTrainer *trainer    = [YCELMTrainer trainer];
+    
+    YCFFN *model = (YCFFN *)[trainer train:nil
+                               inputMatrix:trainingInput
+                              outputMatrix:trainingOutput];
+    
+    YCMatrix *predictedOutput = [model activateWithMatrix:cvInput];
+    
+    [predictedOutput subtract:cvOutput];
+    [predictedOutput elementWiseMultiply:predictedOutput];
+    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
+    CleanLog(@"RMSE: %f", RMSE);
+    XCTAssertLessThan(RMSE, 5.0, @"RMSE above threshold");
 }
 
 - (YCMatrix *)matrixWithCSVName:(NSString *)path removeFirst:(BOOL)removeFirst

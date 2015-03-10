@@ -38,6 +38,11 @@
  * zn+1 = Wn^T * an
  */
 
+// References:
+// G.-B. Huang, H. Zhou, X. Ding, and R. Zhang, "Extreme Learning Machine for Regression and
+// Multiclass Classification", IEEE Transactions on Systems, Man, and Cybernetics - Part B:
+// Cybernetics,  vol. 42, no. 2, pp. 513-529, 2012.
+
 #import "YCELMTrainer.h"
 #import "YCFFN.h"
 #import "YCMatrix/YCMatrix.h"
@@ -58,6 +63,7 @@
     if (self)
     {
         self.settings[@"Hidden Layer Size"] = @700;
+        self.settings[@"C"]                 = @0.5E-9;
     }
     return self;
 }
@@ -70,43 +76,48 @@
     // Output: One sample per column
     // Input: NxS, output: OxS
     
-    // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
-    YCDomain domain           = YCMakeDomain(0, 1);
+    YCDomain domain           = YCMakeDomain(-1, 2);
     YCDomain hiddenDomain     = YCMakeDomain(-1, 2);
     int inputSize             = input.rows;
+    int outputSize            = output.rows;
     int hiddenSize            = [self.settings[@"Hidden Layer Size"] intValue];
+    double C                  = [self.settings[@"C"] doubleValue];
     YCMatrix *inputTransform  = [input rowWiseMapToDomain:domain basis:MinMax];
+    
+    // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
     YCMatrix *outputTransform = [output rowWiseMapToDomain:domain basis:MinMax];
     YCMatrix *invOutTransform = [output rowWiseInverseMapFromDomain:domain basis:MinMax];
     YCMatrix *scaledInput     = [input matrixByRowWiseMapUsing:inputTransform];
     YCMatrix *scaledOutput    = [output matrixByRowWiseMapUsing:outputTransform];
-
-    YCMatrix *hiddenWeights = [YCMatrix randomValuesMatrixOfRows:inputSize
+    
+    // Step II. Randomized input weights and biases and calculation of hidden layer output
+    YCMatrix *inputWeights = [YCMatrix randomValuesMatrixOfRows:inputSize
                                                         columns:hiddenSize
                                                          domain:hiddenDomain];
     
-    YCMatrix *hiddenBiases = [YCMatrix randomValuesMatrixOfRows:hiddenSize
+    YCMatrix *inputBiases = [YCMatrix randomValuesMatrixOfRows:hiddenSize
                                                       columns:1
                                                        domain:hiddenDomain];
     
-    YCMatrix *H = [hiddenWeights matrixByTransposingAndMultiplyingWithRight:scaledInput]; // (NxH)T * NxS = HxS
-    [H addColumn:hiddenBiases];
+    YCMatrix *H = [inputWeights matrixByTransposingAndMultiplyingWithRight:scaledInput]; // (NxH)T * NxS = HxS
+    [H addColumn:inputBiases];
     [H applyFunction:model.function];
     
-    H = [H appendRow:[YCMatrix matrixOfRows:1 Columns:H.columns Value:1]];
+    // Step III. Calculating output weights
+    // outW = ( eye(nHiddenNeurons)/C + H * H') \ H * targets';
+    YCMatrix *oneOverC      = [YCMatrix matrixOfRows:hiddenSize Columns:hiddenSize Value:1.0/C];
+    [oneOverC add:[H matrixByTransposingAndMultiplyingWithLeft:H]];
+    YCMatrix *invA          = [oneOverC pseudoInverse];
     
-    YCMatrix *HI = [H pseudoInverse];
+    YCMatrix *HTargetsT     = [scaledOutput matrixByTransposingAndMultiplyingWithLeft:H];
+    YCMatrix *outputWeights = [invA matrixByMultiplyingWithRight:HTargetsT];
     
-    YCMatrix *outputWnB = [scaledOutput matrixByMultiplyingWithRight:HI];
+    YCMatrix *outputBiases  = [YCMatrix matrixOfRows:outputSize Columns:1];
     
-    YCMatrix *outputWeights = [[outputWnB matrixWithColumnsInRange:NSMakeRange(0, outputWnB.columns-1)] matrixByTransposing];
+    model.weightMatrices    = @[inputWeights, outputWeights];
+    model.biasVectors       = @[inputBiases, outputBiases];
     
-    YCMatrix *outputBiases = [outputWnB getColumn:outputWnB.columns - 1];
-    
-    model.weightMatrices = @[hiddenWeights, outputWeights];
-    model.biasVectors = @[hiddenBiases, outputBiases];
-    
-    // Step VI. Copy transform matrices to model
+    // Step IV. Copy transform matrices to model
     // TRANSFORM MATRICES SHOULD BE COPIED AFTER TRAINING OTHERWISE
     // THE MODEL WILL SCALE OUTPUTS AND RETURN FALSE ERRORS
     model.inputTransform      = inputTransform;

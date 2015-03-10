@@ -1,7 +1,7 @@
 
 #YCML
 
-YCML is a framework for Machine Learning in Objective-C (and soon Swift!).
+YCML is a Machine Learning framework in Objective-C (and soon Swift!).
 Currently, it only implements the basic Extreme Learning Machines (ELM) algorithm.
 
 ELMs are Feed-Forward Networks with a single hidden layer. Their hidden layer weights
@@ -57,6 +57,17 @@ Basic training and activation, taken from the YCML unit tests:
     YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
+
+A more advanced example, using cross-validation for testing:
+
+YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
+YCMatrix *trainingOutput = [trainingData getRow:13];
+YCMatrix *trainingInput  = [trainingData removeRow:13];
+YCELMTrainer *trainer    = [YCELMTrainer trainer];
+
+YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
+
+YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
     
 ##File Structure
 
