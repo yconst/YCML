@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB02F7C51AAF653C00EF1E02 /* YCML_Tests__Swift_.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */; };
+		CB02F7C61AAF653C00EF1E02 /* YCML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB96955D1AAEEB64003BAE48 /* YCML.framework */; };
+		CB02F7CD1AAF720500EF1E02 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
 		CB9695691AAEEB64003BAE48 /* YCML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB96955D1AAEEB64003BAE48 /* YCML.framework */; };
 		CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96956F1AAEEB64003BAE48 /* YCMLTests.m */; };
 		CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96957C1AAEEBDB003BAE48 /* YCML.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CB02F7C71AAF653C00EF1E02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB9695541AAEEB64003BAE48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB96955C1AAEEB64003BAE48;
+			remoteInfo = YCML;
+		};
 		CB96956A1AAEEB64003BAE48 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CB9695541AAEEB64003BAE48 /* Project object */;
@@ -55,6 +65,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "YCML Tests (Swift).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB02F7C31AAF653C00EF1E02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YCML_Tests__Swift_.swift; sourceTree = "<group>"; };
 		CB96955D1AAEEB64003BAE48 /* YCML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9695611AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +90,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CB02F7BD1AAF653C00EF1E02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB02F7C61AAF653C00EF1E02 /* YCML.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9695591AAEEB64003BAE48 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,11 +118,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB02F7C11AAF653C00EF1E02 /* YCML Tests (Swift) */ = {
+			isa = PBXGroup;
+			children = (
+				CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */,
+				CB02F7C21AAF653C00EF1E02 /* Supporting Files */,
+			);
+			path = "YCML Tests (Swift)";
+			sourceTree = "<group>";
+		};
+		CB02F7C21AAF653C00EF1E02 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CB02F7C31AAF653C00EF1E02 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		CB9695531AAEEB64003BAE48 = {
 			isa = PBXGroup;
 			children = (
 				CB96955F1AAEEB64003BAE48 /* YCML */,
 				CB96956C1AAEEB64003BAE48 /* YCMLTests */,
+				CB02F7C11AAF653C00EF1E02 /* YCML Tests (Swift) */,
 				CB96959C1AAEEFCD003BAE48 /* Frameworks */,
 				CB96955E1AAEEB64003BAE48 /* Products */,
 				CB9695791AAEEB96003BAE48 /* AppledocSettings.plist */,
@@ -115,6 +154,7 @@
 			children = (
 				CB96955D1AAEEB64003BAE48 /* YCML.framework */,
 				CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */,
+				CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +261,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		CB02F7BF1AAF653C00EF1E02 /* YCML Tests (Swift) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB02F7CC1AAF653C00EF1E02 /* Build configuration list for PBXNativeTarget "YCML Tests (Swift)" */;
+			buildPhases = (
+				CB02F7BC1AAF653C00EF1E02 /* Sources */,
+				CB02F7BD1AAF653C00EF1E02 /* Frameworks */,
+				CB02F7BE1AAF653C00EF1E02 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CB02F7C81AAF653C00EF1E02 /* PBXTargetDependency */,
+			);
+			name = "YCML Tests (Swift)";
+			productName = "YCML Tests (Swift)";
+			productReference = CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CB96955C1AAEEB64003BAE48 /* YCML */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB9695731AAEEB64003BAE48 /* Build configuration list for PBXNativeTarget "YCML" */;
@@ -267,6 +325,9 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Yannis Chatzikonstantinou";
 				TargetAttributes = {
+					CB02F7BF1AAF653C00EF1E02 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
 					CB96955C1AAEEB64003BAE48 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -295,6 +356,7 @@
 			targets = (
 				CB96955C1AAEEB64003BAE48 /* YCML */,
 				CB9695671AAEEB64003BAE48 /* YCMLTests */,
+				CB02F7BF1AAF653C00EF1E02 /* YCML Tests (Swift) */,
 			);
 		};
 /* End PBXProject section */
@@ -317,6 +379,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CB02F7BE1AAF653C00EF1E02 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB02F7CD1AAF720500EF1E02 /* housing.csv in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB96955B1AAEEB64003BAE48 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,6 +405,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CB02F7BC1AAF653C00EF1E02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB02F7C51AAF653C00EF1E02 /* YCML_Tests__Swift_.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9695581AAEEB64003BAE48 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -357,6 +435,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CB02F7C81AAF653C00EF1E02 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB96955C1AAEEB64003BAE48 /* YCML */;
+			targetProxy = CB02F7C71AAF653C00EF1E02 /* PBXContainerItemProxy */;
+		};
 		CB96956B1AAEEB64003BAE48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CB96955C1AAEEB64003BAE48 /* YCML */;
@@ -370,6 +453,39 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		CB02F7C91AAF653C00EF1E02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "YCML Tests (Swift)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CB02F7CA1AAF653C00EF1E02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "YCML Tests (Swift)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		CB9695711AAEEB64003BAE48 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -453,6 +569,7 @@
 		CB9695741AAEEB64003BAE48 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -466,12 +583,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.9;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		CB9695751AAEEB64003BAE48 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -523,6 +642,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CB02F7CC1AAF653C00EF1E02 /* Build configuration list for PBXNativeTarget "YCML Tests (Swift)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB02F7C91AAF653C00EF1E02 /* Debug */,
+				CB02F7CA1AAF653C00EF1E02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		CB9695571AAEEB64003BAE48 /* Build configuration list for PBXProject "YCML" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

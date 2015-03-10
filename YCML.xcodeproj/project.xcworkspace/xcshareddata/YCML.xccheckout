@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>257FD9D4-C475-4671-BC19-F6A9E5BFD9F5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>YCML</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>AAEC269FD8AFFC2CC1EC21B94E683FF215C7A956</key>
+		<string>https://github.com/yconst/YCMatrix.git</string>
+		<key>BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0</key>
+		<string>https://github.com/yconst/YCML.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>YCML.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>AAEC269FD8AFFC2CC1EC21B94E683FF215C7A956</key>
+		<string>../..yconst/YCMatrix</string>
+		<key>BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/yconst/YCML.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AAEC269FD8AFFC2CC1EC21B94E683FF215C7A956</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YCMatrix</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YCML</string>
+		</dict>
+	</array>
+</dict>
+</plist>

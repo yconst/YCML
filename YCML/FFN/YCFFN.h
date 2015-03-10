@@ -37,12 +37,12 @@
 /**
  Returns the input transformation matrix of the receiver.
  */
-@property (strong) YCMatrix *inputTransform;
+@property (strong) Matrix *inputTransform;
 
 /**
  Returns the output reverse transformation matrix of the receiver.
  */
-@property (strong) YCMatrix *outputTransform;
+@property (strong) Matrix *outputTransform;
 
 /**
  Returns the receiver's input size.

@@ -22,7 +22,7 @@
 
 #import "YCSupervisedTrainer.h"
 #import "YCSupervisedModel.h"
-#import "YCMatrix/YCMatrix.h"
+@import YCMatrix;
 
 @implementation YCSupervisedTrainer
 
@@ -48,7 +48,7 @@
     return self;
 }
 
-- (YCSupervisedModel *)train:(YCSupervisedModel *)model inputMatrix:(YCMatrix *)input outputMatrix:(YCMatrix *)output
+- (YCSupervisedModel *)train:(YCSupervisedModel *)model inputMatrix:(Matrix *)input outputMatrix:(Matrix *)output
 {
     self->_shouldStop = false;
     YCSupervisedModel *theModel = model;
@@ -61,8 +61,8 @@
 }
 
 - (void)performTrainingModel:(YCSupervisedModel *)model
-                 inputMatrix:(YCMatrix *)input
-                outputMatrix:(YCMatrix *)output
+                 inputMatrix:(Matrix *)input
+                outputMatrix:(Matrix *)output
 {
     @throw [NSInternalInconsistencyException initWithFormat:
             @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];

@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
-@class YCMatrix;
+@class Matrix;
 
 @interface YCSupervisedModel : NSObject <NSCopying, NSCoding>
 
@@ -39,7 +39,7 @@
  
  @return The output matrix resulting from the prediction.
  */
-- (YCMatrix *)activateWithMatrix:(YCMatrix *)matrix;
+- (Matrix *)activateWithMatrix:(Matrix *)matrix;
 
 /**
  Holds statistics about the model, usually as a result

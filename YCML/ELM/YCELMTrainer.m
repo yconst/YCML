@@ -45,10 +45,7 @@
 
 #import "YCELMTrainer.h"
 #import "YCFFN.h"
-#import "YCMatrix/YCMatrix.h"
-#import "YCMatrix/YCMatrix+Manipulate.h"
-#import "YCMatrix/YCMatrix+Advanced.h"
-#import "YCMatrix/YCMatrix+Map.h"
+@import YCMatrix;
 
 @implementation YCELMTrainer
 
@@ -69,8 +66,8 @@
 }
 
 - (void)performTrainingModel:(YCFFN *)model
-                 inputMatrix:(YCMatrix *)input
-                outputMatrix:(YCMatrix *)output
+                 inputMatrix:(Matrix *)input
+                outputMatrix:(Matrix *)output
 {
     // Input: One sample per column
     // Output: One sample per column
@@ -82,37 +79,37 @@
     int outputSize            = output.rows;
     int hiddenSize            = [self.settings[@"Hidden Layer Size"] intValue];
     double C                  = [self.settings[@"C"] doubleValue];
-    YCMatrix *inputTransform  = [input rowWiseMapToDomain:domain basis:MinMax];
+    Matrix *inputTransform  = [input rowWiseMapToDomain:domain basis:MinMax];
     
     // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
-    YCMatrix *outputTransform = [output rowWiseMapToDomain:domain basis:MinMax];
-    YCMatrix *invOutTransform = [output rowWiseInverseMapFromDomain:domain basis:MinMax];
-    YCMatrix *scaledInput     = [input matrixByRowWiseMapUsing:inputTransform];
-    YCMatrix *scaledOutput    = [output matrixByRowWiseMapUsing:outputTransform];
+    Matrix *outputTransform = [output rowWiseMapToDomain:domain basis:MinMax];
+    Matrix *invOutTransform = [output rowWiseInverseMapFromDomain:domain basis:MinMax];
+    Matrix *scaledInput     = [input matrixByRowWiseMapUsing:inputTransform];
+    Matrix *scaledOutput    = [output matrixByRowWiseMapUsing:outputTransform];
     
     // Step II. Randomized input weights and biases and calculation of hidden layer output
-    YCMatrix *inputWeights = [YCMatrix randomValuesMatrixOfRows:inputSize
+    Matrix *inputWeights = [Matrix randomValuesMatrixOfRows:inputSize
                                                         columns:hiddenSize
                                                          domain:hiddenDomain];
     
-    YCMatrix *inputBiases = [YCMatrix randomValuesMatrixOfRows:hiddenSize
+    Matrix *inputBiases = [Matrix randomValuesMatrixOfRows:hiddenSize
                                                       columns:1
                                                        domain:hiddenDomain];
     
-    YCMatrix *H = [inputWeights matrixByTransposingAndMultiplyingWithRight:scaledInput]; // (NxH)T * NxS = HxS
+    Matrix *H = [inputWeights matrixByTransposingAndMultiplyingWithRight:scaledInput]; // (NxH)T * NxS = HxS
     [H addColumn:inputBiases];
     [H applyFunction:model.function];
     
     // Step III. Calculating output weights
     // outW = ( eye(nHiddenNeurons)/C + H * H') \ H * targets';
-    YCMatrix *oneOverC      = [YCMatrix matrixOfRows:hiddenSize Columns:hiddenSize Value:1.0/C];
+    Matrix *oneOverC      = [Matrix matrixOfRows:hiddenSize Columns:hiddenSize Value:1.0/C];
     [oneOverC add:[H matrixByTransposingAndMultiplyingWithLeft:H]];
-    YCMatrix *invA          = [oneOverC pseudoInverse];
+    Matrix *invA          = [oneOverC pseudoInverse];
     
-    YCMatrix *HTargetsT     = [scaledOutput matrixByTransposingAndMultiplyingWithLeft:H];
-    YCMatrix *outputWeights = [invA matrixByMultiplyingWithRight:HTargetsT];
+    Matrix *HTargetsT     = [scaledOutput matrixByTransposingAndMultiplyingWithLeft:H];
+    Matrix *outputWeights = [invA matrixByMultiplyingWithRight:HTargetsT];
     
-    YCMatrix *outputBiases  = [YCMatrix matrixOfRows:outputSize Columns:1];
+    Matrix *outputBiases  = [Matrix matrixOfRows:outputSize Columns:1];
     
     model.weightMatrices    = @[inputWeights, outputWeights];
     model.biasVectors       = @[inputBiases, outputBiases];

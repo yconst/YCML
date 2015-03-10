@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
-@class YCSupervisedModel, YCMatrix;
+@class YCSupervisedModel, Matrix;
 
 @interface YCSupervisedTrainer : NSObject <NSCopying, NSCoding>
 
@@ -50,8 +50,8 @@
  @return The trained model (if input != nil, it is the same as the input)
  */
 - (YCSupervisedModel *)train:(YCSupervisedModel *)model
-                 inputMatrix:(YCMatrix *)input
-                outputMatrix:(YCMatrix *)output;
+                 inputMatrix:(Matrix *)input
+                outputMatrix:(Matrix *)output;
 
 /**
  Actually performs the training routine. This method should be implemented
@@ -62,8 +62,8 @@
  @param output The training output
  */
 - (void)performTrainingModel:(YCSupervisedModel *)model
-                 inputMatrix:(YCMatrix *)input
-                outputMatrix:(YCMatrix *)output;
+                 inputMatrix:(Matrix *)input
+                outputMatrix:(Matrix *)output;
 
 /**
  Sends a request to the receiver to stop any ongoing processing.

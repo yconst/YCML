@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "YCSupervisedModel.h"
-#import "YCMatrix/YCMatrix.h"
+@import YCMatrix;
 
 @implementation YCSupervisedModel
 
@@ -45,7 +45,7 @@
 
 #pragma mark Learner Implementation
 
-- (YCMatrix *)activateWithMatrix:(YCMatrix *)matrix
+- (Matrix *)activateWithMatrix:(Matrix *)matrix
 {
     @throw [NSInternalInconsistencyException initWithFormat:
             @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];

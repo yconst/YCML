@@ -40,10 +40,7 @@
  */
 
 #import "YCFFN.h"
-#import "YCMatrix/YCMatrix.h"
-#import "YCMatrix/YCMatrix+Manipulate.h"
-#import "YCMatrix/YCMatrix+Advanced.h"
-#import "YCMatrix/YCMatrix+Map.h"
+@import YCMatrix;
 
 @implementation YCFFN
 
@@ -67,13 +64,13 @@
     };
 }
 
-- (YCMatrix *)activateWithMatrix:(YCMatrix *)matrix
+- (Matrix *)activateWithMatrix:(Matrix *)matrix
 {
     NSAssert([self.weightMatrices count], @"Model not trained");
     NSAssert([matrix rows] == [self.weightMatrices[0] rows], @"Input size mismatch");
     
     // 1. Scale input
-    YCMatrix *scaledInput = matrix; // NxS
+    Matrix *scaledInput = matrix; // NxS
     if (self.inputTransform)
     {
         scaledInput = [matrix matrixByRowWiseMapUsing:self.inputTransform];
@@ -82,7 +79,7 @@
     // 2. Calculate layer-by-layer (and store activations)
     NSMutableArray *lastActivations = [NSMutableArray array];
     
-    YCMatrix *output = scaledInput;
+    Matrix *output = scaledInput;
     
     for (int i=0, j=(int)self.hiddenLayerCount; i<j; i++)
     {
@@ -111,12 +108,12 @@
 
 - (int)inputSize
 {
-    return ((YCMatrix *)[self.weightMatrices firstObject])->rows;
+    return ((Matrix *)[self.weightMatrices firstObject])->rows;
 }
 
 - (int)outputSize
 {
-    return ((YCMatrix *)[self.weightMatrices lastObject])->columns;
+    return ((Matrix *)[self.weightMatrices lastObject])->columns;
 }
 
 - (int)hiddenLayerCount
@@ -126,7 +123,7 @@
 
 - (int)hiddenLayerSize
 {
-    return self.hiddenLayerCount ? ((YCMatrix *)[self.weightMatrices firstObject])->columns : 0;
+    return self.hiddenLayerCount ? ((Matrix *)[self.weightMatrices firstObject])->columns : 0;
 }
 
 #pragma mark NSCopying Implementation

@@ -81,26 +81,17 @@ A more advanced example, using cross-validation:
     [predictedOutput subtract:cvOutput];
     [predictedOutput elementWiseMultiply:predictedOutput];
     double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
-
-YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
-YCMatrix *trainingOutput = [trainingData getRow:13];
-YCMatrix *trainingInput  = [trainingData removeRow:13];
-YCELMTrainer *trainer    = [YCELMTrainer trainer];
-
-YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
-
-YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
     
 ##File Structure
 
-YCSupervisedModel       Base class for all supervised models
-YCSupervisedTrainer     Base class for all supervised model trainers
-YCFFN                   General Feed-Forward Network class
-YCELMTrainer            Basic Extreme Learning Machines trainer
+YCSupervisedModel       Base class for all supervised models  
+YCSupervisedTrainer     Base class for all supervised model trainers  
+YCFFN                   General Feed-Forward Network class  
+YCELMTrainer            Basic Extreme Learning Machines trainer  
 
 ##References
 
-[1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang, "Extreme Learning Machine for Regression andMulticlass Classification", IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics,  vol. 42, no. 2, pp. 513-529, 2012.
+[1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang, "Extreme Learning Machine for Regression and Multiclass Classification", IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
 
 ##License
 
