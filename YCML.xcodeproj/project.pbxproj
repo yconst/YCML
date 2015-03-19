@@ -24,6 +24,12 @@
 		CB9695921AAEECA8003BAE48 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
 		CB96959D1AAEEFE4003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
 		CB9695A01AAEF02D003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
+		CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A4EF1ABA330300464DD2 /* YCProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4ED1ABA330300464DD2 /* YCProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A4F31ABA35D200464DD2 /* YCOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */; };
+		CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A4F81ABA36AD00464DD2 /* YCGradientDescent.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +93,12 @@
 		CB96958B1AAEEBF0003BAE48 /* YCFFN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFFN.m; sourceTree = "<group>"; };
 		CB9695911AAEECA8003BAE48 /* housing.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = housing.csv; sourceTree = "<group>"; };
 		CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YCMatrix.xcodeproj; path = yconst/YCMatrix/YCMatrix.xcodeproj; sourceTree = "<group>"; };
+		CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDerivativeProblem.h; path = Optimization/YCDerivativeProblem.h; sourceTree = "<group>"; };
+		CBC7A4ED1ABA330300464DD2 /* YCProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCProblem.h; path = Optimization/YCProblem.h; sourceTree = "<group>"; };
+		CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOptimizer.h; path = Optimization/YCOptimizer.h; sourceTree = "<group>"; };
+		CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOptimizer.m; path = Optimization/YCOptimizer.m; sourceTree = "<group>"; };
+		CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGradientDescent.h; path = "Optimization/Gradient Descent/YCGradientDescent.h"; sourceTree = "<group>"; };
+		CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGradientDescent.m; path = "Optimization/Gradient Descent/YCGradientDescent.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +181,7 @@
 				CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */,
 				CB9695861AAEEBF0003BAE48 /* ELM */,
 				CB9695891AAEEBF0003BAE48 /* FFN */,
+				CBC7A4EA1ABA327C00464DD2 /* Optimization */,
 				CB9695601AAEEB64003BAE48 /* Supporting Files */,
 			);
 			path = YCML;
@@ -243,6 +256,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CBC7A4EA1ABA327C00464DD2 /* Optimization */ = {
+			isa = PBXGroup;
+			children = (
+				CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */,
+				CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */,
+				CBC7A4ED1ABA330300464DD2 /* YCProblem.h */,
+				CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */,
+				CBC7A4F41ABA367000464DD2 /* Gradient Descent */,
+			);
+			name = Optimization;
+			sourceTree = "<group>";
+		};
+		CBC7A4F41ABA367000464DD2 /* Gradient Descent */ = {
+			isa = PBXGroup;
+			children = (
+				CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */,
+				CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */,
+			);
+			name = "Gradient Descent";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -251,9 +285,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */,
+				CBC7A4EF1ABA330300464DD2 /* YCProblem.h in Headers */,
+				CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */,
 				CB9695821AAEEBE5003BAE48 /* YCSupervisedModel.h in Headers */,
 				CB9695841AAEEBE5003BAE48 /* YCSupervisedTrainer.h in Headers */,
+				CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */,
 				CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */,
+				CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */,
 				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,6 +459,8 @@
 				CB9695831AAEEBE5003BAE48 /* YCSupervisedModel.m in Sources */,
 				CB96958D1AAEEBF0003BAE48 /* YCELMTrainer.m in Sources */,
 				CB9695851AAEEBE5003BAE48 /* YCSupervisedTrainer.m in Sources */,
+				CBC7A4F81ABA36AD00464DD2 /* YCGradientDescent.m in Sources */,
+				CBC7A4F31ABA35D200464DD2 /* YCOptimizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +689,7 @@
 				CB02F7CA1AAF653C00EF1E02 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CB9695571AAEEB64003BAE48 /* Build configuration list for PBXProject "YCML" */ = {
 			isa = XCConfigurationList;
