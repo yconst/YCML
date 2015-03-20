@@ -37,22 +37,22 @@ class YCML_Tests__Swift_: XCTestCase {
         XCTAssertLessThan(RMSE, 6.0, "RMSE above threshold")
     }
     
-    func matrixWithCSVName(name: NSString, removeFirst: Bool) -> Matrix
+    func matrixWithCSVName(name: String, removeFirst: Bool) -> Matrix
     {
         var output: Matrix = Matrix()
         var hasOutput = false
         let bundle = NSBundle(forClass: self.dynamicType)
         let filePath = bundle.pathForResource("housing", ofType: "csv")
-        var fileContents = NSString(contentsOfFile: filePath!, encoding: NSUTF8StringEncoding, error: nil)!
+        var fileContents = String(contentsOfFile: filePath!, encoding: NSUTF8StringEncoding, error: nil)!
         fileContents = fileContents.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
-        var rows = fileContents.componentsSeparatedByString("\n") as Array<NSString>
+        var rows = fileContents.componentsSeparatedByString("\n") as Array<String>
         if (removeFirst).boolValue{
             rows.removeAtIndex(0)
         }
         var counter: Int32 = 0
         for row in rows
         {
-            var fields = row.componentsSeparatedByString(",") as Array<NSNumber>
+            var fields = row.componentsSeparatedByString(",") as Array<String>
             if (!hasOutput)
             {
                 var rowCount = Int32(fields.count)
@@ -66,5 +66,4 @@ class YCML_Tests__Swift_: XCTestCase {
         }
         return output
     }
-    
 }

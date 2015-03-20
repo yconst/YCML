@@ -30,6 +30,10 @@
 		CBC7A4F31ABA35D200464DD2 /* YCOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */; };
 		CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A4F81ABA36AD00464DD2 /* YCGradientDescent.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */; };
+		CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F91ABB7F1000464DD2 /* YCBackPropProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A4FE1ABB7F1000464DD2 /* YCBackPropProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */; };
+		CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +103,10 @@
 		CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOptimizer.m; path = Optimization/YCOptimizer.m; sourceTree = "<group>"; };
 		CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGradientDescent.h; path = "Optimization/Gradient Descent/YCGradientDescent.h"; sourceTree = "<group>"; };
 		CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGradientDescent.m; path = "Optimization/Gradient Descent/YCGradientDescent.m"; sourceTree = "<group>"; };
+		CBC7A4F91ABB7F1000464DD2 /* YCBackPropProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCBackPropProblem.h; sourceTree = "<group>"; };
+		CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropProblem.m; sourceTree = "<group>"; };
+		CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCBackPropTrainer.h; sourceTree = "<group>"; };
+		CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropTrainer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +235,10 @@
 			children = (
 				CB96958A1AAEEBF0003BAE48 /* YCFFN.h */,
 				CB96958B1AAEEBF0003BAE48 /* YCFFN.m */,
+				CBC7A4F91ABB7F1000464DD2 /* YCBackPropProblem.h */,
+				CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */,
+				CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */,
+				CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */,
 			);
 			path = FFN;
 			sourceTree = "<group>";
@@ -292,7 +304,9 @@
 				CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */,
 				CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */,
 				CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */,
+				CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */,
 				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
+				CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,11 +470,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */,
+				CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */,
 				CB9695831AAEEBE5003BAE48 /* YCSupervisedModel.m in Sources */,
 				CB96958D1AAEEBF0003BAE48 /* YCELMTrainer.m in Sources */,
 				CB9695851AAEEBE5003BAE48 /* YCSupervisedTrainer.m in Sources */,
 				CBC7A4F81ABA36AD00464DD2 /* YCGradientDescent.m in Sources */,
 				CBC7A4F31ABA35D200464DD2 /* YCOptimizer.m in Sources */,
+				CBC7A4FE1ABB7F1000464DD2 /* YCBackPropProblem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

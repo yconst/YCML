@@ -34,6 +34,8 @@
 
 @implementation YCMLTests
 
+#pragma mark FeedForward Net Tests
+
 - (void)testFFNctivation
 {
     YCFFN *net = [[YCFFN alloc] init];
@@ -75,44 +77,117 @@
     XCTAssertEqualObjects(expected, actual, @"Predicted matrix is not equal to expected");
 }
 
-- (void)testELMHousing
+- (void)testFFNParameterVectorEncoding
 {
-    // Simple training + testing, no cross-validation
-    Matrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
-    [trainingData shuffleColumns];
-    Matrix *trainingOutput = [trainingData getRow:13];
-    Matrix *trainingInput  = [trainingData removeRow:13];
-    YCELMTrainer *trainer    = [YCELMTrainer trainer];
-    trainer.settings[@"C"]   = @8;
-    trainer.settings[@"Hidden Layer Size"] = @1000;
+    double ia[9] = {9.4084028, -1.14962953, 6.912,
+        2.27, -12.1076, -9.691,
+        1.7603, 1.4902, -3.8019};
+    double oa[3] = {11.895, -3.0235540050, -1.2318};
+    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:3];
+    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:3];
     
-    YCFFN *model = (YCFFN *)[trainer train:nil
-                               inputMatrix:trainingInput
-                              outputMatrix:trainingOutput];
+    YCFFN *model = [[YCFFN alloc] init];
+    model.weightMatrices = @[[Matrix matrixOfRows:3 Columns:5],
+                             [Matrix matrixOfRows:5 Columns:1]];
+    model.biasVectors = @[[Matrix matrixOfRows:5 Columns:1],
+                          [Matrix matrixOfRows:1 Columns:1]];
     
-    Matrix *predictedOutput = [model activateWithMatrix:trainingInput];
+    YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
+                                                                outputMatrix:om
+                                                                       model:model];
+    Matrix *lo = [Matrix matrixOfRows:26 Columns:1 Value:0.0]; // 3x5 + 5 + 1x5 + 1
+    Matrix *hi = [Matrix matrixOfRows:26 Columns:1 Value:5.0];
+    Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
+    NSArray *weights = [prob modelWeightsWithParameters:params];
+    NSArray *biases = [prob modelBiasesWithParameters:params];
+    Matrix *trialParams = [Matrix matrixLike:params];
     
-    [predictedOutput subtract:trainingOutput];
-    [predictedOutput elementWiseMultiply:predictedOutput];
-    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
-    CleanLog(@"RMSE: %f", RMSE);
-    XCTAssertLessThan(RMSE, 4.0, @"RMSE above threshold");
+    [prob storeWeights:weights biases:biases toVector:trialParams];
+    XCTAssertEqualObjects(params, trialParams, @"Converted parameter vector is not equal");
 }
 
-- (void)testELMHousingCV
+- (void)testFFNNumericalGradients
 {
-    // Simple training + cross-validation
-    Matrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
+    double ia[9] = {0.4084028, 0.14962953, 0.912,
+        0.27, 0.1076, 0.691,
+        0.7603, 0.4902, 0.8019};
+    double oa[3] = {0.1, 0.95, 0.45};
+    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:3];
+    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:3];
+    
+    YCFFN *model = [[YCFFN alloc] init];
+    model.weightMatrices = @[[Matrix matrixOfRows:3 Columns:2],
+                             [Matrix matrixOfRows:2 Columns:1]];
+    model.biasVectors = @[[Matrix matrixOfRows:2 Columns:1],
+                          [Matrix matrixOfRows:1 Columns:1]];
+    
+    YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
+                                                                outputMatrix:om
+                                                                       model:model];
+    Matrix *lo     = [Matrix matrixOfRows:11 Columns:1 Value:-1.0]; // 3x2 + 2 + 1x2 + 1
+    Matrix *hi     = [Matrix matrixOfRows:11 Columns:1 Value:1.0];
+    Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
+    
+    Matrix *theoreticalGradients = [Matrix matrixLike:params];
+    [prob derivatives:theoreticalGradients parameters:params];
+    Matrix *numericalGradients   = [Matrix matrixLike:theoreticalGradients];
+    Matrix *perturbed            = [Matrix matrixFromMatrix:params];
+    double e                       = 1E-4;
+    Matrix *resultMin = [Matrix matrixOfRows:1 Columns:1];
+    Matrix *resultMax = [Matrix matrixOfRows:1 Columns:1];
+    for (int i=0; i<[perturbed count]; i++)
+    {
+        perturbed->matrix[i] -= e;
+        [prob evaluate:resultMin parameters:perturbed];
+        perturbed->matrix[i] += 2*e;
+        [prob evaluate:resultMax parameters:perturbed];
+        perturbed->matrix[i] -= e;
+        numericalGradients->matrix[i] = (resultMax->matrix[0] - resultMin->matrix[0]) / (2*e);
+    }
+    CleanLog(@"Theoretical: %@", [theoreticalGradients matrixByTransposing]);
+    CleanLog(@"Numerical: %@", [numericalGradients matrixByTransposing]);
+    CleanLog(@"Difference: %@", [[theoreticalGradients matrixBySubtracting:numericalGradients] matrixByTransposing]);
+    XCTAssert([numericalGradients isEqualToMatrix:theoreticalGradients tolerance:1E-8], @"Matrices are not equal");
+}
+
+#pragma mark Cross-Validation Tests
+
+- (void)testELMHousing
+{
+    YCELMTrainer *trainer                  = [YCELMTrainer trainer];
+    trainer.settings[@"C"]                 = @8;
+    trainer.settings[@"Hidden Layer Size"] = @900;
+    
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+}
+
+- (void)testBackPropHousing
+{
+    YCBackPropTrainer *trainer              = [YCBackPropTrainer trainer];
+    trainer.settings[@"Hidden Layer Size"]  = @8;
+    trainer.settings[@"Lambda"]             = @0.0001;
+    trainer.settings[@"Iterations"]         = @1500;
+    trainer.settings[@"Alpha"]              = @0.5;
+    
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+}
+
+#pragma mark Utility Functions
+
+- (void)testWithTrainer:(YCSupervisedTrainer *)trainer
+                                dataset:(NSString *)dataset
+                 dependentVariableIndex:(int)index
+                                   rmse:(double)rmse
+{
+    // Training + cross-validation
+    Matrix *trainingData   = [self matrixWithCSVName:dataset removeFirst:YES];
     [trainingData shuffleColumns];
     Matrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 30, 29)];
     trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 30)];
-    Matrix *trainingOutput = [trainingData getRow:13];
-    Matrix *trainingInput  = [trainingData removeRow:13];
-    Matrix *cvOutput       = [cvData getRow:13];
-    Matrix *cvInput        = [cvData removeRow:13];
-    YCELMTrainer *trainer    = [YCELMTrainer trainer];
-    trainer.settings[@"C"]   = @8;
-    trainer.settings[@"Hidden Layer Size"] = @1000;
+    Matrix *trainingOutput = [trainingData getRow:index];
+    Matrix *trainingInput  = [trainingData removeRow:index];
+    Matrix *cvOutput       = [cvData getRow:index];
+    Matrix *cvInput        = [cvData removeRow:index];
     
     YCFFN *model = (YCFFN *)[trainer train:nil
                                inputMatrix:trainingInput
@@ -124,7 +199,7 @@
     [predictedOutput elementWiseMultiply:predictedOutput];
     double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
     CleanLog(@"RMSE: %f", RMSE);
-    XCTAssertLessThan(RMSE, 6.0, @"RMSE above threshold");
+    XCTAssertLessThan(RMSE, rmse, @"RMSE above threshold");
 }
 
 - (Matrix *)matrixWithCSVName:(NSString *)path removeFirst:(BOOL)removeFirst

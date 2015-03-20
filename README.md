@@ -2,11 +2,9 @@
 #YCML
 
 YCML is a Machine Learning framework in Objective-C and Swift.
-Currently, it only implements the basic Extreme Learning Machines (ELM) algorithm, as 
-it is described in [1].
+Currently, it implements Feed-Forward Nets, trained either using the Extreme Learning Machines (ELM) training algorithm [1], or Backpropagation [2] with Gradient Descent.
 
-ELMs are Feed-Forward Networks with a single hidden layer. Their hidden layer weights
-are initialized randomly, and the output linear weights are determined analytically.
+ELMs are Feed-Forward Networks with a single hidden layer. Their hidden layer weights are initialized randomly, and the output linear weights are determined analytically.
 
 More algorithms soon to follow. 
 
@@ -14,7 +12,7 @@ More algorithms soon to follow.
 
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
-- Based on YCMatrix, a matrix library that makes use of the Accelerate Framework.
+- Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework.
 
 ##Getting started
 
@@ -22,11 +20,8 @@ Import the project in your workspace, or compile the framework
 and import. YCML depends on YCMatrix, which has been included as a
 Git submodule.
 
-Note: I was planning to use Cocoapods for facilitating deployment, but, to be honest, I had
-a really hard time using it the way I would like (e.g. with local Pods etc.).
-I found that Cocoapods is riddled with frequent changes that break the API, and render much of 
-the information online useless. As such, I decided not to spend more time with it and went with git
-submodules.
+Note: I was planning to use Cocoapods for facilitating deployment, but, to be honest, I had a really hard time using it the way I would like (e.g. with local Pods etc.).
+I found that Cocoapods is riddled with frequent changes that break the API, and render much of the information online useless. As such, I decided not to spend more time with it and went with git submodules.
 
 ##Getting Help
 
@@ -34,14 +29,11 @@ YCML documentation is compiled using Appledoc.
 
 ##Example Usage
 
-YCML models and trainers make use of the YCMatrix class to define
-input and output datasets. Both for input as well as for output,
-each matrix column defines a single training example.
+YCML models and trainers make use of the YCMatrix class to define input and output datasets. Both for input as well as for output, each matrix column defines a single training example.
 
-There are plans to implement a proper dataframe class in the future, in
-addition to the matrix class, as part of the library.
+There are plans to implement a proper dataframe class in the future, in addition to the matrix class, as part of the library.
 
-Basic training and activation, taken from the YCML unit tests (Objective-C):
+Basic training and activation (Objective-C):
 
     #import "YCML/YCML.h"
     #import "YCMatrix/YCMatrix.h"
@@ -73,9 +65,7 @@ A more advanced example, using cross-validation (Objective-C):
     trainer.settings[@"C"]   = @8;
     trainer.settings[@"Hidden Layer Size"] = @1000
 
-    YCFFN *model = (YCFFN *)[trainer train:nil
-    inputMatrix:trainingInput
-    outputMatrix:trainingOutput];
+    YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
 
     YCMatrix *predictedOutput = [model activateWithMatrix:cvInput];
 
@@ -113,10 +103,16 @@ YCSupervisedModel       Base class for all supervised models
 YCSupervisedTrainer     Base class for all supervised model trainers  
 YCFFN                   General Feed-Forward Network class  
 YCELMTrainer            Basic Extreme Learning Machines trainer  
+YCBackPropTrainer       Basic Backpropagation Trainer
+YCOptimizer             Base class for optimization algorithms
+YCGradientDescent       Gradient Descent algorithm
+YCProblem               Base class for optimization problem formulation
+YCDerivativeProblem     Base class for optimization problems where derivative is known
 
 ##References
 
-[1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang, "Extreme Learning Machine for Regression and Multiclass Classification", IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
+[1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang. Extreme Learning Machine for Regression and Multiclass Classification, IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
+[2] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; 1985, p. 318–362.
 
 ##License
 
