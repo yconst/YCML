@@ -20,8 +20,7 @@ Import the project in your workspace, or compile the framework
 and import. YCML depends on YCMatrix, which has been included as a
 Git submodule.
 
-Note: I was planning to use Cocoapods for facilitating deployment, but, to be honest, I had a really hard time using it the way I would like (e.g. with local Pods etc.).
-I found that Cocoapods is riddled with frequent changes that break the API, and render much of the information online useless. As such, I decided not to spend more time with it and went with git submodules.
+Cocoapods support might come at a later time.
 
 ##Getting Help
 
@@ -99,15 +98,15 @@ The last example written in Swift:
     
 ##File Structure
 
-YCSupervisedModel       Base class for all supervised models  
-YCSupervisedTrainer     Base class for all supervised model trainers  
-YCFFN                   General Feed-Forward Network class  
-YCELMTrainer            Basic Extreme Learning Machines trainer  
-YCBackPropTrainer       Basic Backpropagation Trainer  
-YCOptimizer             Base class for optimization algorithms  
-YCGradientDescent       Gradient Descent algorithm  
-YCProblem               Base class for optimization problem formulation  
-YCDerivativeProblem     Base class for optimization problems where derivative is known  
+YCSupervisedModel:        Base class for all supervised models  
+YCSupervisedTrainer:      Base class for all supervised model trainers  
+YCFFN:                    General Feed-Forward Network class  
+YCELMTrainer:             Basic Extreme Learning Machines trainer  
+YCBackPropTrainer:        Basic Backpropagation Trainer  
+YCOptimizer:              Base class for optimization algorithms  
+YCGradientDescent:        Gradient Descent algorithm  
+YCProblem:                Base class for optimization problem formulation  
+YCDerivativeProblem:      Base class for optimization problems where derivative is known  
 
 ##References
 
