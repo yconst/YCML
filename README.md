@@ -103,15 +103,16 @@ YCSupervisedModel       Base class for all supervised models
 YCSupervisedTrainer     Base class for all supervised model trainers  
 YCFFN                   General Feed-Forward Network class  
 YCELMTrainer            Basic Extreme Learning Machines trainer  
-YCBackPropTrainer       Basic Backpropagation Trainer
-YCOptimizer             Base class for optimization algorithms
-YCGradientDescent       Gradient Descent algorithm
-YCProblem               Base class for optimization problem formulation
-YCDerivativeProblem     Base class for optimization problems where derivative is known
+YCBackPropTrainer       Basic Backpropagation Trainer  
+YCOptimizer             Base class for optimization algorithms  
+YCGradientDescent       Gradient Descent algorithm  
+YCProblem               Base class for optimization problem formulation  
+YCDerivativeProblem     Base class for optimization problems where derivative is known  
 
 ##References
 
 [1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang. Extreme Learning Machine for Regression and Multiclass Classification, IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
+
 [2] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; 1985, p. 318–362.
 
 ##License
