@@ -77,7 +77,7 @@
                                                                     outputMatrix:scaledOutput
                                                                            model:model];
     p.lambda                          = [self.settings[@"Lambda"] doubleValue];
-    YCGradientDescent *optimizer      = [[YCGradientDescent alloc] initWithProblem:p];
+    YCOptimizer *optimizer      = [[[self optimizerClass] alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)
     {
@@ -154,6 +154,11 @@
 - (Class)problemClass
 {
     return [YCBackPropProblem class];
+}
+
+- (Class)optimizerClass
+{
+    return [YCGradientDescent class];
 }
 
 @end

@@ -1,10 +1,12 @@
 
 #YCML
 
-YCML is a Machine Learning framework in Objective-C and Swift.
-Currently, it implements Feed-Forward Nets, trained either using the Extreme Learning Machines (ELM) training algorithm [1], or Backpropagation [2] with Gradient Descent.
+YCML is a Machine Learning framework in Objective-C and Swift.  
+The following algorithms are avilable:
 
-ELMs are Feed-Forward Networks with a single hidden layer. Their hidden layer weights are initialized randomly, and the output linear weights are determined analytically.
+- Extreme Learning Machines (ELM) [1]
+- Gradient Descent Backpropagation [2]
+- Resilient Backpropagation (RProp) [3]
 
 More algorithms soon to follow. 
 
@@ -16,9 +18,7 @@ More algorithms soon to follow.
 
 ##Getting started
 
-Import the project in your workspace, or compile the framework
-and import. YCML depends on YCMatrix, which has been included as a
-Git submodule.
+Import the project in your workspace by dragging the .xcodeproj file. YCML depends on YCMatrix, which has been included as a Git submodule.
 
 Cocoapods support might come at a later time.
 
@@ -28,7 +28,11 @@ YCML documentation is compiled using Appledoc.
 
 ##Example Usage
 
-YCML models and trainers make use of the YCMatrix class to define input and output datasets. Both for input as well as for output, each matrix column defines a single training example.
+Here's the simplest training call to an YCML trainer, which returns a trained model:
+
+    YCFFN *theModel = [[YCRpropTrainer trainer] train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
+
+YCML models and trainers make use of the YCMatrix class to define input and output datasets. YCML models accept matrices where each matrix column defines a single training example.
 
 There are plans to implement a proper dataframe class in the future, in addition to the matrix class, as part of the library.
 
@@ -103,6 +107,7 @@ YCSupervisedTrainer:      Base class for all supervised model trainers
 YCFFN:                    General Feed-Forward Network class  
 YCELMTrainer:             Basic Extreme Learning Machines trainer  
 YCBackPropTrainer:        Basic Backpropagation Trainer  
+YCRpropTrainer:           RProp Trainer  
 YCOptimizer:              Base class for optimization algorithms  
 YCGradientDescent:        Gradient Descent algorithm  
 YCProblem:                Base class for optimization problem formulation  
@@ -112,7 +117,9 @@ YCDerivativeProblem:      Base class for optimization problems where derivative 
 
 [1] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang. Extreme Learning Machine for Regression and Multiclass Classification, IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
 
-[2] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; 1985, p. 318–362.
+[2] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; pp. 318–362, 1985.
+
+[3] M. Riedmiller, H. Braun. A direct adaptive method for faster backpropagation learning: the RPROP algorithm. IEEE Int. Conf. Neural Networks; pp. 586-591, 1993.
 
 ##License
 

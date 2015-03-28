@@ -14,7 +14,7 @@ import YCMatrix
 class YCML_Tests__Swift_: XCTestCase {
     
     func testExample() {
-        var trainingData = self.matrixWithCSVName("housing", removeFirst: true)
+        var trainingData = matrixWithCSVName("housing", true)
         trainingData.shuffleColumns()
         var cvData = trainingData.matrixWithColumnsInRange(NSMakeRange(trainingData.columns-30, 29))
         trainingData = trainingData.matrixWithColumnsInRange(NSMakeRange(0, trainingData.columns-30))
@@ -36,34 +36,34 @@ class YCML_Tests__Swift_: XCTestCase {
         NSLog("RMSE: %f", RMSE)
         XCTAssertLessThan(RMSE, 6.0, "RMSE above threshold")
     }
-    
-    func matrixWithCSVName(name: String, removeFirst: Bool) -> Matrix
-    {
-        var output: Matrix = Matrix()
-        var hasOutput = false
-        let bundle = NSBundle(forClass: self.dynamicType)
-        let filePath = bundle.pathForResource("housing", ofType: "csv")
-        var fileContents = String(contentsOfFile: filePath!, encoding: NSUTF8StringEncoding, error: nil)!
-        fileContents = fileContents.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
-        var rows = fileContents.componentsSeparatedByString("\n") as Array<String>
-        if (removeFirst).boolValue{
-            rows.removeAtIndex(0)
-        }
-        var counter: Int32 = 0
-        for row in rows
-        {
-            var fields = row.componentsSeparatedByString(",") as Array<String>
-            if (!hasOutput)
-            {
-                var rowCount = Int32(fields.count)
-                var columnCount = Int32(rows.count)
-                output = Matrix(ofRows: rowCount, columns: columnCount)
-                hasOutput = true
-            }
-            var rowMatrix = Matrix(fromNSArray: fields, rows: Int32(fields.count), columns: 1)
-            output.setColumn(counter, value: rowMatrix)
-            counter += 1
-        }
-        return output
+}
+
+func matrixWithCSVName(name: String, removeFirst: Bool) -> Matrix
+{
+    var output: Matrix = Matrix()
+    var hasOutput = false
+    let bundle = NSBundle(identifier: "com.yconst.SwiftTests")
+    let filePath = bundle!.pathForResource(name, ofType: "csv")
+    var fileContents = String(contentsOfFile: filePath!, encoding: NSUTF8StringEncoding, error: nil)!
+    fileContents = fileContents.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: " "))
+    var rows = fileContents.componentsSeparatedByString("\n") as Array<String>
+    if (removeFirst).boolValue{
+        rows.removeAtIndex(0)
     }
+    var counter: Int32 = 0
+    for row in rows
+    {
+        var fields = row.componentsSeparatedByString(",") as Array<String>
+        if (!hasOutput)
+        {
+            var rowCount = Int32(fields.count)
+            var columnCount = Int32(rows.count)
+            output = Matrix(ofRows: rowCount, columns: columnCount)
+            hasOutput = true
+        }
+        var rowMatrix = Matrix(fromNSArray: fields, rows: Int32(fields.count), columns: 1)
+        output.setColumn(counter, value: rowMatrix)
+        counter += 1
+    }
+    return output
 }

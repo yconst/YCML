@@ -38,5 +38,7 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCDerivativeProblem.h"
 #import "YCBackPropProblem.h"
 #import "YCBackPropTrainer.h"
+#import "YCRProp.h"
+#import "YCRpropTrainer.h"
 #import "YCGradientDescent.h"
 

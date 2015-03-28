@@ -172,6 +172,15 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
 }
 
+- (void)testRPropHousing
+{
+    YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
+    trainer.settings[@"Hidden Layer Size"]  = @8;
+    trainer.settings[@"Lambda"]             = @0.0001;
+    trainer.settings[@"Iterations"]         = @200;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+}
+
 #pragma mark Utility Functions
 
 - (void)testWithTrainer:(YCSupervisedTrainer *)trainer

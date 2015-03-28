@@ -24,8 +24,6 @@
 #import "YCGradientDescent.h"
 #import "YCDerivativeProblem.h"
 
-#define ARC4RANDOM_MAX      0x100000000
-
 @implementation YCGradientDescent
 
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem
@@ -52,7 +50,7 @@
         {
             double start = [initialRanges valueAtRow:i Column:0];
             double range = [initialRanges valueAtRow:i Column:1] - start;
-            [newValues setValue:((double)arc4random() / ARC4RANDOM_MAX) * range + start
+            [newValues setValue:((double)arc4random() / 0x100000000) * range + start
                             Row:i Column:0];
         }
         self.state[@"values"] = newValues;
