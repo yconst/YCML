@@ -59,7 +59,7 @@
     
     // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
     YCDomain domain = YCMakeDomain(0, 1);
-    Matrix *inputTransform  = [input rowWiseMapToDomain:domain basis:MinMax];
+    Matrix *inputTransform  = [input rowWiseMapToDomain:domain basis:StDev];
     Matrix *outputTransform = [output rowWiseMapToDomain:domain basis:MinMax];
     Matrix *invOutTransform = [output rowWiseInverseMapFromDomain:domain basis:MinMax];
     Matrix *scaledInput     = [input matrixByRowWiseMapUsing:inputTransform];

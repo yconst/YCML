@@ -23,7 +23,7 @@
 @import Foundation;
 #import "YCDerivativeProblem.h"
 
-@class YCSupervisedDataset, YCFFN;
+@class YCFFN;
 
 @interface YCBackPropProblem : NSObject <YCDerivativeProblem>
 {

@@ -14,7 +14,8 @@ More algorithms soon to follow.
 
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
-- Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework.
+- Ppowerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
+- Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
 
 ##Getting started
 
@@ -30,13 +31,15 @@ YCML documentation is compiled using Appledoc.
 
 Here's the simplest training call to an YCML trainer, which returns a trained model:
 
+    YCFFN *theModel = [[YCRpropTrainer trainer] train:nil input:trainingInput output:trainingOutput];
+
+YCML models and trainers may use YCMatrix instances in place of a dataframe. In such a case, YCML models accept matrices where each matrix column defines a single training example. Here is an example that uses matrices in place of Dataframes:
+
     YCFFN *theModel = [[YCRpropTrainer trainer] train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
 
-YCML models and trainers make use of the YCMatrix class to define input and output datasets. YCML models accept matrices where each matrix column defines a single training example.
 
-There are plans to implement a proper dataframe class in the future, in addition to the matrix class, as part of the library.
 
-Basic training and activation (Objective-C):
+Basic training and activation (Objective-C, using Matrices):
 
     #import "YCML/YCML.h"
     #import "YCMatrix/YCMatrix.h"
@@ -54,7 +57,7 @@ Basic training and activation (Objective-C):
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
 
-A more advanced example, using cross-validation (Objective-C):
+A more advanced example, using cross-validation (Objective-C, using Matrices):
 
     YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
     [trainingData shuffleColumns];
@@ -99,19 +102,6 @@ The last example written in Swift:
     var RMSE = sqrt(1.0 / Double(predictedOutput.columns) * predictedOutput.sum)
     NSLog("%@", RMSE)
     XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
-    
-##File Structure
-
-YCSupervisedModel:        Base class for all supervised models  
-YCSupervisedTrainer:      Base class for all supervised model trainers  
-YCFFN:                    General Feed-Forward Network class  
-YCELMTrainer:             Basic Extreme Learning Machines trainer  
-YCBackPropTrainer:        Basic Backpropagation Trainer  
-YCRpropTrainer:           RProp Trainer  
-YCOptimizer:              Base class for optimization algorithms  
-YCGradientDescent:        Gradient Descent algorithm  
-YCProblem:                Base class for optimization problem formulation  
-YCDerivativeProblem:      Base class for optimization problems where derivative is known  
 
 ##References
 

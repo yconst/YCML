@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
-@class Matrix;
+@class Matrix, YCDataframe;
 
 @interface YCSupervisedModel : NSObject <NSCopying, NSCoding>
 
@@ -31,6 +31,15 @@
  @return The new instance.
  */
 + (instancetype)model;
+
+/**
+ Activates the receiver using the passed dataframe.
+ 
+ @param input The dataframe used as input for activation.
+ 
+ @return The output dataframe resulting from the prediction.
+ */
+- (YCDataframe *)activateWithDataframe:(YCDataframe *)input;
 
 /**
  Activates the receiver using the passed matrix.

@@ -22,6 +22,8 @@
 
 #import "YCSupervisedTrainer.h"
 #import "YCSupervisedModel.h"
+#import "YCDataframe.h"
+#import "YCDataframe+Matrix.h"
 @import YCMatrix;
 
 @implementation YCSupervisedTrainer
@@ -46,6 +48,25 @@
         self.settings = [NSMutableDictionary dictionary];
     }
     return self;
+}
+
+- (YCSupervisedModel *)train:(YCSupervisedModel *)model
+                       input:(YCDataframe *)input
+                      output:(YCDataframe *)output
+{
+    YCSupervisedModel *theModel = model;
+    if (!theModel)
+    {
+        theModel = [[[[self class] modelClass] alloc] init];
+    }
+    theModel.settings[@"InputMinValues"]        = [input stat:@"min"];
+    theModel.settings[@"InputMaxValues"]        = [input stat:@"max"];
+    theModel.settings[@"InputConversionArray"]  = [input conversionArray];
+    theModel.settings[@"OutputConversionArray"] = [output conversionArray];
+    Matrix *inputM = [input getMatrixUsingConversionArray:theModel.settings[@"InputConversionArray"]];
+    Matrix *outputM = [output getMatrixUsingConversionArray:theModel.settings[@"OutputConversionArray"]];
+    [self train:theModel inputMatrix:inputM outputMatrix:outputM];
+    return theModel;
 }
 
 - (YCSupervisedModel *)train:(YCSupervisedModel *)model inputMatrix:(Matrix *)input outputMatrix:(Matrix *)output

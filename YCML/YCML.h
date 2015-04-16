@@ -41,4 +41,7 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCRProp.h"
 #import "YCRpropTrainer.h"
 #import "YCGradientDescent.h"
-
+#import "YCDataframe.h"
+#import "YCDataframe+Matrix.h"
+#import "YCMissingValue.h"
+#import "NSArray+Statistics.h"

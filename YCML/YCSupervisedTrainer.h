@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
-@class YCSupervisedModel, Matrix;
+@class YCSupervisedModel, YCDataframe, Matrix;
 
 @interface YCSupervisedTrainer : NSObject <NSCopying, NSCoding>
 
@@ -36,16 +36,29 @@
  Returns the model class associated with the receiver. This method
  should be implemented when subclassing.
  
- @return The model class associated with the receiver
+ @return The model class associated with the receiver.
  */
 + (Class)modelClass;
 
 /**
- Trains and returns the supplied model, using input and output matrices.
+ Trains a model using the receiver's training algorithm, and two dataframes as input and output.
  
- @param model  The model to train
- @param input  The training input
- @param output The training output
+ @param model  The model to train. Can be nil.
+ @param input  The training input.
+ @param output The training output.
+ 
+ @return The trained model (if input != nil, it is the same as the input)
+ */
+- (YCSupervisedModel *)train:(YCSupervisedModel *)model
+                       input:(YCDataframe *)input
+                      output:(YCDataframe *)output;
+
+/**
+ Trains a model using the receiver's training algorithm, and two matrices as input and output.
+ 
+ @param model  The model to train. Can be nil.
+ @param input  The training input.
+ @param output The training output.
  
  @return The trained model (if input != nil, it is the same as the input)
  */
@@ -54,12 +67,12 @@
                 outputMatrix:(Matrix *)output;
 
 /**
- Actually performs the training routine. This method should be implemented
- when subclassing
+ Implements the actual training routine. This method should be implemented
+ when subclassing.
  
- @param model  The model to train
- @param input  The training input
- @param output The training output
+ @param model  The model to train.
+ @param input  The training input.
+ @param output The training output.
  */
 - (void)performTrainingModel:(YCSupervisedModel *)model
                  inputMatrix:(Matrix *)input
@@ -76,7 +89,7 @@
 @property (readonly) BOOL shouldStop;
 
 /**
- Holds training algorithm settings
+ Holds training algorithm settings.
  */
 @property NSMutableDictionary *settings;
 

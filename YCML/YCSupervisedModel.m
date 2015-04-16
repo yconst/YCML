@@ -21,6 +21,8 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "YCSupervisedModel.h"
+#import "YCDataframe.h"
+#import "YCDataframe+Matrix.h"
 @import YCMatrix;
 
 @implementation YCSupervisedModel
@@ -44,6 +46,14 @@
 }
 
 #pragma mark Learner Implementation
+
+- (YCDataframe *)activateWithDataframe:(YCDataframe *)input
+{
+    Matrix *matrix = [input getMatrixUsingConversionArray:self.settings[@"InputConversionArray"]];
+    Matrix *predictedMatrix = [self activateWithMatrix:matrix];
+    return [YCDataframe dataframeWithMatrix:predictedMatrix
+                        conversionArray:self.settings[@"OutputConversionArray"]];
+}
 
 - (Matrix *)activateWithMatrix:(Matrix *)matrix
 {

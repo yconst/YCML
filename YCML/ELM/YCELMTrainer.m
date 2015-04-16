@@ -79,7 +79,7 @@
     int outputSize            = output.rows;
     int hiddenSize            = [self.settings[@"Hidden Layer Size"] intValue];
     double C                  = [self.settings[@"C"] doubleValue];
-    Matrix *inputTransform  = [input rowWiseMapToDomain:domain basis:MinMax];
+    Matrix *inputTransform  = [input rowWiseMapToDomain:domain basis:StDev];
     
     // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
     Matrix *outputTransform = [output rowWiseMapToDomain:domain basis:MinMax];

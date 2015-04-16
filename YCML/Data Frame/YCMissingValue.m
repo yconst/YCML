@@ -1,8 +1,8 @@
 //
-//  YCBackPropTrainer.m
+//  YCMissingValue.m
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 21/3/15.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 29/3/15.
 //  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
@@ -20,29 +20,31 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCRpropTrainer.h"
-#import "YCBackPropTrainer.h"
-#import "YCRProp.h"
+#import "YCMissingValue.h"
 
-@implementation YCRpropTrainer
+YCMissingValue *uniValue;
 
--(id)init
+@implementation YCMissingValue
+
++ (instancetype)missingValue
 {
-    if (self = [super init])
+    if (!uniValue)
     {
-        self.settings[@"Hidden Layer Count"] = @1;
-        self.settings[@"Hidden Layer Size"]  = @5;
-        self.settings[@"Lambda"]             = @0.0001;
-        self.settings[@"Iterations"]         = @500;
-        self.settings[@"Target"]             = @-1;
-        [self.settings removeObjectForKey:@"Alpha"];
+        uniValue = [[YCMissingValue alloc] init];
     }
-    return self;
+    return uniValue;
 }
 
-- (Class)optimizerClass
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    return [YCRProp class];
+    return [YCMissingValue missingValue];
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {}
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    return [YCMissingValue missingValue];
 }
 
 @end
