@@ -51,14 +51,29 @@
 - (Matrix *)activateWithMatrix:(Matrix *)matrix;
 
 /**
+ Returns the receiver's input size.
+ */
+@property (readonly) int inputSize;
+
+/**
+ Returns the receiver's output size.
+ */
+@property (readonly) int outputSize;
+
+/**
  Holds statistics about the model, usually as a result
  of the learning process.
  */
 @property NSMutableDictionary *statistics;
 
 /**
- Holds model settings.
+ Holds model properties.
  */
-@property NSMutableDictionary *settings;
+@property NSMutableDictionary *properties;
+
+/**
+ Holds training settings used to train this model.
+ */
+@property NSMutableDictionary *trainingSettings;
 
 @end

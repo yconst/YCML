@@ -59,12 +59,13 @@
     {
         theModel = [[[[self class] modelClass] alloc] init];
     }
-    theModel.settings[@"InputMinValues"]        = [input stat:@"min"];
-    theModel.settings[@"InputMaxValues"]        = [input stat:@"max"];
-    theModel.settings[@"InputConversionArray"]  = [input conversionArray];
-    theModel.settings[@"OutputConversionArray"] = [output conversionArray];
-    Matrix *inputM = [input getMatrixUsingConversionArray:theModel.settings[@"InputConversionArray"]];
-    Matrix *outputM = [output getMatrixUsingConversionArray:theModel.settings[@"OutputConversionArray"]];
+    theModel.properties[@"InputMinValues"]        = [input stat:@"min"];
+    theModel.properties[@"InputMaxValues"]        = [input stat:@"max"];
+    theModel.properties[@"InputConversionArray"]  = [input conversionArray];
+    theModel.properties[@"OutputConversionArray"] = [output conversionArray];
+    [theModel.trainingSettings addEntriesFromDictionary:self.settings];
+    Matrix *inputM = [input getMatrixUsingConversionArray:theModel.properties[@"InputConversionArray"]];
+    Matrix *outputM = [output getMatrixUsingConversionArray:theModel.properties[@"OutputConversionArray"]];
     [self train:theModel inputMatrix:inputM outputMatrix:outputM];
     return theModel;
 }

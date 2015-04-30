@@ -27,7 +27,7 @@
 
 @implementation YCSupervisedModel
 
-@synthesize settings, statistics;
+@synthesize properties, statistics;
 
 + (instancetype)model
 {
@@ -39,8 +39,9 @@
     self = [super init];
     if (self)
     {
-        self.statistics = [NSMutableDictionary dictionary];
-        self.settings = [NSMutableDictionary dictionary];
+        self.statistics       = [NSMutableDictionary dictionary];
+        self.properties       = [NSMutableDictionary dictionary];
+        self.trainingSettings = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -49,10 +50,10 @@
 
 - (YCDataframe *)activateWithDataframe:(YCDataframe *)input
 {
-    Matrix *matrix = [input getMatrixUsingConversionArray:self.settings[@"InputConversionArray"]];
+    Matrix *matrix = [input getMatrixUsingConversionArray:self.properties[@"InputConversionArray"]];
     Matrix *predictedMatrix = [self activateWithMatrix:matrix];
     return [YCDataframe dataframeWithMatrix:predictedMatrix
-                        conversionArray:self.settings[@"OutputConversionArray"]];
+                        conversionArray:self.properties[@"OutputConversionArray"]];
 }
 
 - (Matrix *)activateWithMatrix:(Matrix *)matrix
@@ -65,16 +66,18 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    [encoder encodeObject:self.settings forKey:@"settings"];
+    [encoder encodeObject:self.properties forKey:@"properties"];
     [encoder encodeObject:self.statistics forKey:@"statistics"];
+    [encoder encodeObject:self.trainingSettings forKey:@"trainingSettings"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init])
     {
-        self.settings = [decoder decodeObjectForKey:@"settings"];
+        self.properties = [decoder decodeObjectForKey:@"properties"];
         self.statistics = [decoder decodeObjectForKey:@"statistics"];
+        self.trainingSettings = [decoder decodeObjectForKey:@"trainingSettings"];
     }
     return self;
 }
@@ -84,10 +87,21 @@
     id copied = [YCSupervisedModel model];
     if (copied)
     {
-        [copied setSettings:[self.settings mutableCopy]];
+        [copied setProperties:[self.properties mutableCopy]];
         [copied setStatistics:[self.statistics mutableCopy]];
+        [copied setTrainingSettings:[self.trainingSettings mutableCopy]];
     }
     return copied;
+}
+
+- (int)inputSize
+{
+    return 0;
+}
+
+- (int)outputSize
+{
+    return 0;
 }
 
 @end
