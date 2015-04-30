@@ -51,6 +51,8 @@ typedef enum AttributeType : int16_t {
 
 - (NSArray *)samplesAtIndexes:(NSIndexSet *)idxs;
 
+- (NSArray *)samplesNotInIndexes:(NSIndexSet *)idxs;
+
 - (NSArray *)attributeIdentifiers;
 
 - (NSArray *)classesForAttribute:(NSString *)attribute;
@@ -97,7 +99,17 @@ typedef enum AttributeType : int16_t {
 
 - (NSNumber *)stat:(NSString *)stat forAttribute:(NSString *)attribute;
 
+/**
+ Returns an NSArray of NSDictionaries, each corresponding to a sample.
+ */
 @property (readonly) NSArray *allSamples;
+
+/**
+ Returns an NSArray of NSArrays, each corresponding to a sample.
+ 
+ @warning The first NSArray contains the attribute keys.
+ */
+@property (readonly) NSArray *allSampleValues;
 
 @property (readonly) NSUInteger dataCount;
 

@@ -122,6 +122,13 @@
     return ret;
 }
 
+- (NSArray *)samplesNotInIndexes:(NSIndexSet *)idxs
+{
+    NSMutableIndexSet *inverse = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self dataCount])];
+    [inverse removeIndexes:idxs];
+    return [self samplesAtIndexes:inverse];
+}
+
 - (NSArray *)attributeIdentifiers
 {
     return [self->_data allKeys];
@@ -351,6 +358,27 @@
 {
     NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self dataCount])];
     return [self samplesAtIndexes:set];
+}
+
+- (NSArray *)allSampleValues
+{
+    NSMutableArray *allSamples = [NSMutableArray array];
+    NSArray *allKeys = [self attributeKeys];
+    NSUInteger count = [self dataCount];
+    for (int i=0; i<count; i++)
+    {
+        [allSamples addObject:[NSMutableArray array]];
+    }
+    for (NSString *key in allKeys)
+    {
+        NSArray *attribute = self->_data[key];
+        for (int i=0; i<count; i++)
+        {
+            [allSamples[i] addObject:attribute[i]];
+        }
+    }
+    [allSamples insertObject:allKeys atIndex:0];
+    return allSamples;
 }
 
 - (NSMutableDictionary *)allData

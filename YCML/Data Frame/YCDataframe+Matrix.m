@@ -135,7 +135,7 @@
             Matrix *subset = [inputMatrix matrixWithRowsInRange:NSMakeRange(iter, count)];
             for (int i=0; i<sampleCount; i++)
             {
-                int largestIndex = [self indexOfLargestValueIn:[subset getRow:i]];
+                int largestIndex = [self indexOfLargestValueIn:[subset row:i]];
                 [attributeSamples addObject:classes[largestIndex]];
             }
             [convertedDictionary setValue:attributeSamples forKey:label];
