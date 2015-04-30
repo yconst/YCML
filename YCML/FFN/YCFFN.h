@@ -37,22 +37,12 @@
 /**
  Returns the input transformation matrix of the receiver.
  */
-@property (strong) Matrix *inputTransform;
+@property Matrix *inputTransform;
 
 /**
  Returns the output reverse transformation matrix of the receiver.
  */
-@property (strong) Matrix *outputTransform;
-
-/**
- Returns the receiver's input size.
- */
-@property (readonly) int inputSize;
-
-/**
- Returns the receiver's output size.
- */
-@property (readonly) int outputSize;
+@property Matrix *outputTransform;
 
 @property BOOL linearOutputs;
 

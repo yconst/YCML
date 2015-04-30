@@ -104,8 +104,8 @@
     // Step VI. Copy transform matrices to model
     // TRANSFORM MATRICES SHOULD BE COPIED AFTER TRAINING OTHERWISE
     // THE MODEL WILL SCALE OUTPUTS AND RETURN FALSE ERRORS
-    model.InputTransform      = inputTransform;
-    model.OutputTransform     = invOutTransform;
+    model.inputTransform      = inputTransform;
+    model.outputTransform     = invOutTransform;
 }
 
 - (void)initialize:(YCFFN *)model

@@ -94,15 +94,15 @@
     int sampleCount   = self->_inputMatrix->columns;
     
     // Split matrices
-    if (!self->_inputMatrixArray) _inputMatrixArray   = [_inputMatrix ColumnsAsNSArray];
-    if (!self->_outputMatrixArray) _outputMatrixArray = [_outputMatrix ColumnsAsNSArray];
+    if (!self->_inputMatrixArray) _inputMatrixArray   = [_inputMatrix columnsAsNSArray];
+    if (!self->_outputMatrixArray) _outputMatrixArray = [_outputMatrix columnsAsNSArray];
     
     [tm activateWithMatrix:self->_inputMatrix];
     
     NSMutableArray *activationArrays = [NSMutableArray array];
     for (Matrix *m in [tm lastActivations])
     {
-        [activationArrays addObject:[m ColumnsAsNSArray]];
+        [activationArrays addObject:[m columnsAsNSArray]];
     }
     
     NSMutableArray *weightGradients = [NSMutableArray array];

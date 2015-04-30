@@ -155,8 +155,8 @@
         self.weightMatrices = [aDecoder decodeObjectForKey:@"weightMatrices"];
         self.biasVectors = [aDecoder decodeObjectForKey:@"biasVectors"];
         self->_lastActivations = [aDecoder decodeObjectForKey:@"lastActivations"];
-        self.InputTransform = [aDecoder decodeObjectForKey:@"inputTransform"];
-        self.OutputTransform = [aDecoder decodeObjectForKey:@"outputTransform"];
+        self.inputTransform = [aDecoder decodeObjectForKey:@"inputTransform"];
+        self.outputTransform = [aDecoder decodeObjectForKey:@"outputTransform"];
         [self initFunctions];
     }
     return self;
