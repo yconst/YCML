@@ -83,7 +83,7 @@
     [gd run];
     Matrix *result = [Matrix matrixOfRows:1 Columns:1];
     [gdProblem evaluate:result parameters:gd.state[@"values"]];
-    XCTAssertLessThan([result valueAtRow:0 Column:0], 0.01);
+    XCTAssertLessThan([result valueAtRow:0 Column:0], 0.02);
 }
 
 - (void)testRPropDescent

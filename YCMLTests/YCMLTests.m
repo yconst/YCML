@@ -20,10 +20,11 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 #import <XCTest/XCTest.h>
 @import YCML;
 @import YCMatrix;
+#import "CHCSVParser.h"
 
 // Convenience logging function (without date/object)
 #define CleanLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -158,7 +159,7 @@
     trainer.settings[@"C"]                 = @8;
     trainer.settings[@"Hidden Layer Size"] = @900;
     
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
 - (void)testBackPropHousing
@@ -169,77 +170,83 @@
     trainer.settings[@"Iterations"]         = @1500;
     trainer.settings[@"Alpha"]              = @0.5;
     
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
 - (void)testRPropHousing
 {
     YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
-    trainer.settings[@"Hidden Layer Size"]  = @8;
+    trainer.settings[@"Hidden Layer Size"]  = @10;
     trainer.settings[@"Lambda"]             = @0.0001;
-    trainer.settings[@"Iterations"]         = @200;
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableIndex:13 rmse:6.0];
+    trainer.settings[@"Iterations"]         = @100;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
+
+- (void)testRBFHousing
+{
+    YCOLSTrainer *trainer                 = [YCOLSTrainer trainer];
+    trainer.settings[@"Kernel Width"] = @2.8;
+    trainer.settings[@"Error Tolerance"] = @0.1;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
+
+#pragma mark Dataframe Tests
+
+- (void)testCorruptDataframe
+{
+    YCDataframe *template = [YCDataframe dataframe];
+    [template addSampleWithData:@{@"First" : @0.0, @"Second" : @-1.0, @"Third" : @-5.0}];
+    [template addSampleWithData:@{@"First" : @6.7, @"Second" :  @0.1, @"Third" : @40.0}];
+    YCDataframe *random = [template randomSamplesWithCount:5000];
+    [random addSamplesWithData:[template allSamples]];
+    NSDictionary *randomMins = [template stat:@"min"];
+    NSDictionary *randomMaxs = [template stat:@"max"];
+    YCDataframe *corrupt = [random copy];
+    [corrupt corruptWithProbability:1.0 relativeMagnitude:0.5];
+    NSDictionary *corruptMins = [corrupt stat:@"min"];
+    NSDictionary *corruptMaxs = [corrupt stat:@"max"];
+    XCTAssert([randomMins isEqualToDictionary:corruptMins], @"Minimums are not maintained");
+    XCTAssert([randomMaxs isEqualToDictionary:corruptMaxs], @"Maximums are not maintained");
+    
 }
 
 #pragma mark Utility Functions
 
 - (void)testWithTrainer:(YCSupervisedTrainer *)trainer
                                 dataset:(NSString *)dataset
-                 dependentVariableIndex:(int)index
+                 dependentVariableLabel:(NSString *)label
                                    rmse:(double)rmse
 {
-    // Training + cross-validation
-    Matrix *trainingData   = [self matrixWithCSVName:dataset removeFirst:YES];
-    [trainingData shuffleColumns];
-    Matrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 30, 29)];
-    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 30)];
-    Matrix *trainingOutput = [trainingData getRow:index];
-    Matrix *trainingInput  = [trainingData removeRow:index];
-    Matrix *cvOutput       = [cvData getRow:index];
-    Matrix *cvInput        = [cvData removeRow:index];
+    YCDataframe *input    = [self dataframeWithCSVName:dataset];
+    YCDataframe *output   = [YCDataframe dataframeWithDictionary:@{label : [input allValuesForAttribute:label]}];
+    [input removeAttributeWithIdentifier:label];
+    NSDictionary *results = [[YCCrossValidation validationWithSettings:nil] test:trainer
+                                                                           input:input
+                                                                          output:output];
+    double RMSE           = [results[@"RMSE"] doubleValue];
     
-    YCFFN *model = (YCFFN *)[trainer train:nil
-                               inputMatrix:trainingInput
-                              outputMatrix:trainingOutput];
-    
-    Matrix *predictedOutput = [model activateWithMatrix:cvInput];
-    
-    [predictedOutput subtract:cvOutput];
-    [predictedOutput elementWiseMultiply:predictedOutput];
-    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
-    CleanLog(@"RMSE: %f", RMSE);
+    CleanLog(@"RMSE (CV): %f", RMSE);
     XCTAssertLessThan(RMSE, rmse, @"RMSE above threshold");
 }
 
-- (Matrix *)matrixWithCSVName:(NSString *)path removeFirst:(BOOL)removeFirst
+- (YCDataframe *)dataframeWithCSVName:(NSString *)path
 {
-    Matrix *output;
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *filePath = [bundle pathForResource:@"housing" ofType:@"csv"];
-    
+    YCDataframe *output    = [YCDataframe dataframe];
+    NSBundle *bundle       = [NSBundle bundleForClass:[self class]];
+    NSString *filePath     = [bundle pathForResource:@"housing" ofType:@"csv"];
     NSString* fileContents = [NSString stringWithContentsOfFile:filePath
                                                        encoding:NSUTF8StringEncoding
                                                           error:nil];
-    fileContents = [fileContents stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
-    NSMutableArray* rows = [[fileContents componentsSeparatedByString:@"\n"] mutableCopy];
-    if (removeFirst)
+    NSMutableArray *rows = [[fileContents CSVComponents] mutableCopy];
+    
+    NSArray *labels        = rows[0];
+    [rows removeObjectAtIndex:0];
+    
+    for (NSArray *sampleData in rows)
     {
-        [rows removeObjectAtIndex:0];
+        [output addSampleWithData:[NSDictionary dictionaryWithObjects:sampleData forKeys:labels]];
     }
-    int counter = 0;
-    for (NSString *row in rows)
-    {
-        NSArray *fields = [row componentsSeparatedByString:@","];
-        if (!output)
-        {
-            output = [Matrix matrixOfRows:(int)[fields count]
-                                    Columns:(int)[rows count]];
-            
-        }
-        [output setColumn:counter++ Value:[Matrix matrixFromNSArray:fields
-                                                                 Rows:(int)[fields count]
-                                                              Columns:1]];
-    }
+
     return output;
 }
 
