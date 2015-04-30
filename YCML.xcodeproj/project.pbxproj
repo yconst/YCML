@@ -14,6 +14,17 @@
 		CB1802C71ABE192600A2927B /* YCRProp.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1802C51ABE192600A2927B /* YCRProp.m */; };
 		CB1802CB1ABE19DF00A2927B /* YCRpropTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */; };
+		CB6ECD421AEFB6DF000E70A7 /* YCCrossValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB6ECD431AEFB6DF000E70A7 /* YCCrossValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6ECD411AEFB6DF000E70A7 /* YCCrossValidation.m */; };
+		CB6ECD471AF0106E000E70A7 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6ECD461AF0106E000E70A7 /* CHCSVParser.m */; };
+		CB7E6D071AE1226F00B37EA4 /* YCRegressionMetrics.h in Headers */ = {isa = PBXBuildFile; fileRef = CB7E6D051AE1226F00B37EA4 /* YCRegressionMetrics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB7E6D081AE1226F00B37EA4 /* YCRegressionMetrics.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7E6D061AE1226F00B37EA4 /* YCRegressionMetrics.m */; };
+		CB7E6D0D1AE7D00100B37EA4 /* YCRBFNet.h in Headers */ = {isa = PBXBuildFile; fileRef = CB7E6D0B1AE7D00100B37EA4 /* YCRBFNet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB7E6D0E1AE7D00100B37EA4 /* YCRBFNet.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */; };
+		CB7E6D111AE7D01A00B37EA4 /* YCOLSTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB7E6D121AE7D01A00B37EA4 /* YCOLSTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */; };
+		CB7E6D331AEA382400B37EA4 /* YCDataframe+Transform.h in Headers */ = {isa = PBXBuildFile; fileRef = CB7E6D311AEA382400B37EA4 /* YCDataframe+Transform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB7E6D341AEA382400B37EA4 /* YCDataframe+Transform.m in Sources */ = {isa = PBXBuildFile; fileRef = CB7E6D321AEA382400B37EA4 /* YCDataframe+Transform.m */; };
 		CB9695691AAEEB64003BAE48 /* YCML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB96955D1AAEEB64003BAE48 /* YCML.framework */; };
 		CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96956F1AAEEB64003BAE48 /* YCMLTests.m */; };
 		CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96957C1AAEEBDB003BAE48 /* YCML.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -96,6 +107,18 @@
 		CB1802C51ABE192600A2927B /* YCRProp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRProp.m; path = Optimization/RProp/YCRProp.m; sourceTree = "<group>"; };
 		CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRpropTrainer.h; sourceTree = "<group>"; };
 		CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRpropTrainer.m; sourceTree = "<group>"; };
+		CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCrossValidation.h; path = Testing/YCCrossValidation.h; sourceTree = "<group>"; };
+		CB6ECD411AEFB6DF000E70A7 /* YCCrossValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCrossValidation.m; path = Testing/YCCrossValidation.m; sourceTree = "<group>"; };
+		CB6ECD451AF0106E000E70A7 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCSVParser.h; path = ../../CHCSVParser/CHCSVParser/CHCSVParser/CHCSVParser.h; sourceTree = "<group>"; };
+		CB6ECD461AF0106E000E70A7 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCSVParser.m; path = ../../CHCSVParser/CHCSVParser/CHCSVParser/CHCSVParser.m; sourceTree = "<group>"; };
+		CB7E6D051AE1226F00B37EA4 /* YCRegressionMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRegressionMetrics.h; path = "Regression Metrics/YCRegressionMetrics.h"; sourceTree = "<group>"; };
+		CB7E6D061AE1226F00B37EA4 /* YCRegressionMetrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRegressionMetrics.m; path = "Regression Metrics/YCRegressionMetrics.m"; sourceTree = "<group>"; };
+		CB7E6D0B1AE7D00100B37EA4 /* YCRBFNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRBFNet.h; path = RBF/YCRBFNet.h; sourceTree = "<group>"; };
+		CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRBFNet.m; path = RBF/YCRBFNet.m; sourceTree = "<group>"; };
+		CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOLSTrainer.h; path = RBF/YCOLSTrainer.h; sourceTree = "<group>"; };
+		CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOLSTrainer.m; path = RBF/YCOLSTrainer.m; sourceTree = "<group>"; };
+		CB7E6D311AEA382400B37EA4 /* YCDataframe+Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "YCDataframe+Transform.h"; path = "Data Frame/YCDataframe+Transform.h"; sourceTree = "<group>"; };
+		CB7E6D321AEA382400B37EA4 /* YCDataframe+Transform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "YCDataframe+Transform.m"; path = "Data Frame/YCDataframe+Transform.m"; sourceTree = "<group>"; };
 		CB96955D1AAEEB64003BAE48 /* YCML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9695611AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +206,35 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		CB6ECD3F1AEFB296000E70A7 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */,
+				CB6ECD411AEFB6DF000E70A7 /* YCCrossValidation.m */,
+			);
+			name = Testing;
+			sourceTree = "<group>";
+		};
+		CB7E6CFF1AE121F700B37EA4 /* Metrics */ = {
+			isa = PBXGroup;
+			children = (
+				CB7E6D051AE1226F00B37EA4 /* YCRegressionMetrics.h */,
+				CB7E6D061AE1226F00B37EA4 /* YCRegressionMetrics.m */,
+			);
+			name = Metrics;
+			sourceTree = "<group>";
+		};
+		CB7E6D0A1AE7CFD700B37EA4 /* RBF */ = {
+			isa = PBXGroup;
+			children = (
+				CB7E6D0B1AE7D00100B37EA4 /* YCRBFNet.h */,
+				CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */,
+				CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */,
+				CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */,
+			);
+			name = RBF;
+			sourceTree = "<group>";
+		};
 		CB9695531AAEEB64003BAE48 = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +269,11 @@
 				CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */,
 				CB9695861AAEEBF0003BAE48 /* ELM */,
 				CB9695891AAEEBF0003BAE48 /* FFN */,
+				CB7E6D0A1AE7CFD700B37EA4 /* RBF */,
 				CBF75B191AC7739400495246 /* Data Frame */,
 				CBC7A4EA1ABA327C00464DD2 /* Optimization */,
+				CB7E6CFF1AE121F700B37EA4 /* Metrics */,
+				CB6ECD3F1AEFB296000E70A7 /* Testing */,
 				CB9695601AAEEB64003BAE48 /* Supporting Files */,
 			);
 			path = YCML;
@@ -246,6 +301,8 @@
 		CB96956D1AAEEB64003BAE48 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB6ECD451AF0106E000E70A7 /* CHCSVParser.h */,
+				CB6ECD461AF0106E000E70A7 /* CHCSVParser.m */,
 				CB96956E1AAEEB64003BAE48 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -330,6 +387,8 @@
 				CBF75B271AC774D000495246 /* YCDataframe.m */,
 				CBF75B281AC774D000495246 /* YCDataframe+Matrix.h */,
 				CBF75B291AC774D000495246 /* YCDataframe+Matrix.m */,
+				CB7E6D311AEA382400B37EA4 /* YCDataframe+Transform.h */,
+				CB7E6D321AEA382400B37EA4 /* YCDataframe+Transform.m */,
 				CBF75B2A1AC774D000495246 /* YCMissingValue.h */,
 				CBF75B2B1AC774D000495246 /* YCMissingValue.m */,
 				CBF75B321AC7750200495246 /* NSArray+Statistics.h */,
@@ -346,17 +405,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB96957D1AAEEBDB003BAE48 /* YCML.h in Headers */,
+				CB7E6D071AE1226F00B37EA4 /* YCRegressionMetrics.h in Headers */,
 				CBF75B2C1AC774D000495246 /* YCDataframe.h in Headers */,
 				CBC7A4EF1ABA330300464DD2 /* YCProblem.h in Headers */,
+				CB7E6D0D1AE7D00100B37EA4 /* YCRBFNet.h in Headers */,
 				CB1802C61ABE192600A2927B /* YCRProp.h in Headers */,
 				CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */,
+				CB7E6D111AE7D01A00B37EA4 /* YCOLSTrainer.h in Headers */,
 				CBF75B341AC7750200495246 /* NSArray+Statistics.h in Headers */,
 				CB9695821AAEEBE5003BAE48 /* YCSupervisedModel.h in Headers */,
 				CB1802CB1ABE19DF00A2927B /* YCRpropTrainer.h in Headers */,
 				CB9695841AAEEBE5003BAE48 /* YCSupervisedTrainer.h in Headers */,
 				CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */,
+				CB7E6D331AEA382400B37EA4 /* YCDataframe+Transform.h in Headers */,
 				CBF75B301AC774D000495246 /* YCMissingValue.h in Headers */,
 				CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */,
+				CB6ECD421AEFB6DF000E70A7 /* YCCrossValidation.h in Headers */,
 				CBF75B2E1AC774D000495246 /* YCDataframe+Matrix.h in Headers */,
 				CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */,
 				CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */,
@@ -526,11 +590,16 @@
 			files = (
 				CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */,
 				CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */,
+				CB7E6D121AE7D01A00B37EA4 /* YCOLSTrainer.m in Sources */,
+				CB7E6D0E1AE7D00100B37EA4 /* YCRBFNet.m in Sources */,
+				CB7E6D341AEA382400B37EA4 /* YCDataframe+Transform.m in Sources */,
+				CB6ECD431AEFB6DF000E70A7 /* YCCrossValidation.m in Sources */,
 				CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */,
 				CBF75B2D1AC774D000495246 /* YCDataframe.m in Sources */,
 				CB9695831AAEEBE5003BAE48 /* YCSupervisedModel.m in Sources */,
 				CBF75B351AC7750200495246 /* NSArray+Statistics.m in Sources */,
 				CB96958D1AAEEBF0003BAE48 /* YCELMTrainer.m in Sources */,
+				CB7E6D081AE1226F00B37EA4 /* YCRegressionMetrics.m in Sources */,
 				CB9695851AAEEBE5003BAE48 /* YCSupervisedTrainer.m in Sources */,
 				CBF75B311AC774D000495246 /* YCMissingValue.m in Sources */,
 				CB1802C71ABE192600A2927B /* YCRProp.m in Sources */,
@@ -547,6 +616,7 @@
 			files = (
 				CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */,
 				CBF75B151AC747E400495246 /* YCMLOptimizationTest.m in Sources */,
+				CB6ECD471AF0106E000E70A7 /* CHCSVParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

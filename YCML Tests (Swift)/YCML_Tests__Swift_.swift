@@ -18,9 +18,9 @@ class YCML_Tests__Swift_: XCTestCase {
         trainingData.shuffleColumns()
         var cvData = trainingData.matrixWithColumnsInRange(NSMakeRange(trainingData.columns-30, 29))
         trainingData = trainingData.matrixWithColumnsInRange(NSMakeRange(0, trainingData.columns-30))
-        var trainingOutput = trainingData.getRow(13)
+        var trainingOutput = trainingData.row(13)
         var trainingInput = trainingData.removeRow(13)
-        var cvOutput = cvData.getRow(13)
+        var cvOutput = cvData.row(13)
         var cvInput = cvData.removeRow(13)
         var trainer = YCELMTrainer()
         trainer.settings["C"] = 8
