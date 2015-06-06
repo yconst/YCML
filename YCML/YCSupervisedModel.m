@@ -62,6 +62,20 @@
             @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];
 }
 
+#pragma mark NSCopying Implementation
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    id copied = [[self class] model];
+    if (copied)
+    {
+        [copied setProperties:[self.properties mutableCopy]];
+        [copied setStatistics:[self.statistics mutableCopy]];
+        [copied setTrainingSettings:[self.trainingSettings mutableCopy]];
+    }
+    return copied;
+}
+
 #pragma mark NSCoding Implementation
 
 - (void)encodeWithCoder:(NSCoder *)encoder
@@ -80,18 +94,6 @@
         self.trainingSettings = [decoder decodeObjectForKey:@"trainingSettings"];
     }
     return self;
-}
-
-- (instancetype)copyWithZone:(NSZone *)zone
-{
-    id copied = [YCSupervisedModel model];
-    if (copied)
-    {
-        [copied setProperties:[self.properties mutableCopy]];
-        [copied setStatistics:[self.statistics mutableCopy]];
-        [copied setTrainingSettings:[self.trainingSettings mutableCopy]];
-    }
-    return copied;
 }
 
 - (int)inputSize
