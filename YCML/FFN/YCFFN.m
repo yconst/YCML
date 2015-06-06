@@ -130,9 +130,17 @@
 
 - (instancetype)copyWithZone:(NSZone *)zone
 {
-    id copy = [super copyWithZone:zone];
-    [copy setFunction:[self.function copy]];
-    [copy setYDerivative:[self.yDerivative copy]];
+    YCFFN *copy = [super copyWithZone:zone];
+    if (copy)
+    {
+        copy.weightMatrices = [self.weightMatrices copy];
+        copy.biasVectors = [self.biasVectors copy];
+        copy->_lastActivations = [self.lastActivations copy];
+        copy.inputTransform = [self.inputTransform copy];
+        copy.outputTransform = [self.outputTransform copy];
+        [copy setFunction:[self.function copy]];
+        [copy setYDerivative:[self.yDerivative copy]];
+    }
     return copy;
 }
 
