@@ -53,9 +53,11 @@ typedef enum AttributeType : int16_t {
 
 - (NSArray *)samplesNotInIndexes:(NSIndexSet *)idxs;
 
+- (void)sortByAttribute:(NSString *)attribute ascending:(BOOL)ascending;
+
 - (NSArray *)attributeIdentifiers;
 
-- (NSArray *)classesForAttribute:(NSString *)attribute;
+- (NSArray *)classesForAttribute:(NSString *)attribute; // TODO: add max label count
 
 - (void)addBlankAttributeWithIdentifier:(NSString *)ident;
 
@@ -105,9 +107,10 @@ typedef enum AttributeType : int16_t {
 @property (readonly) NSArray *allSamples;
 
 /**
- Returns an NSArray of NSArrays, each corresponding to a sample.
+ Returns an NSArray of NSArrays, each corresponding to a sample. The first array
+ contains the attribute labels.
  
- @warning The first NSArray contains the attribute keys.
+ @warning The first NSArray contains the attribute labels.
  */
 @property (readonly) NSArray *allSampleValues;
 

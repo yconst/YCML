@@ -129,6 +129,28 @@
     return [self samplesAtIndexes:inverse];
 }
 
+- (void)sortByAttribute:(NSString *)attribute ascending:(BOOL)ascending
+{
+    
+    NSArray *sortedSamples = [[self allSamples] sortedArrayUsingComparator:
+                              ^NSComparisonResult(id obj1, id obj2) {
+        id value1 = (NSDictionary *)obj1[attribute];
+        id value2 = (NSDictionary *)obj2[attribute];
+        if ([value1 respondsToSelector:@selector(compare:)] &&
+            [value2 respondsToSelector:@selector(compare:)])
+        {
+            if (ascending)
+            {
+                return [value1 compare:value2];
+            }
+            return [value2 compare:value1];
+        }
+        return NSOrderedAscending; // Whatever, just return something
+    }];
+    [self removeAllSamples];
+    [self addSamplesWithData:sortedSamples];
+}
+
 - (NSArray *)attributeIdentifiers
 {
     return [self->_data allKeys];
@@ -165,7 +187,7 @@
             for (id sampleValue in data)
             {
                 [copiedArray addObject:[self correctValueFor:sampleValue
-                                       AdjustTypeOfAttribute:ident]];
+                                       adjustTypeOfAttribute:ident]];
             }
             [_data setObject:copiedArray forKey:ident];
         }
@@ -188,6 +210,9 @@
     if ([_attributeTypes objectForKey:ident]) return;
     
     [_attributeTypes setObject:@0 forKey:ident];
+    
+    [self willChangeValueForKey:@"attributeCount"];
+    [self didChangeValueForKey:@"attributeCount"];
 }
 
 // Optional override when subclassing
@@ -195,6 +220,8 @@
 {
     [_attributeTypes removeObjectForKey:ident];
     [_data removeObjectForKey:ident];
+    [self willChangeValueForKey:@"attributeCount"];
+    [self didChangeValueForKey:@"attributeCount"];
 }
 
 // Optional override when subclassing
@@ -257,7 +284,7 @@
     {
         for (id key in record)
         {
-            id oldValue = [_data objectForKey:key];
+            id oldValue = _data[key];
             if (!oldValue)
             {
                 [self addBlankAttributeWithIdentifier:key];
@@ -268,7 +295,8 @@
             id sampleValue = [record objectForKey:key];
             if (sampleValue)
             {
-                [_data[key] insertObject:[self correctValueFor:sampleValue AdjustTypeOfAttribute:key]
+                [_data[key] insertObject:[self correctValueFor:sampleValue
+                                         adjustTypeOfAttribute:key]
                                  atIndex:idx];
             }
             else
@@ -277,6 +305,8 @@
             }
         }
     }
+    [self willChangeValueForKey:@"dataCount"];
+    [self didChangeValueForKey:@"dataCount"];
 }
 
 - (NSMutableDictionary *)removeSampleAtIndex:(NSUInteger)idx
@@ -288,6 +318,8 @@
         [ret setValue:val forKey:key];
         [[_data objectForKey:key] removeObjectAtIndex:idx];
     }
+    [self willChangeValueForKey:@"dataCount"];
+    [self didChangeValueForKey:@"dataCount"];
     return ret;
 }
 
@@ -297,6 +329,8 @@
     {
         [feature removeObjectsAtIndexes:idxs];
     }
+    [self willChangeValueForKey:@"dataCount"];
+    [self didChangeValueForKey:@"dataCount"];
 }
 
 - (void)removeAllSamples
@@ -305,8 +339,11 @@
     {
         [a removeAllObjects];
     }
+    [self willChangeValueForKey:@"dataCount"];
+    [self didChangeValueForKey:@"dataCount"];
 }
 
+// Optional override when subclassing
 - (void)appendDataframe:(YCDataframe *)dataframe
 {
     for (NSString *identifier in [dataframe attributeKeys])
@@ -315,8 +352,10 @@
     }
     for (NSString *identifier in [dataframe attributeKeys])
     {
-        self->_data[identifier] = [[dataframe allValuesForAttribute:identifier] mutableCopy];
+        [self->_data[identifier] addObjectsFromArray:[dataframe allValuesForAttribute:identifier]];
     }
+    [self willChangeValueForKey:@"dataCount"];
+    [self didChangeValueForKey:@"dataCount"];
 }
 
 - (NSDictionary *)stats
@@ -507,7 +546,7 @@
 
 #pragma mark Helpers
 
-- (id)correctValueFor:(id)value AdjustTypeOfAttribute:(NSString *)ident
+- (id)correctValueFor:(id)value adjustTypeOfAttribute:(NSString *)ident
 {
     if ([value isKindOfClass:[NSNumber class]])
     {
