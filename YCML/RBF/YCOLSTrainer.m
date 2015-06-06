@@ -38,6 +38,7 @@
         self.settings[@"Kernel Width"]    = @2;
         self.settings[@"Error Tolerance"] = @0.02;
         self.settings[@"Max Regressors"]  = @300;
+        self.settings[@"Lambda"] = @0;
     }
     return self;
 }
@@ -77,6 +78,7 @@
     double cols               = inp->columns; // == S
     double basisFunctionWidth = [[self.settings objectForKey:@"Kernel Width"] doubleValue];
     int maxRegressors         = [self.settings[@"Max Regressors"] intValue];
+    double lambda             = [self.settings[@"Lambda"] doubleValue];
     // inp -> NxS
     model.widths              = [Matrix matrixOfRows:cols
                                                Columns:1
@@ -137,8 +139,6 @@
                     
                     // Calculate ERR (= Error Reduction Ratio)
                     
-                    // Failsafe for zero vector
-                    //if (wkiwki == 0) continue;
                     double sumg2 = 0;
                     
                     // Check how much the regressor contributes to each output
@@ -148,7 +148,7 @@
                         sumg2 += gki*gki;
                     }
                     
-                    double ERR = (sumg2*wkiwki)/dTrace;
+                    double ERR = (sumg2*(wkiwki + lambda))/dTrace;
                     
                     // If the current ERR is larger than the max ERR, select this regressor.
                     if (ERR > maxERR)
@@ -184,7 +184,7 @@
                                                                 object:self
                                                               userInfo:netStats];
             
-            // Break if tolerance is reached or stop is issued
+            // Break if tolerance is reached or stopping command is issued
             if (totalError <= tolerance || self.shouldStop) break;
             
             // Break if maximum number of regressors reached

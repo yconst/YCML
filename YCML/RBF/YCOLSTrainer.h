@@ -25,6 +25,8 @@
 
 @interface YCOLSTrainer : YCSupervisedTrainer
 
+- (void)centersAndWidthsFor:(YCRBFNet *)model input:(Matrix *)inp output:(Matrix *)outp;
+
 - (void)weightsFor:(YCRBFNet *)model input:(Matrix *)input output:(Matrix *)output;
 
 @end

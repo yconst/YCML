@@ -84,6 +84,34 @@
     return designmatrix;
 }
 
+#pragma mark Properties
+
+- (int)inputSize
+{
+    return self.centers.rows;
+}
+
+- (int)outputSize
+{
+    return self.weights.columns;
+}
+
+#pragma mark NSCopying Implementation
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    YCRBFNet *copy = [super copyWithZone:zone];
+    if (copy)
+    {
+        copy.centers = [self.centers copy];
+        copy.widths = [self.widths copy];
+        copy.weights = [self.weights copy];
+        copy.inputTransform = [self.inputTransform copy];
+        copy.outputTransform = [self.outputTransform copy];
+    }
+    return copy;
+}
+
 #pragma mark NSCoding Implementation
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -102,6 +130,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.centers forKey:@"centers"];
     [aCoder encodeObject:self.widths forKey:@"widths"];
     [aCoder encodeObject:self.weights forKey:@"weights"];
