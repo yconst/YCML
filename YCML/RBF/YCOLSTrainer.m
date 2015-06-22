@@ -193,14 +193,15 @@
     }
     
     // Here create a new matrix of selected regressors.
-    Matrix *selectedRegressorMatrix = [Matrix matrixOfRows:inp->rows Columns:(int)[selectedRegressors count]];
+    Matrix *selectedRegressorMatrix = [Matrix matrixOfRows:inp->rows
+                                                   Columns:(int)[selectedRegressors count]];
     int i = 0;
     for (Matrix *r in selectedRegressors)
     {
         [selectedRegressorMatrix setColumn:i++ Value:r];
     }
-    model.centers = selectedRegressorMatrix;
     
+    model.centers = selectedRegressorMatrix;
     model.widths = [Matrix matrixOfRows:model.centers.columns
                                 Columns:1
                                   Value:basisFunctionWidth];

@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for YCML.
 FOUNDATION_EXPORT double YCMLVersionNumber;
@@ -42,6 +42,7 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCRpropTrainer.h"
 #import "YCRBFNet.h"
 #import "YCOLSTrainer.h"
+#import "YCOLSPRESSTrainer.h"
 #import "YCGradientDescent.h"
 #import "YCDataframe.h"
 #import "YCDataframe+Matrix.h"
