@@ -39,6 +39,8 @@ typedef enum AttributeType : int16_t {
 
 + (instancetype)dataframeWithDictionary:(NSDictionary *)input deepCopy:(BOOL)copy;
 
+- (YCDataframe *)dataframeByFilteringAttributes:(NSArray *)attributes;
+
 - (NSUInteger)attributeCount;
 
 - (NSArray *)allValuesForAttribute:(NSString *)attribute;

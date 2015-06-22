@@ -75,6 +75,21 @@
     return self;
 }
 
+- (YCDataframe *)dataframeByFilteringAttributes:(NSArray *)attributeLabels
+{
+    YCDataframe *newFrame = [[[self class] alloc] init];
+    for (NSString *attributeLabel in attributeLabels)
+    {
+        if ([self.attributeKeys containsObject:attributeLabel])
+        {
+            [newFrame addAttributeWithIdentifier:attributeLabel
+                                            data:[self allValuesForAttribute:attributeLabel]
+                                        deepCopy:YES];
+        }
+    }
+    return newFrame;
+}
+
 - (NSUInteger)attributeCount
 {
     return [_data count];
@@ -533,8 +548,8 @@
     NSString *s = [NSString stringWithFormat:
                    @"%@ with %ld attributes and %ld samples.\nAttribute Order:\n",
             NSStringFromClass([self class]),
-            [self attributeCount],
-            self.dataCount];
+            (unsigned long)[self attributeCount],
+            (unsigned long)self.dataCount];
     int c = 1;
     for (NSString *attributeName in [self->_data allKeys])
     {
