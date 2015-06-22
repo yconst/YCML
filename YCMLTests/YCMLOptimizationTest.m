@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 Yannis Chatzikonstantinou. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <XCTest/XCTest.h>
+@import XCTest;
 @import YCML;
 @import YCMatrix;
 

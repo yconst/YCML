@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Yannis Chatzikonstantinou. All rights reserved.
 //
 
-import Cocoa
 import XCTest
 import YCML
 import YCMatrix

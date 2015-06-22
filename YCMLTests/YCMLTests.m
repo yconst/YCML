@@ -20,8 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-@import Cocoa;
-#import <XCTest/XCTest.h>
+@import XCTest;
 @import YCML;
 @import YCMatrix;
 #import "CHCSVParser.h"
@@ -159,7 +158,7 @@
     trainer.settings[@"C"]                 = @8;
     trainer.settings[@"Hidden Layer Size"] = @900;
     
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:7.0];
 }
 
 - (void)testBackPropHousing
@@ -187,6 +186,13 @@
     YCOLSTrainer *trainer                 = [YCOLSTrainer trainer];
     trainer.settings[@"Kernel Width"] = @2.8;
     trainer.settings[@"Error Tolerance"] = @0.1;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
+
+- (void)testRBFPRESSHousing
+{
+    YCOLSTrainer *trainer                 = [YCOLSPRESSTrainer trainer];
+    trainer.settings[@"Kernel Width"] = @2.8;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
