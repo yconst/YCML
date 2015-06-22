@@ -7,12 +7,57 @@
 		<key>YCML.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
+		</dict>
+		<key>YCMatrix.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>CB02F7BF1AAF653C00EF1E02</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C151B24374F004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C1F1B243750004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C481B24395F004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C521B24395F004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C7A1B2439CA004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB265C841B2439CA004BE740</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB41BE161B3838DC004E2522</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB41BE201B3838DC004E2522</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -14,6 +14,19 @@
 		CB1802C71ABE192600A2927B /* YCRProp.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1802C51ABE192600A2927B /* YCRProp.m */; };
 		CB1802CB1ABE19DF00A2927B /* YCRpropTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */; };
+		CB41BE3C1B383934004E2522 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE301B383934004E2522 /* Constants.h */; };
+		CB41BE3D1B383934004E2522 /* Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE311B383934004E2522 /* Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE3E1B383934004E2522 /* Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB41BE321B383934004E2522 /* Matrix.m */; };
+		CB41BE3F1B383934004E2522 /* Matrix+Advanced.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE331B383934004E2522 /* Matrix+Advanced.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE401B383934004E2522 /* Matrix+Advanced.m in Sources */ = {isa = PBXBuildFile; fileRef = CB41BE341B383934004E2522 /* Matrix+Advanced.m */; };
+		CB41BE411B383934004E2522 /* Matrix+Manipulate.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE351B383934004E2522 /* Matrix+Manipulate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE421B383934004E2522 /* Matrix+Manipulate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB41BE361B383934004E2522 /* Matrix+Manipulate.m */; };
+		CB41BE431B383934004E2522 /* Matrix+Map.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE371B383934004E2522 /* Matrix+Map.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE441B383934004E2522 /* Matrix+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = CB41BE381B383934004E2522 /* Matrix+Map.m */; };
+		CB41BE451B383934004E2522 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE391B383934004E2522 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE461B383934004E2522 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB41BE3A1B383934004E2522 /* NSArray+Matrix.m */; };
+		CB41BE471B383934004E2522 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB41BE3B1B383934004E2522 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB41BE481B383A3F004E2522 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB41BE171B3838DC004E2522 /* YCMatrix.framework */; };
 		CB6ECD421AEFB6DF000E70A7 /* YCCrossValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB6ECD431AEFB6DF000E70A7 /* YCCrossValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6ECD411AEFB6DF000E70A7 /* YCCrossValidation.m */; };
 		CB6ECD471AF0106E000E70A7 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6ECD461AF0106E000E70A7 /* CHCSVParser.m */; };
@@ -37,8 +50,6 @@
 		CB96958E1AAEEBF0003BAE48 /* YCFFN.h in Headers */ = {isa = PBXBuildFile; fileRef = CB96958A1AAEEBF0003BAE48 /* YCFFN.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */ = {isa = PBXBuildFile; fileRef = CB96958B1AAEEBF0003BAE48 /* YCFFN.m */; };
 		CB9695921AAEECA8003BAE48 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
-		CB96959D1AAEEFE4003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
-		CB9695A01AAEF02D003BAE48 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
 		CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A4EF1ABA330300464DD2 /* YCProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4ED1ABA330300464DD2 /* YCProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,8 +60,9 @@
 		CBC7A4FE1ABB7F1000464DD2 /* YCBackPropProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */; };
 		CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */; };
+		CBD606821B0FC48300DCA6AD /* YCOLSPRESSTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBD606831B0FC48300DCA6AD /* YCOLSPRESSTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */; };
 		CBF75B151AC747E400495246 /* YCMLOptimizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF75B141AC747E400495246 /* YCMLOptimizationTest.m */; };
-		CBF75B171AC75B0400495246 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */; };
 		CBF75B2C1AC774D000495246 /* YCDataframe.h in Headers */ = {isa = PBXBuildFile; fileRef = CBF75B261AC774D000495246 /* YCDataframe.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBF75B2D1AC774D000495246 /* YCDataframe.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF75B271AC774D000495246 /* YCDataframe.m */; };
 		CBF75B2E1AC774D000495246 /* YCDataframe+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CBF75B281AC774D000495246 /* YCDataframe+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -76,27 +88,6 @@
 			remoteGlobalIDString = CB96955C1AAEEB64003BAE48;
 			remoteInfo = YCML;
 		};
-		CB9695981AAEEFC8003BAE48 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CBBE02AC178F215000744F77;
-			remoteInfo = YCMatrix;
-		};
-		CB96959A1AAEEFC8003BAE48 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CBBE02C4178F215100744F77;
-			remoteInfo = YCMatrixTests;
-		};
-		CB96959E1AAEEFE8003BAE48 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CBBE02AB178F215000744F77;
-			remoteInfo = YCMatrix;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +98,20 @@
 		CB1802C51ABE192600A2927B /* YCRProp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRProp.m; path = Optimization/RProp/YCRProp.m; sourceTree = "<group>"; };
 		CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRpropTrainer.h; sourceTree = "<group>"; };
 		CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRpropTrainer.m; sourceTree = "<group>"; };
+		CB41BE171B3838DC004E2522 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB41BE1A1B3838DC004E2522 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB41BE301B383934004E2522 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		CB41BE311B383934004E2522 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
+		CB41BE321B383934004E2522 /* Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix.m; sourceTree = "<group>"; };
+		CB41BE331B383934004E2522 /* Matrix+Advanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Advanced.h"; sourceTree = "<group>"; };
+		CB41BE341B383934004E2522 /* Matrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Advanced.m"; sourceTree = "<group>"; };
+		CB41BE351B383934004E2522 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; };
+		CB41BE361B383934004E2522 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; };
+		CB41BE371B383934004E2522 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Map.h"; sourceTree = "<group>"; };
+		CB41BE381B383934004E2522 /* Matrix+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Map.m"; sourceTree = "<group>"; };
+		CB41BE391B383934004E2522 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
+		CB41BE3A1B383934004E2522 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
+		CB41BE3B1B383934004E2522 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMatrix.h; sourceTree = "<group>"; };
 		CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCrossValidation.h; path = Testing/YCCrossValidation.h; sourceTree = "<group>"; };
 		CB6ECD411AEFB6DF000E70A7 /* YCCrossValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCrossValidation.m; path = Testing/YCCrossValidation.m; sourceTree = "<group>"; };
 		CB6ECD451AF0106E000E70A7 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCSVParser.h; path = ../../CHCSVParser/CHCSVParser/CHCSVParser/CHCSVParser.h; sourceTree = "<group>"; };
@@ -137,7 +142,6 @@
 		CB96958A1AAEEBF0003BAE48 /* YCFFN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCFFN.h; sourceTree = "<group>"; };
 		CB96958B1AAEEBF0003BAE48 /* YCFFN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFFN.m; sourceTree = "<group>"; };
 		CB9695911AAEECA8003BAE48 /* housing.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = housing.csv; sourceTree = "<group>"; };
-		CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YCMatrix.xcodeproj; path = yconst/YCMatrix/YCMatrix.xcodeproj; sourceTree = "<group>"; };
 		CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDerivativeProblem.h; path = Optimization/YCDerivativeProblem.h; sourceTree = "<group>"; };
 		CBC7A4ED1ABA330300464DD2 /* YCProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCProblem.h; path = Optimization/YCProblem.h; sourceTree = "<group>"; };
 		CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOptimizer.h; path = Optimization/YCOptimizer.h; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 		CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropProblem.m; sourceTree = "<group>"; };
 		CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCBackPropTrainer.h; sourceTree = "<group>"; };
 		CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropTrainer.m; sourceTree = "<group>"; };
+		CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOLSPRESSTrainer.h; path = RBF/YCOLSPRESSTrainer.h; sourceTree = "<group>"; };
+		CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOLSPRESSTrainer.m; path = RBF/YCOLSPRESSTrainer.m; sourceTree = "<group>"; };
 		CBF75B141AC747E400495246 /* YCMLOptimizationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLOptimizationTest.m; sourceTree = "<group>"; };
 		CBF75B261AC774D000495246 /* YCDataframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDataframe.h; path = "Data Frame/YCDataframe.h"; sourceTree = "<group>"; };
 		CBF75B271AC774D000495246 /* YCDataframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCDataframe.m; path = "Data Frame/YCDataframe.m"; sourceTree = "<group>"; };
@@ -164,8 +170,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBF75B171AC75B0400495246 /* YCMatrix.framework in Frameworks */,
 				CB02F7C61AAF653C00EF1E02 /* YCML.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB41BE131B3838DC004E2522 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,7 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB96959D1AAEEFE4003BAE48 /* YCMatrix.framework in Frameworks */,
+				CB41BE481B383A3F004E2522 /* YCMatrix.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +193,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB9695A01AAEF02D003BAE48 /* YCMatrix.framework in Frameworks */,
 				CB9695691AAEEB64003BAE48 /* YCML.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -202,6 +213,41 @@
 			isa = PBXGroup;
 			children = (
 				CB02F7C31AAF653C00EF1E02 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CB41BE111B3836BF004E2522 /* YCMatrix */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = YCMatrix;
+			sourceTree = "<group>";
+		};
+		CB41BE181B3838DC004E2522 /* YCMatrix */ = {
+			isa = PBXGroup;
+			children = (
+				CB41BE301B383934004E2522 /* Constants.h */,
+				CB41BE311B383934004E2522 /* Matrix.h */,
+				CB41BE321B383934004E2522 /* Matrix.m */,
+				CB41BE331B383934004E2522 /* Matrix+Advanced.h */,
+				CB41BE341B383934004E2522 /* Matrix+Advanced.m */,
+				CB41BE351B383934004E2522 /* Matrix+Manipulate.h */,
+				CB41BE361B383934004E2522 /* Matrix+Manipulate.m */,
+				CB41BE371B383934004E2522 /* Matrix+Map.h */,
+				CB41BE381B383934004E2522 /* Matrix+Map.m */,
+				CB41BE391B383934004E2522 /* NSArray+Matrix.h */,
+				CB41BE3A1B383934004E2522 /* NSArray+Matrix.m */,
+				CB41BE3B1B383934004E2522 /* YCMatrix.h */,
+				CB41BE191B3838DC004E2522 /* Supporting Files */,
+			);
+			path = YCMatrix;
+			sourceTree = "<group>";
+		};
+		CB41BE191B3838DC004E2522 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CB41BE1A1B3838DC004E2522 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -231,6 +277,8 @@
 				CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */,
 				CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */,
 				CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */,
+				CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */,
+				CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */,
 			);
 			name = RBF;
 			sourceTree = "<group>";
@@ -241,6 +289,7 @@
 				CB96955F1AAEEB64003BAE48 /* YCML */,
 				CB96956C1AAEEB64003BAE48 /* YCMLTests */,
 				CB02F7C11AAF653C00EF1E02 /* YCML Tests (Swift) */,
+				CB41BE181B3838DC004E2522 /* YCMatrix */,
 				CB96959C1AAEEFCD003BAE48 /* Frameworks */,
 				CB96955E1AAEEB64003BAE48 /* Products */,
 				CB9695791AAEEB96003BAE48 /* AppledocSettings.plist */,
@@ -255,6 +304,7 @@
 				CB96955D1AAEEB64003BAE48 /* YCML.framework */,
 				CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */,
 				CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */,
+				CB41BE171B3838DC004E2522 /* YCMatrix.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -282,6 +332,7 @@
 		CB9695601AAEEB64003BAE48 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB41BE111B3836BF004E2522 /* YCMatrix */,
 				CB9695611AAEEB64003BAE48 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -340,19 +391,9 @@
 			name = Datasets;
 			sourceTree = "<group>";
 		};
-		CB9695941AAEEFC7003BAE48 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */,
-				CB96959B1AAEEFC8003BAE48 /* YCMatrixTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		CB96959C1AAEEFCD003BAE48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -400,6 +441,20 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		CB41BE141B3838DC004E2522 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB41BE471B383934004E2522 /* YCMatrix.h in Headers */,
+				CB41BE411B383934004E2522 /* Matrix+Manipulate.h in Headers */,
+				CB41BE451B383934004E2522 /* NSArray+Matrix.h in Headers */,
+				CB41BE431B383934004E2522 /* Matrix+Map.h in Headers */,
+				CB41BE3F1B383934004E2522 /* Matrix+Advanced.h in Headers */,
+				CB41BE3D1B383934004E2522 /* Matrix.h in Headers */,
+				CB41BE3C1B383934004E2522 /* Constants.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB96955A1AAEEB64003BAE48 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -425,6 +480,7 @@
 				CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */,
 				CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */,
 				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
+				CBD606821B0FC48300DCA6AD /* YCOLSPRESSTrainer.h in Headers */,
 				CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +506,24 @@
 			productReference = CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CB41BE161B3838DC004E2522 /* YCMatrix */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB41BE2A1B3838DC004E2522 /* Build configuration list for PBXNativeTarget "YCMatrix" */;
+			buildPhases = (
+				CB41BE121B3838DC004E2522 /* Sources */,
+				CB41BE131B3838DC004E2522 /* Frameworks */,
+				CB41BE141B3838DC004E2522 /* Headers */,
+				CB41BE151B3838DC004E2522 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YCMatrix;
+			productName = YCMatrix;
+			productReference = CB41BE171B3838DC004E2522 /* YCMatrix.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		CB96955C1AAEEB64003BAE48 /* YCML */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB9695731AAEEB64003BAE48 /* Build configuration list for PBXNativeTarget "YCML" */;
@@ -462,7 +536,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				CB96959F1AAEEFE8003BAE48 /* PBXTargetDependency */,
 			);
 			name = YCML;
 			productName = YCML;
@@ -493,11 +566,15 @@
 		CB9695541AAEEB64003BAE48 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Yannis Chatzikonstantinou";
 				TargetAttributes = {
 					CB02F7BF1AAF653C00EF1E02 = {
 						CreatedOnToolsVersion = 6.1.1;
+					};
+					CB41BE161B3838DC004E2522 = {
+						CreatedOnToolsVersion = 6.3.1;
 					};
 					CB96955C1AAEEB64003BAE48 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -517,37 +594,15 @@
 			mainGroup = CB9695531AAEEB64003BAE48;
 			productRefGroup = CB96955E1AAEEB64003BAE48 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = CB9695941AAEEFC7003BAE48 /* Products */;
-					ProjectRef = CB9695931AAEEFC7003BAE48 /* YCMatrix.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				CB96955C1AAEEB64003BAE48 /* YCML */,
 				CB9695671AAEEB64003BAE48 /* YCMLTests */,
 				CB02F7BF1AAF653C00EF1E02 /* YCML Tests (Swift) */,
+				CB41BE161B3838DC004E2522 /* YCMatrix */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		CB9695991AAEEFC8003BAE48 /* YCMatrix.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = YCMatrix.framework;
-			remoteRef = CB9695981AAEEFC8003BAE48 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CB96959B1AAEEFC8003BAE48 /* YCMatrixTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = YCMatrixTests.xctest;
-			remoteRef = CB96959A1AAEEFC8003BAE48 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		CB02F7BE1AAF653C00EF1E02 /* Resources */ = {
@@ -555,6 +610,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB02F7CD1AAF720500EF1E02 /* housing.csv in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB41BE151B3838DC004E2522 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,12 +646,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB41BE121B3838DC004E2522 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB41BE461B383934004E2522 /* NSArray+Matrix.m in Sources */,
+				CB41BE401B383934004E2522 /* Matrix+Advanced.m in Sources */,
+				CB41BE441B383934004E2522 /* Matrix+Map.m in Sources */,
+				CB41BE3E1B383934004E2522 /* Matrix.m in Sources */,
+				CB41BE421B383934004E2522 /* Matrix+Manipulate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9695581AAEEB64003BAE48 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */,
 				CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */,
+				CBD606831B0FC48300DCA6AD /* YCOLSPRESSTrainer.m in Sources */,
 				CB7E6D121AE7D01A00B37EA4 /* YCOLSTrainer.m in Sources */,
 				CB7E6D0E1AE7D00100B37EA4 /* YCRBFNet.m in Sources */,
 				CB7E6D341AEA382400B37EA4 /* YCDataframe+Transform.m in Sources */,
@@ -633,11 +708,6 @@
 			target = CB96955C1AAEEB64003BAE48 /* YCML */;
 			targetProxy = CB96956A1AAEEB64003BAE48 /* PBXContainerItemProxy */;
 		};
-		CB96959F1AAEEFE8003BAE48 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = YCMatrix;
-			targetProxy = CB96959E1AAEEFE8003BAE48 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -646,6 +716,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
@@ -654,7 +725,8 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "YCML Tests (Swift)/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yconst.SwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -665,12 +737,59 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "YCML Tests (Swift)/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yconst.SwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		CB41BE2B1B3838DC004E2522 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = YCMatrix/Info.plist;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CB41BE2C1B3838DC004E2522 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = YCMatrix/Info.plist;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -694,6 +813,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -710,8 +830,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -749,6 +871,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphonesimulator iphoneos";
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -757,7 +881,9 @@
 		CB9695741AAEEB64003BAE48 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -768,8 +894,10 @@
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -778,7 +906,9 @@
 		CB9695751AAEEB64003BAE48 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ADDITIONAL_SDKS = "";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -789,8 +919,10 @@
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -800,6 +932,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
@@ -808,7 +941,8 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = YCMLTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -818,11 +952,13 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = YCMLTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -838,6 +974,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CB41BE2A1B3838DC004E2522 /* Build configuration list for PBXNativeTarget "YCMatrix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB41BE2B1B3838DC004E2522 /* Debug */,
+				CB41BE2C1B3838DC004E2522 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		CB9695571AAEEB64003BAE48 /* Build configuration list for PBXProject "YCML" */ = {
 			isa = XCConfigurationList;

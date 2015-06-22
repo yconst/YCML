@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0630"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,23 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB96955C1AAEEB64003BAE48"
-               BuildableName = "YCML.framework"
-               BlueprintName = "YCML"
+               BlueprintIdentifier = "CB41BE161B3838DC004E2522"
+               BuildableName = "YCMatrix.framework"
+               BlueprintName = "YCMatrix"
                ReferencedContainer = "container:YCML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
+            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB9695671AAEEB64003BAE48"
-               BuildableName = "YCMLTests.xctest"
-               BlueprintName = "YCMLTests"
+               BlueprintIdentifier = "CB41BE201B3838DC004E2522"
+               BuildableName = "YCMatrixTests.xctest"
+               BlueprintName = "YCMatrixTests"
                ReferencedContainer = "container:YCML.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,38 +42,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB9695671AAEEB64003BAE48"
-               BuildableName = "YCMLTests.xctest"
-               BlueprintName = "YCMLTests"
-               ReferencedContainer = "container:YCML.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB02F7BF1AAF653C00EF1E02"
-               BuildableName = "YCML Tests (Swift).xctest"
-               BlueprintName = "YCML Tests (Swift)"
-               ReferencedContainer = "container:YCML.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CB96955C1AAEEB64003BAE48"
-            BuildableName = "YCML.framework"
-            BlueprintName = "YCML"
+            BlueprintIdentifier = "CB41BE161B3838DC004E2522"
+            BuildableName = "YCMatrix.framework"
+            BlueprintName = "YCMatrix"
             ReferencedContainer = "container:YCML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -83,14 +61,13 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
-      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CB96955C1AAEEB64003BAE48"
-            BuildableName = "YCML.framework"
-            BlueprintName = "YCML"
+            BlueprintIdentifier = "CB41BE161B3838DC004E2522"
+            BuildableName = "YCMatrix.framework"
+            BlueprintName = "YCMatrix"
             ReferencedContainer = "container:YCML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -106,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CB96955C1AAEEB64003BAE48"
-            BuildableName = "YCML.framework"
-            BlueprintName = "YCML"
+            BlueprintIdentifier = "CB41BE161B3838DC004E2522"
+            BuildableName = "YCMatrix.framework"
+            BlueprintName = "YCMatrix"
             ReferencedContainer = "container:YCML.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
