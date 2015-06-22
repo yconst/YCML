@@ -83,6 +83,8 @@
              [trainingOutput attributeCount] == [testOutput attributeCount], @"Sample sizes differ");
     
     NSMutableDictionary *cumulativeStats = [NSMutableDictionary dictionary];
+    NSMutableArray *models = [NSMutableArray array];
+    
     int folds = [self.settings[@"Folds"] intValue];
     
     int foldLength = (int)([testInput dataCount] / folds);
@@ -114,9 +116,13 @@
             }
             [cumulativeStats[key] addObject:output[key]];
         }
+        
+        [models addObject:model];
     }
     
     self.results = [cumulativeStats copy];
+    self.models = models;
+    
     for (NSString *key in cumulativeStats.allKeys)
     {
         cumulativeStats[key] = [cumulativeStats[key] mean];

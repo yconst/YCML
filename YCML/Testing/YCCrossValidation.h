@@ -50,4 +50,6 @@
 
 @property NSDictionary *results;
 
+@property NSArray *models;
+
 @end
