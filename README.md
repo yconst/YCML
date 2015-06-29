@@ -8,6 +8,7 @@ The following algorithms are currently available:
 - Resilient Backpropagation (RProp) [2]
 - Extreme Learning Machines (ELM) [3]
 - Forward Selection using Orthogonal Least Squares (for RBF Net) [4, 5]
+- Forward Selection using Orthogonal Least Squares with the PRESS statistic [6]
 
 Where applicable, regularized versions of the algrithms have been implemented.
 
@@ -44,15 +45,8 @@ YCML models and trainers may use YCMatrix instances in place of a dataframe. In 
 
 Basic training and activation (Objective-C, using Matrices):
 
-    #import "YCML/YCML.h"
-    #import "YCMatrix/YCMatrix.h"
-    #import "YCMatrix/YCMatrix+Manipulate.h"
-    #import "YCMatrix/YCMatrix+Advanced.h"
-
-    (...)
-
     YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
-    YCMatrix *trainingOutput = [trainingData getRow:13];
+    YCMatrix *trainingOutput = [trainingData getRow:13]; // Output row == 13
     YCMatrix *trainingInput  = [trainingData removeRow:13];
     YCELMTrainer *trainer    = [YCELMTrainer trainer];
 
@@ -60,29 +54,38 @@ Basic training and activation (Objective-C, using Matrices):
 
     YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
 
-A more advanced example, using cross-validation (Objective-C, using Matrices):
+Cross-validation example, from data input to presentation of results:
+    
+    // Change "filePath" with your file path
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath]; 
+    NSMutableArray *dataarray = [[NSArray arrayWithContentsOfCSVURL: url] mutableCopy];
+    
+    // First row is taken as header
+    NSArray *header = [dataarray firstObject];
+    [dataarray removeObjectAtIndex:0];
 
-    YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
-    [trainingData shuffleColumns];
-    YCMatrix *cvData         = [trainingData matrixWithColumnsInRange:NSMakeRange(trainingData.columns - 20, 19)];
-    trainingData             = [trainingData matrixWithColumnsInRange:NSMakeRange(0, trainingData.columns - 20)];
-    YCMatrix *trainingOutput = [trainingData getRow:13];
-    YCMatrix *trainingInput  = [trainingData removeRow:13];
-    YCMatrix *cvOutput       = [cvData getRow:13];
-    YCMatrix *cvInput        = [cvData removeRow:13];
-    YCELMTrainer *trainer    = [YCELMTrainer trainer];
-    trainer.settings[@"C"]   = @8;
-    trainer.settings[@"Hidden Layer Size"] = @1000
+    YCDataframe *input = [YCDataframe dataframe];
+    for (NSArray *record in dataarray)
+    {
+        NSDictionary *recordDictionary = [NSDictionary dictionaryWithObjects:record forKeys:header];
+        [input addSampleWithData:recordDictionary];
+    }
 
-    YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
+    YCDataframe *output = [YCDataframe dataframe];
 
-    YCMatrix *predictedOutput = [model activateWithMatrix:cvInput];
+    // Change outputAttribute with your target (dependent) variable
+    NSArray *outputData = [input allValuesForAttribute:outputAttribute];
+    [input removeAttributeWithIdentifier:eAttribute];
+    [output addAttributeWithIdentifier:eAttribute data:outputData];
 
-    [predictedOutput subtract:cvOutput];
-    [predictedOutput elementWiseMultiply:predictedOutput];
-    double RMSE = sqrt( (1.0/[predictedOutput count]) * [predictedOutput sum] );
+    YCCrossValidation *cv = [[YCCrossValidation alloc] initWithSettings:@{@"Folds" : @10}];
+    
+    // Choose the trainer/model that you wish to test
+    YCBackPropTrainer *trainer = [YCRpropTrainer trainer];
 
-The last example written in Swift:
+    NSLog(@"Results:\n %@", [cv test:trainer input:input output:output]);
+
+Train and Test example in Swift (sorry for my Swift illiteracy btw):
 
     var trainingData = self.matrixWithCSVName("housing", removeFirst: true)
     trainingData.shuffleColumns()
@@ -118,6 +121,8 @@ The last example written in Swift:
 [4] S. Chen, CN Cowan, PM Grant. Orthogonal least squares learning algorithm for radial basis function networks. IEEE Trans Neural Netw, vol. 2, no. 2, pp. 302–9, 1991.
 
 [5] S. Chen, E. Chng, K. Alkadhimi. Regularized orthogonal least squares algorithm for constructing radial basis function networks. Int J Control 1996.
+
+[6] X. Hong, P. Sharkey, K. Warwick. Automatic nonlinear predictive model-construction algorithm using forward regression and the PRESS statistic. IEEE Proc - Control Theory Appl. vol. 150, no. 3, pp. 245–54, 2003
 
 ##License
 
