@@ -751,6 +751,7 @@
 		CB41BE2B1B3838DC004E2522 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -776,6 +777,7 @@
 		CB41BE2C1B3838DC004E2522 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
@@ -982,6 +984,7 @@
 				CB41BE2C1B3838DC004E2522 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CB9695571AAEEB64003BAE48 /* Build configuration list for PBXProject "YCML" */ = {
 			isa = XCConfigurationList;
