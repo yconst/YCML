@@ -30,6 +30,10 @@
 
 - (NSNumber *)calculateStat:(NSString *)stat;
 
+- (NSIndexSet *)indexesOfOutliersWithFenceMultiplier:(double)multiplier;
+
+- (NSNumber *)quantile:(double)q;
+
 @property (readonly) NSNumber *sum;
 
 @property (readonly) NSNumber *mean;
@@ -38,7 +42,11 @@
 
 @property (readonly) NSNumber *max;
 
+@property (readonly) NSNumber *Q1;
+
 @property (readonly) NSNumber *median;
+
+@property (readonly) NSNumber *Q3;
 
 @property (readonly) NSNumber *variance;
 

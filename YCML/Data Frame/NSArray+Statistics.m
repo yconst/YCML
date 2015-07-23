@@ -21,42 +21,22 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "NSArray+Statistics.h"
+#import "NSIndexSet+Sampling.h"
 
 @implementation NSArray (Statistics)
 
 - (NSArray *)sample:(int)samples replacement:(BOOL)replacement
 {
-    NSMutableArray *selectedItems = [[NSMutableArray alloc] init];;
-    if (replacement)
-    {
-        NSUInteger N = [self count];
-        for (int i=0; i<samples; i++)
-        {
-            [selectedItems addObject:self[(int)(N * (double)arc4random() / 0x1000000000)]];
-        }
-    }
-    else
-    {
-        int i = 0;
-        int n = samples;
-        NSUInteger N = [self count];
-        while (n > 0)
-        {
-            if (N * (double)arc4random() / 0x1000000000 <= n)
-            {
-                [selectedItems addObject:self[i]];
-                n--;
-            }
-            i++;
-            N--;
-        }
-    }
-    return selectedItems;
+    NSRange theRange = NSMakeRange(0, self.count);
+    NSIndexSet *theIndexes = [NSIndexSet indexesForSampling:samples
+                                                    inRange:theRange
+                                                replacement:replacement];
+    return [self objectsAtIndexes:theIndexes];
 }
 
 - (NSDictionary *)stats
 {
-    NSArray *statOperations = @[@"sum", @"min", @"max", @"mean", @"variance"];
+    NSArray *statOperations = @[@"sum", @"min", @"max", @"mean", @"median", @"variance"];
     NSMutableDictionary *attributeStats = [NSMutableDictionary dictionary];
     for (NSString *op in statOperations)
     {
@@ -100,6 +80,46 @@
     return nil;
 }
 
+- (NSIndexSet *)indexesOfOutliersWithFenceMultiplier:(double)multiplier
+{
+    NSAssert(multiplier > 0, @"Zero or negative fence multiplier");
+    double Q1 = [self.Q1 doubleValue];
+    double Q3 = [self.Q3 doubleValue];
+    double iql = Q3 - Q1;
+    double lf = Q1 - iql * multiplier;
+    double hf = Q3 + iql * multiplier;
+    NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+    NSUInteger count = 0;
+    for (NSNumber *n in self)
+    {
+        double dn = [n doubleValue];
+        if (dn < lf || dn > hf)
+        {
+            [indexes addIndex:count];
+        }
+        count++;
+    }
+    return indexes;
+}
+
+- (NSNumber *)quantile:(double)q
+{
+    NSAssert(0 <= q && q <= 1, @"Quantile value beyond range");
+    NSAssert(self.count > 0, @"Array is empty");
+    NSArray *sortedArray = [self sortedArrayUsingSelector:@selector(compare:)];
+    
+    if (q == 1) return [sortedArray lastObject];
+    
+    double realIndex = ((double)[sortedArray count] + 1.0) * q;
+    int lastIndex = (int)self.count - 1;
+    int firstIndex = MIN(MAX(0, (int)realIndex), lastIndex);
+    int secondIndex = MIN(firstIndex + 1, lastIndex);
+    double ratio = realIndex - firstIndex;
+    double v1 = [sortedArray[firstIndex] doubleValue];
+    double v2 = [sortedArray[secondIndex] doubleValue];
+    return @(v1 * (1-ratio) + v2 * ratio);
+}
+
 - (NSNumber *)sum
 {
     return [self valueForKeyPath:@"@sum.self"];
@@ -120,25 +140,19 @@
     return [self valueForKeyPath:@"@avg.self"];
 }
 
-- (NSNumber *)median {
-    NSArray *sortedArray = [self sortedArrayUsingSelector:@selector(compare:)];
-    NSNumber *median;
-    if (sortedArray.count != 1)
-    {
-        if (sortedArray.count % 2 == 0)
-        {
-            median = @(([[sortedArray objectAtIndex:sortedArray.count / 2] integerValue]) + ([[sortedArray objectAtIndex:sortedArray.count / 2 + 1] integerValue]) / 2);
-        }
-        else
-        {
-            median = @([[sortedArray objectAtIndex:sortedArray.count / 2] integerValue]);
-        }
-    }
-    else
-    {
-        median = [sortedArray objectAtIndex:1];
-    }
-    return median;
+- (NSNumber *)Q1
+{
+    return [self quantile:0.25];
+}
+
+- (NSNumber *)median
+{
+    return [self quantile:0.5];
+}
+
+- (NSNumber *)Q3
+{
+    return [self quantile:0.75];
 }
 
 - (NSNumber *)variance

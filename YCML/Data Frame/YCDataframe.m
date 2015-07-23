@@ -166,11 +166,6 @@
     [self addSamplesWithData:sortedSamples];
 }
 
-- (NSArray *)attributeIdentifiers
-{
-    return [self->_data allKeys];
-}
-
 - (NSArray *)classesForAttribute:(NSString *)attribute
 {
     NSAssert([self.attributeTypes[attribute] intValue] == Nominal, @"Attributes should be nominal");
@@ -404,6 +399,19 @@
 {
     NSAssert([_attributeTypes[attribute] intValue] == Ordinal, @"Attribute should be ordinal");
     return [_data[attribute] calculateStat:stat];
+}
+
+- (NSDictionary *)outlierIndexesWithFenceMultiplier:(double)multiplier
+{
+    NSMutableDictionary *indexSets = [NSMutableDictionary dictionary];
+    for (NSString *attributeIdentifier in self.attributeKeys)
+    {
+        if (self.attributeTypes[attributeIdentifier] != Ordinal) continue;
+        NSArray *attributeData = [self allValuesForAttribute:attributeIdentifier];
+        [indexSets setObject:[attributeData indexesOfOutliersWithFenceMultiplier:multiplier]
+                      forKey:attributeIdentifier];
+    }
+    return indexSets;
 }
 
 #pragma  mark Property Accessors

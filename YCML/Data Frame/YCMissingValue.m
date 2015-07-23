@@ -47,4 +47,14 @@ YCMissingValue *uniValue;
     return [YCMissingValue missingValue];
 }
 
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    return @(NAN);
+}
+
+- (NSString *)description
+{
+    return @"Missing Value";
+}
+
 @end
