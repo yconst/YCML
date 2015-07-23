@@ -181,6 +181,16 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
+- (void)testStochasticRPropHousing
+{
+    YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
+    trainer.settings[@"Hidden Layer Size"]  = @10;
+    trainer.settings[@"Lambda"]             = @0.0001;
+    trainer.settings[@"Iterations"]         = @100;
+    trainer.settings[@"Samples"] = @70;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
+
 - (void)testRBFHousing
 {
     YCOLSTrainer *trainer                 = [YCOLSTrainer trainer];

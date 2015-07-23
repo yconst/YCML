@@ -47,4 +47,6 @@
 
 @property double lambda;
 
+@property int sampleCount;
+
 @end

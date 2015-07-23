@@ -12,18 +12,34 @@ The following algorithms are currently available:
 
 Where applicable, regularized versions of the algrithms have been implemented.
 
-More algorithms soon to follow. 
+YCML also contains some optimization algorithms as support for deriving predictive models, although they can be used for any kind of problem:
+
+- Gradient Descent (Single-Objective, Unconstrained)
+- RProp Gradient Descent (Single-Objective, Unconstrained)
+- NSGA-II (Multi-Objective, Constrained) [7]
 
 ##Features
 
+###Learning
+
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
+- Powerful and modular Backprop class, that can be configured for stochastic GD.
 - Powerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
+
+###Optimization
+
+- Separate optimization routines for single- and multi-objective problems.
+- Surrogate class that exposes a predictive model as an objective function, useful for optimization.
+
+###Other
+
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
+- NSArray category for basic statistics (mean, median, quartiles, min and max, variance, sd etc.)
 
 ##Getting started
 
-Import the project in your workspace by dragging the .xcodeproj file. YCML depends on YCMatrix. Since version 0.2.0, YCML includes YCMatrix as a separate target (including copies of YCMatrix files), and as such does away with Git submodules.
+Import the project in your workspace by dragging the .xcodeproj file. YCML depends on YCMatrix. Since version 0.2.0, YCML includes YCMatrix as a separate target (including copies of YCMatrix files), so you practically don't need to include anything apart from the framework itself.
 
 Cocoapods support might come at a later time.
 
@@ -124,7 +140,11 @@ Train and Test example in Swift (sorry for my Swift illiteracy btw):
 
 [6] X. Hong, P. Sharkey, K. Warwick. Automatic nonlinear predictive model-construction algorithm using forward regression and the PRESS statistic. IEEE Proc - Control Theory Appl. vol. 150, no. 3, pp. 245–54, 2003
 
-##License
+[7] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
+
+##License 
+
+YCML is licensed under the GPLv3. For other licensing options, please contact the author.
 
 __YCML__
 
