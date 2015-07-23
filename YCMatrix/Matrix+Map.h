@@ -71,4 +71,10 @@ static inline BOOL YCEqualDomains(YCDomain domain1, YCDomain domain2)
 
 - (Matrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
 
+- (Matrix *)matrixByColumnWiseMapUsing:(Matrix *)transform;
+
+- (Matrix *)columnWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
+
+- (Matrix *)columnWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
+
 @end

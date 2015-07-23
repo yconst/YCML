@@ -141,4 +141,19 @@
     return transform;
 }
 
+- (Matrix *)matrixByColumnWiseMapUsing:(Matrix *)transform
+{
+    return [[self matrixByTransposing] matrixByRowWiseMapUsing:transform];
+}
+
+- (Matrix *)columnWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis
+{
+    return [[self matrixByTransposing] rowWiseMapToDomain:domain basis:basis];
+}
+
+- (Matrix *)columnWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis
+{
+    return [[self matrixByTransposing] rowWiseInverseMapFromDomain:domain basis:basis];
+}
+
 @end
