@@ -1,8 +1,8 @@
 //
-//  YCProblem.h
+//  YCIndividual.h
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 19/3/15.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 29/6/15.
 //  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
@@ -20,29 +20,22 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 @class Matrix;
+@interface YCIndividual : NSObject <NSCopying, NSCoding>
 
-@protocol YCProblem
+- (instancetype)initWithVariableCount:(int)count;
 
-- (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters;
+- (instancetype)initWithRandomValuesInBounds:(Matrix *)bounds; // nx2
 
-@property (readonly) Matrix *parameterBounds;
+@property Matrix *decisionVariableValues;
 
-@property (readonly) Matrix *initialValuesRangeHint;
+@property Matrix *objectiveFunctionValues;
 
-@property (readonly) int parameterCount;
+@property Matrix *constraintValues;
 
-@property (readonly) int objectiveCount;
+@property (readonly) double constraintViolation;
 
-@property (readonly) int constraintCount;
-
-@optional
-
-@property (readonly) NSArray *parameterLabels;
-
-@property (readonly) NSArray *objectiveLabels;
-
-@property (readonly) NSArray *constraintLabels;
+@property BOOL evaluated;
 
 @end

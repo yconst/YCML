@@ -84,6 +84,18 @@
                                                       userInfo:self.state];
 }
 
+- (NSArray *)bestParameters
+{
+    @throw [NSInternalInconsistencyException initWithFormat:
+            @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];
+}
+
+- (NSArray *)bestObjectives
+{
+    @throw [NSInternalInconsistencyException initWithFormat:
+            @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];
+}
+
 #pragma mark NSCopying implementation
 
 - (instancetype)copyWithZone:(NSZone *)zone

@@ -88,4 +88,16 @@
     return YES;
 }
 
+- (NSArray *)bestParameters
+{
+    if (!self.state[@"values"]) return nil;
+    return @[self.state[@"values"]];
+}
+
+- (NSArray *)bestObjectives
+{
+    if (!self.state[@"best"]) return nil;
+    return @[self.state[@"best"]];
+}
+
 @end

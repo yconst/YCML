@@ -42,4 +42,8 @@
 
 @property NSMutableDictionary *statistics;
 
+@property (readonly) NSArray *bestParameters;
+
+@property (readonly) NSArray *bestObjectives;
+
 @end
