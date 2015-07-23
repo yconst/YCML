@@ -47,6 +47,7 @@
         self.settings[@"Iterations"]         = @500;
         self.settings[@"Alpha"]              = @0.1;
         self.settings[@"Target"]             = @-1;
+        self.settings[@"Samples"]            = @-1;
     }
     return self;
 }
@@ -77,6 +78,7 @@
                                                                     outputMatrix:scaledOutput
                                                                            model:model];
     p.lambda                          = [self.settings[@"Lambda"] doubleValue];
+    p.sampleCount                     = [self.settings[@"Samples"] intValue];
     YCOptimizer *optimizer      = [[[self optimizerClass] alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)

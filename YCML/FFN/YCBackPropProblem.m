@@ -23,6 +23,7 @@
 @import YCMatrix;
 #import "YCBackPropProblem.h"
 #import "YCFFN.h"
+#import "NSIndexSet+Sampling.h"
 
 // N: Size of input
 // S: Number of samples
@@ -64,20 +65,20 @@
     self.trainedModel.biasVectors    = [self modelBiasesWithParameters:parameters];
     Matrix *residual               = [self->_trainedModel activateWithMatrix:self->_inputMatrix];
     
-    // calculate sum-of-squares error
+    // Calculate sum-of-squares error
     [residual subtract:self->_outputMatrix];
     [residual applyFunction:^double(double value) {
         return 0.5*value*value;
     }];
     
-    // calculate regularization term
+    // Calculate regularization term
     int n = self->_outputMatrix->columns;
     int s = self->_outputMatrix->rows;
     Matrix *weights = [parameters matrixWithRowsInRange:NSMakeRange(0, [self weightParameterCount])];
     [weights elementWiseMultiply:weights];
     double ws2 = [weights sum];
     
-    // add and return
+    // Add and return
     double cost = [residual sum] / (n * s) + self.lambda * ws2/n;
     [target setValue:cost Row:0 Column:0];
 }
@@ -91,13 +92,41 @@
     tm.weightMatrices = [self modelWeightsWithParameters:parameters];
     tm.biasVectors    = [self modelBiasesWithParameters:parameters];
     int hiddenCount   = tm.hiddenLayerCount;
-    int sampleCount   = self->_inputMatrix->columns;
     
-    // Split matrices
-    if (!self->_inputMatrixArray) _inputMatrixArray   = [_inputMatrix columnsAsNSArray];
-    if (!self->_outputMatrixArray) _outputMatrixArray = [_outputMatrix columnsAsNSArray];
+    // Prepare Matrices and Arrays
+    int sampleCount;
+    Matrix *inputMatrix;
+    Matrix *outputMatrix;
+    NSArray *inputMatrixArray;
+    NSArray *outputMatrixArray;
     
-    [tm activateWithMatrix:self->_inputMatrix];
+    if (self.sampleCount <= 0 || self.sampleCount > self->_inputMatrix->columns)
+    {
+        // Reference & Split matrices
+        sampleCount  = self->_inputMatrix->columns;
+        inputMatrix  = self->_inputMatrix;
+        outputMatrix = self->_outputMatrix;
+        if (!self->_inputMatrixArray) _inputMatrixArray   = [inputMatrix columnsAsNSArray];
+        if (!self->_outputMatrixArray) _outputMatrixArray = [outputMatrix columnsAsNSArray];
+        inputMatrixArray = _inputMatrixArray;
+        outputMatrixArray = _outputMatrixArray;
+    }
+    else
+    {
+        // Sample & Split matrices
+        sampleCount  = self.sampleCount;
+        NSRange range = NSMakeRange(0, self->_inputMatrix->columns);
+        NSIndexSet *sampleIndexes = [NSIndexSet indexesForSampling:sampleCount
+                                                           inRange:range
+                                                       replacement:NO];
+        inputMatrix  = [self->_inputMatrix columns:sampleIndexes];
+        outputMatrix = [self->_outputMatrix columns:sampleIndexes];
+        inputMatrixArray  = [inputMatrix columnsAsNSArray];
+        outputMatrixArray = [outputMatrix columnsAsNSArray];
+    }
+    
+    // Activate model and extract layer output arrays
+    [tm activateWithMatrix:inputMatrix];
     
     NSMutableArray *activationArrays = [NSMutableArray array];
     for (Matrix *m in [tm lastActivations])
@@ -105,6 +134,7 @@
         [activationArrays addObject:[m columnsAsNSArray]];
     }
     
+    // Prepare weight and bias matrices
     NSMutableArray *weightGradients = [NSMutableArray array];
     NSMutableArray *biasGradients   = [NSMutableArray array];
     for (int l=0; l<=hiddenCount; l++)
@@ -113,11 +143,12 @@
         [biasGradients addObject:[Matrix matrixLike:tm.biasVectors[l]]];
     }
     
+    // For every sample:
     for (int s=0; s<sampleCount; s++)
     {
         // Calculate Deltas for Output
         NSMutableArray *deltas = [NSMutableArray array];
-        Matrix *expectedOutput = _outputMatrixArray[s];
+        Matrix *expectedOutput = outputMatrixArray[s];
         Matrix *modelOutput    = [activationArrays lastObject][s];
         Matrix *delta          = [modelOutput matrixBySubtracting:expectedOutput];
         [delta elementWiseMultiply:[modelOutput matrixByApplyingFunction:tm.yDerivative]];
@@ -137,7 +168,7 @@
         for (int l=0; l<=hiddenCount; l++)
         {
             Matrix *weights = self.trainedModel.weightMatrices[l];
-            Matrix *incoming = l==0 ? _inputMatrixArray[s] : activationArrays[l-1][s];
+            Matrix *incoming = l==0 ? inputMatrixArray[s] : activationArrays[l-1][s];
             delta              = deltas[l];
             Matrix *loss = [delta matrixByTransposingAndMultiplyingWithLeft:incoming];
             [loss add:[weights matrixByMultiplyingWithScalar:self.lambda]];
@@ -146,6 +177,8 @@
             [biasGradients[l] add:delta];
         }
     }
+    
+    // Divide gradients with sample count
     double mult = 1.0/sampleCount;
     for (Matrix *m in weightGradients)
     {
