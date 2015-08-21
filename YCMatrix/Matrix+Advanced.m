@@ -86,7 +86,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     Matrix *U = [[Matrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
     Matrix *S = [Matrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
     Matrix *V = [Matrix matrixFromArray:va Rows:self->columns Columns:self->columns Mode:YCMWeak]; // nxn
-
+    
     return @{@"U" : U, @"S" : S, @"V" : V};
 }
 
@@ -137,7 +137,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     __CLPK_integer rank = self->rows;
     __CLPK_integer info;
     __CLPK_integer i,j;
-
+    
     dpotrf_(&uplo, &rank, self->matrix, (__CLPK_integer *)&self->rows, &info);
     
     if(info > 0)
@@ -363,6 +363,22 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return [result sum];
 }
 
+- (void)bernoulli
+{
+    NSUInteger count = self.count;
+    for (int i=0; i<count; i++)
+    {
+        if (self->matrix[i] > ((double)arc4random() / ARC4RANDOM_MAX))
+        {
+            self->matrix[i] = 1;
+        }
+        else
+        {
+            self->matrix[i] = 0;
+        }
+    }
+}
+
 @end
 
 static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR)
@@ -491,47 +507,47 @@ static void SVDColumnMajor(double *A, __CLPK_integer rows, __CLPK_integer column
 
 static void pInv(double *A, int rows, int columns, double *Aplus)
 /*
-
-Compute the pseudo inverse of matrix A
-
-Author:  Luke Lonergan
-Date:    5/31/08
-License: Use pfreely
-
-We use the approach from here:
-http://en.wikipedia.org/wiki/Moore-Penrose_pseudoinverse#Finding_the_\
-pseudoinverse_of_a_matrix
-
-Synopsis:
-A computationally simpler and more accurate way to get the pseudoinverse
-is by using the singular value decomposition.[1][5][6] If A = U Σ V* is
-the singular value decomposition of A, then A+ = V Σ+ U* . For a diagonal
-matrix such as Σ, we get the pseudoinverse by taking the reciprocal of
-each non-zero element on the diagonal, and leaving the zeros in place.
-In numerical computation, only elements larger than some small tolerance
-are taken to be nonzero, and the others are replaced by zeros. For
-example, in the Matlab function pinv, the tolerance is taken to be
-t = ε•max(rows,columns)•max(Σ), where ε is the machine epsilon.
-
-Input:  the matrix A with "rows" rows and "columns" columns, in column
-values consecutive order (row-major)
-Output: the matrix A+ with "columns" rows and "rows" columns, the
-Moore-Penrose pseudo inverse of A
-
-The approach is summarized:
-- Compute the SVD (diagonalization) of A, yielding the U, S and V
-factors of A
-- Compute the pseudo inverse A+ = U x S+ x Vt
-
-S+ is the pseudo inverse of the diagonal matrix S, which is gained by
-inverting the non zero diagonals
-
-Vt is the transpose of V
-
-Note that there is some fancy index rework in this implementation to deal
-with the row values consecutive order used by the FORTRAN dgesdd_ routine.
  
-*/
+ Compute the pseudo inverse of matrix A
+ 
+ Author:  Luke Lonergan
+ Date:    5/31/08
+ License: Use pfreely
+ 
+ We use the approach from here:
+ http://en.wikipedia.org/wiki/Moore-Penrose_pseudoinverse#Finding_the_\
+ pseudoinverse_of_a_matrix
+ 
+ Synopsis:
+ A computationally simpler and more accurate way to get the pseudoinverse
+ is by using the singular value decomposition.[1][5][6] If A = U Σ V* is
+ the singular value decomposition of A, then A+ = V Σ+ U* . For a diagonal
+ matrix such as Σ, we get the pseudoinverse by taking the reciprocal of
+ each non-zero element on the diagonal, and leaving the zeros in place.
+ In numerical computation, only elements larger than some small tolerance
+ are taken to be nonzero, and the others are replaced by zeros. For
+ example, in the Matlab function pinv, the tolerance is taken to be
+ t = ε•max(rows,columns)•max(Σ), where ε is the machine epsilon.
+ 
+ Input:  the matrix A with "rows" rows and "columns" columns, in column
+ values consecutive order (row-major)
+ Output: the matrix A+ with "columns" rows and "rows" columns, the
+ Moore-Penrose pseudo inverse of A
+ 
+ The approach is summarized:
+ - Compute the SVD (diagonalization) of A, yielding the U, S and V
+ factors of A
+ - Compute the pseudo inverse A+ = U x S+ x Vt
+ 
+ S+ is the pseudo inverse of the diagonal matrix S, which is gained by
+ inverting the non zero diagonals
+ 
+ Vt is the transpose of V
+ 
+ Note that there is some fancy index rework in this implementation to deal
+ with the row values consecutive order used by the FORTRAN dgesdd_ routine.
+ 
+ */
 {
     long int    minmn;
     int    i, j, k, ii;

@@ -33,8 +33,8 @@
 @interface Matrix (Advanced)
 
 /**
- Returns a matrix containing random values between |lower| and |upper|. 
- The parameter matrices should have the same dimensions, and the resulting 
+ Returns a matrix containing random values between |lower| and |upper|.
+ The parameter matrices should have the same dimensions, and the resulting
  matrix will also be of the same dimensions as the parameters.
  
  @param lower Matrix containing values for the lower bounds.
@@ -69,8 +69,8 @@
  @return An NSDictionary containing the "U", "S", "V" components of the SVD of the receiver.
  
  @warning   As a matter of efficiency, and because the corresponding LAPACK function requires
-            column-major matrices, the output dictionary will contain the "V" matrix, and not 
-            it's transpose.
+ column-major matrices, the output dictionary will contain the "V" matrix, and not
+ it's transpose.
  */
 - (NSDictionary *)SVD;
 
@@ -108,9 +108,9 @@
  Returns an NSDictionary with the results of performing an Eigenvalue decomposition on the receiver.
  
  @return    A dictionary with the following key/value assignments:
-            "Eigenvalues" : nx1 vector containing the matrix eigenvalues.
-            "Left Eigenvectors" : nxn matrix containing the matrix left eigenvectors, one per row.
-            "Right Eigenvectors" : nxn matrix containing the matrix right eigenvectors, one per row.
+ "Eigenvalues" : nx1 vector containing the matrix eigenvalues.
+ "Left Eigenvectors" : nxn matrix containing the matrix left eigenvectors, one per row.
+ "Right Eigenvectors" : nxn matrix containing the matrix right eigenvectors, one per row.
  */
 - (NSDictionary *)eigenvaluesAndEigenvectors;
 
@@ -212,7 +212,7 @@
  @return The calculated distance.
  
  @warning This method will accept any kind of matrix as parameter, as long as the
-          dimensions are equal.
+ dimensions are equal.
  
  */
 - (double)euclideanDistanceTo:(Matrix *)other;
@@ -229,5 +229,11 @@
  
  */
 - (double)quadranceTo:(Matrix *)other;
+
+/**
+ Replaces values of the receiver with zeroes or ones, depending on the probability expressed by
+ the existing values in the receiver.
+ */
+- (void)bernoulli;
 
 @end

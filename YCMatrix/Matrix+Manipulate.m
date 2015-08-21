@@ -487,7 +487,7 @@
     return [Matrix matrixFromArray:newArray Rows:newRows Columns:columns];
 }
 
-// Fisher-Yates Inside-out Shuffle (UNTESTED!)
+// Fisher-Yates Inside-out Shuffle
 - (Matrix *)matrixByShufflingRows
 {
     Matrix *ret = [Matrix matrixFromMatrix:self];
@@ -499,14 +499,15 @@
         if (o == i) continue;
         for (int j=0; j<colCount; j++)
         {
-            ret->matrix[i*rowCount + j] = ret->matrix[o*rowCount + j];
-            ret->matrix[o*rowCount + j] = self->matrix[o*rowCount + j];
+            // TODO: Speed this up using memcpy
+            ret->matrix[i*colCount + j] = ret->matrix[o*colCount + j];
+            ret->matrix[o*colCount + j] = self->matrix[i*colCount + j];
         }
     }
     return ret;
 }
 
-// Fisher-Yates Shuffle (UNTESTED!)
+// Fisher-Yates Shuffle
 - (void)shuffleRows
 {
     int rowCount = self->rows;
@@ -517,9 +518,10 @@
         int o = arc4random_uniform((int)i);
         for (int j=0; j<colCount; j++)
         {
-            tmp = self->matrix[i*rowCount + j];
-            self->matrix[i*rowCount + j] = self->matrix[o*rowCount + j];
-            self->matrix[o*rowCount + j] = tmp;
+            // TODO: Speed this up using memcpy
+            tmp = self->matrix[i*colCount + j];
+            self->matrix[i*colCount + j] = self->matrix[o*colCount + j];
+            self->matrix[o*colCount + j] = tmp;
         }
     }
 }
@@ -533,16 +535,16 @@
     for (int i=0; i<colCount; i++)
     {
         int o = arc4random_uniform((int)i);
-        for (int j=0; j<colCount; j++)
+        for (int j=0; j<rowCount; j++)
         {
-            ret->matrix[j*rowCount + i] = ret->matrix[j*rowCount + o];
-            ret->matrix[j*rowCount + o] = self->matrix[j*rowCount + o];
+            ret->matrix[j*colCount + i] = ret->matrix[j*colCount + o];
+            ret->matrix[j*colCount + o] = self->matrix[j*colCount + i];
         }
     }
     return ret;
 }
 
-// Fisher-Yates Shuffle (UNTESTED!)
+// Fisher-Yates Shuffle
 - (void)shuffleColumns
 {
     int rowCount = self->rows;
@@ -553,9 +555,9 @@
         int o = arc4random_uniform((int)i);
         for (int j=0; j<rowCount; j++)
         {
-            tmp = self->matrix[j*rowCount + i];
-            self->matrix[j*rowCount + i] = self->matrix[j*rowCount + o];
-            self->matrix[j*rowCount + o] = tmp;
+            tmp = self->matrix[j*colCount + i];
+            self->matrix[j*colCount + i] = self->matrix[j*colCount + o];
+            self->matrix[j*colCount + o] = tmp;
         }
     }
 }
