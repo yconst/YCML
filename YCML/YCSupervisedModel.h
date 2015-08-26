@@ -21,16 +21,10 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
+#import "YCGenericModel.h"
 @class Matrix, YCDataframe;
 
-@interface YCSupervisedModel : NSObject <NSCopying, NSCoding>
-
-/**
- Allocates and initializes a new instance of the receiver class.
- 
- @return The new instance.
- */
-+ (instancetype)model;
+@interface YCSupervisedModel : YCGenericModel
 
 /**
  Activates the receiver using the passed dataframe.
@@ -59,21 +53,5 @@
  Returns the receiver's output size.
  */
 @property (readonly) int outputSize;
-
-/**
- Holds statistics about the model, usually as a result
- of the learning process.
- */
-@property NSMutableDictionary *statistics;
-
-/**
- Holds model properties.
- */
-@property NSMutableDictionary *properties;
-
-/**
- Holds training settings used to train this model.
- */
-@property NSMutableDictionary *trainingSettings;
 
 @end

@@ -28,10 +28,13 @@
 #import "NSArray+Statistics.h"
 
 @implementation YCCrossValidation
+{
+    int _currentFold;
+}
 
 + (instancetype)validationWithSettings:(NSDictionary *)settings
 {
-    return [[self alloc] init];
+    return [[self alloc] initWithSettings:settings];
 }
 
 - (instancetype)init
@@ -89,8 +92,14 @@
     
     int foldLength = (int)([testInput dataCount] / folds);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleTrainingStep:)
+                                                 name:@"TrainingStep"
+                                               object:trainer];
     for (int i=0; i<folds; i++)
     {
+        _currentFold = i;
+        
         NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*foldLength, foldLength)];
         
         YCDataframe *trimmedTrainingInput = [YCDataframe dataframe];
@@ -120,6 +129,8 @@
         [models addObject:model];
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.results = [cumulativeStats copy];
     self.models = models;
     
@@ -134,4 +145,17 @@
 {
     return [self test:trainer trainingInput:input trainingOutput:output testInput:input testOutput:output];
 }
+
+#pragma mark Notifications
+
+- (void)handleTrainingStep:(NSNotification *)aNotification
+{
+    NSMutableDictionary *userInfo = [aNotification.userInfo mutableCopy];
+    userInfo[@"Total Folds"] = self.settings[@"Folds"];
+    userInfo[@"Current Fold"] = @(_currentFold);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CVStep"
+                                                        object:self
+                                                      userInfo:userInfo];
+}
+
 @end

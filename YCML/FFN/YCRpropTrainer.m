@@ -26,6 +26,11 @@
 
 @implementation YCRpropTrainer
 
++ (Class)optimizerClass
+{
+    return [YCRProp class];
+}
+
 -(id)init
 {
     if (self = [super init])
@@ -38,11 +43,6 @@
         [self.settings removeObjectForKey:@"Alpha"];
     }
     return self;
-}
-
-- (Class)optimizerClass
-{
-    return [YCRProp class];
 }
 
 @end

@@ -29,7 +29,7 @@
 
 @implementation YCDataframe
 {
-    NSNumberFormatter *f;
+    NSNumberFormatter *_f;
 }
 
 + (instancetype)dataframe
@@ -69,8 +69,8 @@
     {
         _data = [NSMutableDictionary dictionary];
         _attributeTypes = [NSMutableDictionary dictionary];
-        f = [[NSNumberFormatter alloc] init];
-        [f setAllowsFloats:YES];
+        _f = [[NSNumberFormatter alloc] init];
+        [_f setAllowsFloats:YES];
     }
     return self;
 }
@@ -252,7 +252,7 @@
     {
         if ([value isKindOfClass:[NSString class]])
         {
-            NSNumber *numValue = [f numberFromString:value];
+            NSNumber *numValue = [_f numberFromString:value];
             if (!numValue)
             {
                 currentType = @1;
@@ -578,7 +578,7 @@
     }
     if ([value isKindOfClass:[NSString class]])
     {
-        NSNumber *numValue = [f numberFromString:value];
+        NSNumber *numValue = [_f numberFromString:value];
         if (numValue)
         {
             return numValue;

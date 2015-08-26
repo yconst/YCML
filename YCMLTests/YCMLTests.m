@@ -175,20 +175,20 @@
 - (void)testRPropHousing
 {
     YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
-    trainer.settings[@"Hidden Layer Size"]  = @10;
+    trainer.settings[@"Hidden Layer Size"]  = @8;
     trainer.settings[@"Lambda"]             = @0.0001;
-    trainer.settings[@"Iterations"]         = @100;
+    trainer.settings[@"Iterations"]         = @200;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
 - (void)testStochasticRPropHousing
 {
     YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
-    trainer.settings[@"Hidden Layer Size"]  = @10;
+    trainer.settings[@"Hidden Layer Size"]  = @8;
     trainer.settings[@"Lambda"]             = @0.0001;
-    trainer.settings[@"Iterations"]         = @100;
-    trainer.settings[@"Samples"] = @70;
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+    trainer.settings[@"Iterations"]         = @300;
+    trainer.settings[@"Samples"] = @50;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.5];
 }
 
 - (void)testRBFHousing
