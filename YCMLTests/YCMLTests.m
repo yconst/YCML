@@ -36,7 +36,7 @@
 
 #pragma mark FeedForward Net Tests
 
-- (void)testFFNctivation
+- (void)testFFNActivation
 {
     YCFFN *net = [[YCFFN alloc] init];
     
