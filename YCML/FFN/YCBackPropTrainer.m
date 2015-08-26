@@ -32,6 +32,16 @@
 
 @implementation YCBackPropTrainer
 
++ (Class)problemClass
+{
+    return [YCBackPropProblem class];
+}
+
++ (Class)optimizerClass
+{
+    return [YCGradientDescent class];
+}
+
 + (Class)modelClass
 {
     return [YCFFN class];
@@ -74,12 +84,12 @@
     [self initialize:model withInputSize:inputSize hiddenSize:hiddenSize hiddenCount:hiddenCount outputSize:outputSize];
     
     // Step III. Defining the Backprop problem and GD properties
-    YCBackPropProblem *p      = [[[self problemClass] alloc] initWithInputMatrix:scaledInput
-                                                                    outputMatrix:scaledOutput
-                                                                           model:model];
+    YCBackPropProblem *p      = [[[[self class] problemClass] alloc] initWithInputMatrix:scaledInput
+                                                                            outputMatrix:scaledOutput
+                                                                                   model:model];
     p.lambda                          = [self.settings[@"Lambda"] doubleValue];
     p.sampleCount                     = [self.settings[@"Samples"] intValue];
-    YCOptimizer *optimizer      = [[[self optimizerClass] alloc] initWithProblem:p];
+    YCOptimizer *optimizer      = [[[[self class] optimizerClass] alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)
     {
@@ -153,14 +163,5 @@
                                                                  @"Iteration" : state[@"currentIteration"]}];
 }
 
-- (Class)problemClass
-{
-    return [YCBackPropProblem class];
-}
-
-- (Class)optimizerClass
-{
-    return [YCGradientDescent class];
-}
 
 @end
