@@ -108,12 +108,12 @@
 
 - (int)inputSize
 {
-    return ((Matrix *)[self.weightMatrices firstObject])->rows;
+    return ((Matrix *)[self.weightMatrices firstObject]).rows;
 }
 
 - (int)outputSize
 {
-    return ((Matrix *)[self.weightMatrices lastObject])->columns;
+    return ((Matrix *)[self.weightMatrices lastObject]).columns;
 }
 
 - (int)hiddenLayerCount
@@ -123,7 +123,7 @@
 
 - (int)hiddenLayerSize
 {
-    return self.hiddenLayerCount ? ((Matrix *)[self.weightMatrices firstObject])->columns : 0;
+    return self.hiddenLayerCount ? ((Matrix *)[self.weightMatrices firstObject]).columns : 0;
 }
 
 #pragma mark NSCopying Implementation
