@@ -9,7 +9,7 @@ The following algorithms are currently available:
 - Extreme Learning Machines (ELM) [3]
 - Forward Selection using Orthogonal Least Squares (for RBF Net) [4, 5]
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [6]
-- Binary Restricted Boltzmann Machines [7] (CD & PCD)
+- Binary Restricted Boltzmann Machines [7] (CD & PCD, Untested!)
 
 Where applicable, regularized versions of the algrithms have been implemented.
 
@@ -128,7 +128,6 @@ Train and Test example in Swift (sorry for my Swift illiteracy btw):
 
 ##References
 
-
 [1] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; pp. 318–362, 1985.
 
 [2] M. Riedmiller, H. Braun. A direct adaptive method for faster backpropagation learning: the RPROP algorithm. IEEE Int. Conf. Neural Networks; pp. 586-591, 1993.
@@ -141,7 +140,7 @@ Train and Test example in Swift (sorry for my Swift illiteracy btw):
 
 [6] X. Hong, P. Sharkey, K. Warwick. Automatic nonlinear predictive model-construction algorithm using forward regression and the PRESS statistic. IEEE Proc - Control Theory Appl. vol. 150, no. 3, pp. 245–54, 2003
 
-
+[7] G. Hinton. Training Products of Experts by Minimizing Contrastive Divergence. Neural Comput. vol. 14, no. 8, pp.1771–800, 2002.
 
 [8] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
 
