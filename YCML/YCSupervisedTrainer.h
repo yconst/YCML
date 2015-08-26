@@ -21,24 +21,10 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
+#import "YCGenericTrainer.h"
 @class YCSupervisedModel, YCDataframe, Matrix;
 
-@interface YCSupervisedTrainer : NSObject <NSCopying, NSCoding>
-
-/**
- Allocates and initializes a new instance of the receiving class.
- 
- @return The new instance
- */
-+ (instancetype)trainer;
-
-/**
- Returns the model class associated with the receiver. This method
- should be implemented when subclassing.
- 
- @return The model class associated with the receiver.
- */
-+ (Class)modelClass;
+@interface YCSupervisedTrainer : YCGenericTrainer
 
 /**
  Trains a model using the receiver's training algorithm, and two dataframes as input and output.
@@ -78,19 +64,6 @@
                  inputMatrix:(Matrix *)input
                 outputMatrix:(Matrix *)output;
 
-/**
- Sends a request to the receiver to stop any ongoing processing.
- */
-- (void)stop;
 
-/**
- Holds whether the receiver is bound to stop.
- */
-@property (readonly) BOOL shouldStop;
-
-/**
- Holds training algorithm settings.
- */
-@property NSMutableDictionary *settings;
 
 @end
