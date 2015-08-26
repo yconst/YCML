@@ -9,7 +9,7 @@ The following algorithms are currently available:
 - Extreme Learning Machines (ELM) [3]
 - Forward Selection using Orthogonal Least Squares (for RBF Net) [4, 5]
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [6]
-- Binary Restricted Boltzmann Machines [7] (CD & PCD, Untested!)
+- Binary Restricted Boltzmann Machines (CD & PCD, Untested!) [7] 
 
 Where applicable, regularized versions of the algrithms have been implemented.
 
