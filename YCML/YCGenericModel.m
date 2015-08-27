@@ -29,6 +29,20 @@
     return [[self alloc] init];
 }
 
+#pragma mark Initialization
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.statistics       = [NSMutableDictionary dictionary];
+        self.properties       = [NSMutableDictionary dictionary];
+        self.trainingSettings = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
 #pragma mark NSCopying Implementation
 
 - (instancetype)copyWithZone:(NSZone *)zone
@@ -61,6 +75,28 @@
         self.trainingSettings = [decoder decodeObjectForKey:@"trainingSettings"];
     }
     return self;
+}
+
+- (NSString *)textDescription
+{
+    NSMutableString *description = [NSMutableString string];
+    
+    [description appendFormat:@"%@\n\n", self.class];
+    
+    [description appendFormat:@"Training Settings\n\n"];
+    for (NSString *key in self.trainingSettings.allKeys)
+    {
+        [description appendFormat:@"\t%@ : %@\n", key, self.trainingSettings[key]];
+    }
+    
+    [description appendFormat:@"\nStatistics\n\n"];
+    for (NSString *key in self.statistics.allKeys)
+    {
+        [description appendFormat:@"\t%@ : %@\n", key, self.statistics[key]];
+    }
+    [description appendFormat:@"\n"];
+    
+    return description;
 }
 
 @end

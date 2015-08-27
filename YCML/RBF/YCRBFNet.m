@@ -60,6 +60,7 @@
     int N = input->rows;
     int S = input->columns;
     int D = self.centers->columns;
+    
     // Generate design matrix of dimensions SxD
     Matrix *designmatrix = [Matrix matrixOfRows:S Columns:D]; // -> SxD
     
@@ -136,6 +137,42 @@
     [aCoder encodeObject:self.weights forKey:@"weights"];
     [aCoder encodeObject:self.inputTransform forKey:@"inputTransform"];
     [aCoder encodeObject:self.outputTransform forKey:@"outputTransform"];
+}
+
+#pragma mark Text Description
+
+- (NSString *)textDescription
+{
+    NSMutableString *description = (NSMutableString *)[super textDescription];
+    
+    // Print RBF function type
+    [description appendFormat:@"\nRBF Function is Gaussian\n"];
+    
+    // Print input and output transform matrices
+    if (self.inputTransform)
+    {
+        [description appendFormat:@"\nInput Transform (%d x %d)\n%@",self.inputTransform.rows,
+         self.inputTransform.columns, self.inputTransform];
+    }
+    if (self.outputTransform)
+    {
+        [description appendFormat:@"\nOutput Transform (%d x %d)\n%@",self.outputTransform.rows,
+         self.outputTransform.columns, self.outputTransform];
+    }
+    
+    // Print centers
+    [description appendFormat:@"\nCenters (%d x %d)\n%@",self.centers.rows,
+        self.centers.columns, self.centers];
+    
+    // Print bandwidths
+    [description appendFormat:@"\nBandwidths (%d x %d)\n%@",self.widths.rows,
+     self.widths.columns, self.widths];
+    
+    // Print output weights
+    [description appendFormat:@"\nOutput Weights (%d x %d)\n%@",self.weights.rows,
+     self.weights.columns, self.weights];
+    
+    return description;
 }
 
 @end

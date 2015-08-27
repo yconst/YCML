@@ -170,4 +170,82 @@
     return self;
 }
 
+
+#pragma mark Text Description
+
+- (NSString *)textDescription
+{
+    NSMutableString *description = (NSMutableString *)[super textDescription];
+    [description appendFormat:@"\nActivation function is Sigmoid\n"];
+    
+    // Print input and output transform matrices
+    if (self.inputTransform)
+    {
+        [description appendFormat:@"\nInput Transform (%d x %d)\n%@",self.inputTransform.rows,
+         self.inputTransform.columns, self.inputTransform];
+    }
+    if (self.outputTransform)
+    {
+        [description appendFormat:@"\nOutput Transform (%d x %d)\n%@",self.outputTransform.rows,
+         self.outputTransform.columns, self.outputTransform];
+    }
+    [self.weightMatrices enumerateObjectsUsingBlock:^(id  __nonnull obj,
+                                                      NSUInteger idx,
+                                                      BOOL * __nonnull stop) {
+        [description appendFormat:@"\nWeights\n"];
+        Matrix *weights = obj;
+        if (self.hiddenLayerCount == 0)
+        {
+            [description appendFormat:@"\nInput to Output (%d x %d)\n%@",weights.rows,
+             weights.columns, weights];
+        }
+        else if (idx == 0)
+        {
+            // Print input-hidden layer weights
+            [description appendFormat:@"\nInput to H1 (%d x %d)\n%@",weights.rows,
+             weights.columns, weights];
+        }
+        else if (idx == self.hiddenLayerCount)
+        {
+            // Print hidden-output layer weights
+            [description appendFormat:@"\nH%lu to Output (%d x %d)\n%@",(unsigned long)idx,
+             weights.rows, weights.columns, weights];
+        }
+        else
+        {
+            // Print hidden-hidden layer weights
+            [description appendFormat:@"\nH%lu to H%lu (%d x %d)\n%@",(unsigned long)idx,
+             (unsigned long)idx + 1, weights.rows, weights.columns, weights];
+        }
+    }];
+    [self.biasVectors enumerateObjectsUsingBlock:^(id  __nonnull obj,
+                                                      NSUInteger idx,
+                                                      BOOL * __nonnull stop) {
+        [description appendFormat:@"\nBiases\n"];
+        Matrix *biases = obj;
+        if (self.hiddenLayerCount == 0)
+        {
+            [description appendFormat:@"\nInput to Output (%d x 1)\n%@",biases.rows, biases];
+        }
+        else if (idx == 0)
+        {
+            // Print input-hidden layer biases
+            [description appendFormat:@"\nInput to H1 (%d x 1)\n%@",biases.rows, biases];
+        }
+        else if (idx == self.hiddenLayerCount)
+        {
+            // Print hidden-output layer biases
+            [description appendFormat:@"\nH%lu to Output (%d x 1)\n%@",(unsigned long)idx,
+             biases.rows, biases];
+        }
+        else
+        {
+            // Print hidden-hidden layer biases
+            [description appendFormat:@"\nH%lu to H%lu (%d x 1)\n%@",(unsigned long)idx,
+             (unsigned long)idx + 1, biases.rows, biases];
+        }
+    }];
+    return description;
+}
+
 @end

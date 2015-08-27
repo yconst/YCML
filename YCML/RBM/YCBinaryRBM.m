@@ -104,4 +104,28 @@
     return self.weights.rows;
 }
 
+#pragma mark Text Description
+
+- (NSString *)textDescription
+{
+    NSMutableString *description = (NSMutableString *)[super textDescription];
+    
+    // Print RBF function type
+    [description appendFormat:@"\nFunction is Sigmoid\n"];
+    
+    // Print centers
+    [description appendFormat:@"\nWeights (%d x %d)\n%@",self.weights.rows,
+     self.weights.columns, self.weights];
+    
+    // Print bandwidths
+    [description appendFormat:@"\nVisible Biases (%d x %d)\n%@",self.visibleBiases.rows,
+     self.visibleBiases.columns, self.visibleBiases];
+    
+    // Print output weights
+    [description appendFormat:@"\nHidden Biases (%d x %d)\n%@",self.hiddenBiases.rows,
+     self.hiddenBiases.columns, self.hiddenBiases];
+    
+    return description;
+}
+
 @end
