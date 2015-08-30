@@ -1,5 +1,5 @@
 
-#YCML
+#YCML [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 
 YCML is a Machine Learning framework written in Objective-C, and also available for use in Swift.  
 The following algorithms are currently available:
