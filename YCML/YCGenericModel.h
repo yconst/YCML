@@ -46,4 +46,10 @@
  */
 @property NSMutableDictionary *trainingSettings;
 
+/**
+ A human-readable text description of the model, 
+ including all of it's properties.
+ */
+@property (readonly) NSString *textDescription;
+
 @end
