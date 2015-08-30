@@ -74,9 +74,9 @@
               @"Hidden matrix is not equal to expected");
     
     // Let's do some sampling as well
-    Matrix *gibbs = [model sampleHiddenGivenVisible:[model sampleVisibleGivenHidden:input]];
+    Matrix *gibbsStep = [model sampleVisibleGivenHidden:[model sampleHiddenGivenVisible:input]];
     
-    CleanLog(@"%@", gibbs);
+    CleanLog(@"%@", gibbsStep);
 }
 
 - (void)testBinaryRBMFreeEnergy

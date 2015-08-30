@@ -189,9 +189,7 @@
         [description appendFormat:@"\nOutput Transform (%d x %d)\n%@",self.outputTransform.rows,
          self.outputTransform.columns, self.outputTransform];
     }
-    [self.weightMatrices enumerateObjectsUsingBlock:^(id  __nonnull obj,
-                                                      NSUInteger idx,
-                                                      BOOL * __nonnull stop) {
+    [self.weightMatrices enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
         [description appendFormat:@"\nWeights\n"];
         Matrix *weights = obj;
         if (self.hiddenLayerCount == 0)

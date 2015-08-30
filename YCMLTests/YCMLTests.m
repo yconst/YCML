@@ -193,15 +193,15 @@
 
 - (void)testRBFHousing
 {
-    YCOLSTrainer *trainer                 = [YCOLSTrainer trainer];
-    trainer.settings[@"Kernel Width"] = @2.8;
-    trainer.settings[@"Error Tolerance"] = @0.1;
+    YCOLSTrainer *trainer                = [YCOLSTrainer trainer];
+    trainer.settings[@"Kernel Width"]    = @2.8;
+    trainer.settings[@"Error Tolerance"] = @0.10;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
 - (void)testRBFPRESSHousing
 {
-    YCOLSTrainer *trainer                 = [YCOLSPRESSTrainer trainer];
+    YCOLSTrainer *trainer             = [YCOLSPRESSTrainer trainer];
     trainer.settings[@"Kernel Width"] = @2.8;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
