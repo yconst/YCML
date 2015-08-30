@@ -216,9 +216,7 @@
              (unsigned long)idx + 1, weights.rows, weights.columns, weights];
         }
     }];
-    [self.biasVectors enumerateObjectsUsingBlock:^(id  __nonnull obj,
-                                                      NSUInteger idx,
-                                                      BOOL * __nonnull stop) {
+    [self.biasVectors enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
         [description appendFormat:@"\nBiases\n"];
         Matrix *biases = obj;
         if (self.hiddenLayerCount == 0)
