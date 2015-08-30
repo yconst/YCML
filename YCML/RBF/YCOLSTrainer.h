@@ -29,4 +29,6 @@
 
 - (void)weightsFor:(YCRBFNet *)model input:(Matrix *)input output:(Matrix *)output;
 
+- (Matrix *)initialDesignMatrixWithInput:(Matrix *)input widths:(Matrix *)widths;
+
 @end

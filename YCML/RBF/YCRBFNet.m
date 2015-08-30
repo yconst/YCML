@@ -39,7 +39,7 @@
     
     // 2. Calculate Basis Function Outputs
     //    ->SxD
-    Matrix *H = [self calculateDesignMatrixWithInput:ScaledInput];
+    Matrix *H = [self designMatrixWithInput:ScaledInput];
     
     // 3. Augment with bias term!
     H = [H appendColumn:[Matrix matrixOfRows:H->rows Columns:1 Value:1.0]];
@@ -55,7 +55,7 @@
     return Output;
 }
 
-- (Matrix *)calculateDesignMatrixWithInput:(Matrix *)input
+- (Matrix *)designMatrixWithInput:(Matrix *)input
 {
     int N = input->rows;
     int S = input->columns;

@@ -25,13 +25,13 @@
 @interface YCRBFNet : YCSupervisedModel
 
 /**
- Calculates the design matrix of the model with input |input|
+ Returns the design matrix of the model with input |input|
  
  @param input The input to the model.
  
  @return The design matrix.
  */
-- (Matrix *)calculateDesignMatrixWithInput:(Matrix *)input;
+- (Matrix *)designMatrixWithInput:(Matrix *)input;
 
 /**
  Returns the input transformation matrix of the receiver.

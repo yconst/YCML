@@ -49,7 +49,7 @@
     model.centers             = [Matrix matrixFromMatrix:inp];// -> NxS
     
     // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
-    Matrix *P                 = [model calculateDesignMatrixWithInput:inp]; // -> SxS
+    Matrix *P                 = [model designMatrixWithInput:inp]; // -> SxS
     NSArray *PA               = [P columnsAsNSArray];
     
     // This will hold all the *orthogonalized* vectors up till the current (k) step

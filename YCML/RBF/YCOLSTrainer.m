@@ -92,7 +92,7 @@
     double dTrace             = [[outp matrixByMultiplyingWithRight:[outp matrixByTransposing]] trace];
     
     // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
-    Matrix *P                 = [model calculateDesignMatrixWithInput:inp]; // -> SxS
+    Matrix *P                 = [self initialDesignMatrixWithInput:inp widths:model.widths]; // -> SxS
     NSArray *PA               = [P columnsAsNSArray];
     
     // This will hold all the *orthogonalized* vectors up till the current (k) step
@@ -217,11 +217,47 @@
 - (void)weightsFor:(YCRBFNet *)model input:(Matrix *)input output:(Matrix *)output
 {
     // O = H * W => W = H^-1 * O
-    Matrix *H     = [model calculateDesignMatrixWithInput:input];
+    Matrix *H     = [model designMatrixWithInput:input];
     H             = [H appendColumn:[Matrix matrixOfRows:H->rows Columns:1 Value:1]]; // Augment with bias
     Matrix *Hinv  = [H pseudoInverse];
     Matrix *W     = [Hinv matrixByMultiplyingWithRight:[output matrixByTransposing]];
     model.weights = W;
+}
+
+- (Matrix *)initialDesignMatrixWithInput:(Matrix *)input widths:(Matrix *)widths
+{
+    NSAssert(widths.rows == input.columns, @"Widths need to have same number of rows as input matrix");
+    int N = input->rows;
+    int S = input->columns;
+    
+    // Generate design matrix of dimensions SxS
+    Matrix *designmatrix = [Matrix matrixOfRows:S Columns:S];
+    
+    // Fill up the design matrix, traversing first row and then column
+    dispatch_apply(S, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i)
+                   {
+                       @autoreleasepool {
+                           for (size_t j=i; j<S; j++)
+                           {
+                               if (i == j)
+                               {
+                                   designmatrix->matrix[i*(S + 1)] = 1;
+                                   continue;
+                               }
+                               double sqsum = 0;
+                               double val;
+                               for (int k=0; k<N; k++)
+                               {
+                                   val = input->matrix[k*S + i] - input->matrix[k*S + j];
+                                   sqsum += val*val;
+                               }
+                               double bfvalue = exp( - sqsum / pow(widths->matrix[j], 2));
+                               designmatrix->matrix[i*S + j] = bfvalue;
+                               designmatrix->matrix[j*S + i] = bfvalue;
+                           }
+                       }
+                   });
+    return designmatrix;
 }
 
 @end
