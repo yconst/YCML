@@ -23,6 +23,7 @@
 #import <XCTest/XCTest.h>
 @import YCMatrix;
 @import YCML;
+#import "CHCSVParser.h"
 
 // Convenience logging function (without date/object)
 #define CleanLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -134,6 +135,30 @@
     
     [prob storeWeights:weights visibleBiases:vBiases hiddenBiases:hBiases toVector:trialParams];
     XCTAssertEqualObjects(params, trialParams, @"Converted parameter vector is not equal");
+}
+
+- (void)testBinaryRBMTraining
+{
+    Matrix *mnist = [self matrixWithCSVName:@"mnist_train_1_to_37"];
+    YCBinaryRBMTrainer *trainer = [YCBinaryRBMTrainer trainer];
+    [trainer train:nil inputMatrix:mnist];
+}
+
+- (Matrix *)matrixWithCSVName:(NSString *)path
+{
+    NSBundle *bundle       = [NSBundle bundleForClass:[self class]];
+    NSString *filePath     = [bundle pathForResource:path ofType:@"csv"];
+    NSString* fileContents = [NSString stringWithContentsOfFile:filePath
+                                                       encoding:NSUTF8StringEncoding
+                                                          error:nil];
+    NSMutableArray *arrays = [[fileContents CSVComponents] mutableCopy];
+   
+    NSMutableArray *cols = [NSMutableArray array];
+    for (NSArray *a in arrays)
+    {
+        [cols addObject:[Matrix matrixFromNSArray:a Rows:(int)(a.count) Columns:1]];
+    }
+    return [Matrix matrixFromColumns:cols]; // Transpose to have one sample per column
 }
 
 @end

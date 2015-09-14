@@ -38,7 +38,8 @@
 
 - (int)parameterCount
 {
-    return (int)self.trainedModel.weights.count;
+    return (int)self.trainedModel.weights.count + (int)self.trainedModel.visibleBiases.count +
+    (int)self.trainedModel.hiddenBiases.count;
 }
 
 - (Matrix *)parameterBounds
@@ -82,8 +83,9 @@
     self.trainedModel.visibleBiases = [self visibleBiasWithParameters:parameters];
     self.trainedModel.hiddenBiases = [self hiddenBiasWithParameters:parameters];
     
-    Matrix *inputSample = [_inputMatrix matrixBySamplingColumns:[self.trainedModel.trainingSettings[@"Samples"] intValue]
-                                                    Replacement:NO];
+    Matrix *inputSample = self.sampleCount <= 0 ? _inputMatrix :
+    [_inputMatrix matrixBySamplingColumns:self.sampleCount
+                                        Replacement:NO];
     
     Matrix *positiveHiddenProbs = [self.trainedModel propagateToHidden:inputSample];
     Matrix *positiveHiddenState = [self.trainedModel sampleHiddenGivenVisible:inputSample];
@@ -93,11 +95,8 @@
     
     Matrix *negativeHiddenProbs = [self.trainedModel propagateToHidden:negativeVisibleState];
     
-    Matrix *positiveAssociations = [inputSample matrixByMultiplyingWithRight:positiveHiddenProbs];
-    Matrix *negativeAssociations = [negativeVisibleProbs matrixByTransposingAndMultiplyingWithRight:negativeHiddenProbs]; // should be OUTER product
-    
-    positiveAssociations = [positiveAssociations meansOfRows];
-    negativeAssociations = [negativeAssociations meansOfRows];
+    Matrix *positiveAssociations = [inputSample matrixByTransposingAndMultiplyingWithLeft:positiveHiddenProbs];
+    Matrix *negativeAssociations = [negativeVisibleProbs matrixByTransposingAndMultiplyingWithLeft:negativeHiddenProbs]; // should be OUTER product
     
     Matrix *weightUpdates = positiveAssociations;
     [weightUpdates subtract:negativeAssociations];
