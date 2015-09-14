@@ -26,6 +26,7 @@
 #import "YCDataframe.h"
 #import "YCMissingValue.h"
 #import "NSArray+Statistics.h"
+#import "OrderedDictionary.h"
 
 @implementation YCDataframe
 {
@@ -67,7 +68,7 @@
     self = [super init];
     if (self)
     {
-        _data = [NSMutableDictionary dictionary];
+        _data = [MutableOrderedDictionary dictionary];
         _attributeTypes = [NSMutableDictionary dictionary];
         _f = [[NSNumberFormatter alloc] init];
         [_f setAllowsFloats:YES];
@@ -445,7 +446,7 @@
 
 - (NSMutableDictionary *)allData
 {
-    return _data;
+    return (NSMutableDictionary *)_data;
 }
 
 - (NSUInteger)dataCount
@@ -501,8 +502,17 @@
 // Optional override when subclassing
 - (id)initWithCoder:(NSCoder*)decoder
 {
-    if (self = [super init]) {
-        _data = [decoder decodeObjectForKey:@"data"];
+    if (self = [super init])
+    {
+        id data = [decoder decodeObjectForKey:@"data"];
+        if ([data isKindOfClass:[MutableOrderedDictionary class]])
+        {
+            _data = data;
+        }
+        else
+        {
+            _data = [MutableOrderedDictionary dictionaryWithDictionary:data];
+        }
         _attributeTypes = [decoder decodeObjectForKey:@"attributeTypes"];
     }
     return self;
@@ -514,7 +524,7 @@
 - (instancetype)copyWithZone:(NSZone *)zone
 {
     YCDataframe *cp = [[[self class] allocWithZone:zone] init];
-    cp->_data = [NSMutableDictionary dictionaryWithCapacity:[self->_data count]];
+    cp->_data = [MutableOrderedDictionary dictionaryWithCapacity:[self->_data count]];
     for (NSString *ident in [_data allKeys])
     {
         cp->_data[ident] = [_data[ident] mutableCopyWithZone:zone];

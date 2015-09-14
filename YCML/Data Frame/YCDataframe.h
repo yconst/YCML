@@ -21,6 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
+@class MutableOrderedDictionary;
 
 typedef enum AttributeType : int16_t {
     Ordinal = 0, // Numerical
@@ -30,7 +31,7 @@ typedef enum AttributeType : int16_t {
 
 @interface YCDataframe : NSObject <NSCoding, NSCopying>
 {
-    @protected NSMutableDictionary *_data;
+    @protected MutableOrderedDictionary *_data;
 }
 
 + (instancetype)dataframe;

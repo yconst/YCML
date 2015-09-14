@@ -22,6 +22,7 @@
 
 #import "YCDataframe+Transform.h"
 #import "NSArray+Statistics.h"
+#import "OrderedDictionary.h"
 
 @implementation YCDataframe (Transform)
 

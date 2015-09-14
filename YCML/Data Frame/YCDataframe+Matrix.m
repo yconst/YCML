@@ -24,6 +24,7 @@
 // http://stackoverflow.com/questions/6720191/reverse-nsstring-text
 
 #import "YCDataframe+Matrix.h"
+#import "OrderedDictionary.h"
 @import YCMatrix;
 
 @implementation YCDataframe (Matrix)
