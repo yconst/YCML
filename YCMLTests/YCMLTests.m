@@ -249,7 +249,7 @@
 {
     YCDataframe *output    = [YCDataframe dataframe];
     NSBundle *bundle       = [NSBundle bundleForClass:[self class]];
-    NSString *filePath     = [bundle pathForResource:@"housing" ofType:@"csv"];
+    NSString *filePath     = [bundle pathForResource:path ofType:@"csv"];
     NSString* fileContents = [NSString stringWithContentsOfFile:filePath
                                                        encoding:NSUTF8StringEncoding
                                                           error:nil];
