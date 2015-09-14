@@ -29,12 +29,14 @@ FOUNDATION_EXPORT double YCMLVersionNumber;
 FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <YCML/PublicHeader.h>
-
+#import "YCGenericModel.h"
+#import "YCGenericTrainer.h"
 #import "YCSupervisedModel.h"
 #import "YCSupervisedTrainer.h"
+
 #import "YCFFN.h"
 #import "YCELMTrainer.h"
-#import "YCProblem.h"
+
 #import "YCDerivativeProblem.h"
 #import "YCBackPropProblem.h"
 #import "YCBackPropTrainer.h"
@@ -42,20 +44,27 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCRpropTrainer.h"
 #import "YCRBFNet.h"
 #import "YCOLSTrainer.h"
+
 #import "YCOLSPRESSTrainer.h"
+
 #import "YCBinaryRBM.h"
 #import "YCBinaryRBMTrainer.h"
 #import "YCBinaryRBMProblem.h"
+
+#import "YCProblem.h"
 #import "YCGradientDescent.h"
 #import "YCPopulationBasedOptimizer.h"
 #import "YCIndividual.h"
 #import "YCNSGAII.h"
 #import "YCSurrogateModel.h"
 #import "YCCompoundProblem.h"
+
 #import "YCDataframe.h"
 #import "YCDataframe+Matrix.h"
 #import "YCDataframe+Transform.h"
+#import "OrderedDictionary.h"
 #import "YCMissingValue.h"
+
 #import "NSArray+Statistics.h"
 #import "YCRegressionMetrics.h"
 #import "YCCrossValidation.h"
