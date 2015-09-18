@@ -98,13 +98,13 @@
     Matrix *positiveAssociations = [inputSample matrixByTransposingAndMultiplyingWithLeft:positiveHiddenProbs];
     Matrix *negativeAssociations = [negativeVisibleProbs matrixByTransposingAndMultiplyingWithLeft:negativeHiddenProbs]; // should be OUTER product
     
-    Matrix *weightUpdates = positiveAssociations;
-    [weightUpdates subtract:negativeAssociations];
+    Matrix *weightUpdates = negativeAssociations;
+    [weightUpdates subtract:positiveAssociations];
     
-    Matrix *visibleBiasUpdates = [positiveHiddenProbs matrixBySubtracting:negativeHiddenProbs];
+    Matrix *visibleBiasUpdates = [negativeHiddenProbs matrixBySubtracting:positiveHiddenProbs];
     visibleBiasUpdates = [visibleBiasUpdates meansOfRows];
     
-    Matrix *hiddenBiasUpdates = [inputSample matrixBySubtracting:negativeVisibleProbs];
+    Matrix *hiddenBiasUpdates = [negativeVisibleProbs matrixBySubtracting:inputSample];
     hiddenBiasUpdates = [hiddenBiasUpdates meansOfRows];
     
     [self storeWeights:weightUpdates

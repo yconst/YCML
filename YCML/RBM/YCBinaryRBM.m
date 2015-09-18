@@ -80,6 +80,11 @@
     return visible;
 }
 
+- (Matrix *)gibbsStep:(Matrix *)visible
+{
+    return [self sampleVisibleGivenHidden:[self sampleHiddenGivenVisible:visible]];
+}
+
 - (Matrix *)freeEnergy:(Matrix *)visible
 {
     // visible: NxS

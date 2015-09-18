@@ -139,6 +139,31 @@
 
 - (void)testBinaryRBMTraining
 {
+    double samples[] = {
+        1,0,0,0,0,0,0,
+        0,1,0,0,0,0,0,
+        1,0,0,0,0,0,0,
+        0,1,0,0,0,0,0,
+        0,0,1,0,0,0,0,
+        1,0,0,0,0,0,0,
+        0,1,0,0,0,0,0,
+        0,0,1,0,0,0,0,
+        0,0,0,0,0,0,1};
+    Matrix *samplesMatrix = [[Matrix matrixFromArray:samples Rows:4 Columns:7] matrixByTransposing];
+    YCBinaryRBMTrainer *trainer = [YCBinaryRBMTrainer trainer];
+    YCBinaryRBM *model = [trainer train:nil inputMatrix:samplesMatrix];
+    Matrix *s1 = [Matrix matrixFromNSArray:@[@1, @0, @0, @0, @0, @0, @0] Rows:7 Columns:1];
+    Matrix *s2 = [Matrix matrixFromNSArray:@[@0, @1, @0, @0, @0, @0, @0] Rows:7 Columns:1];
+    Matrix *s3 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @1, @0, @0] Rows:7 Columns:1];
+    Matrix *s4 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @0, @0, @1] Rows:7 Columns:1];
+    CleanLog(@"Out Mon: %@, E: %@", [model gibbsStep:s1], [model freeEnergy:s1]);
+    CleanLog(@"Out Tue: %@, E: %@", [model gibbsStep:s2], [model freeEnergy:s2]);
+    CleanLog(@"Out Fri: %@, E: %@", [model gibbsStep:s3], [model freeEnergy:s3]);
+    CleanLog(@"Out Sun: %@, E: %@", [model gibbsStep:s4], [model freeEnergy:s4]);
+}
+
+- (void)testBinaryRBMTrainingMNIST
+{
     Matrix *mnist = [self matrixWithCSVName:@"mnist_train_1_to_37"];
     YCBinaryRBMTrainer *trainer = [YCBinaryRBMTrainer trainer];
     [trainer train:nil inputMatrix:mnist];

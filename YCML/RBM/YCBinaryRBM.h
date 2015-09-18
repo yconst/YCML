@@ -38,6 +38,8 @@
 
 - (Matrix *)sampleVisibleGivenHidden:(Matrix *)hidden;
 
+- (Matrix *)gibbsStep:(Matrix *)visible;
+
 - (Matrix *)freeEnergy:(Matrix *)visible;
 
 @property Matrix *weights;

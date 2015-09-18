@@ -44,7 +44,7 @@
 {
     if (self = [super init])
     {
-        self.settings[@"Hidden Layer Size"]  = @5;
+        self.settings[@"Hidden Layer Size"]  = @3;
         self.settings[@"Lambda"]             = @0.0001;
         self.settings[@"Iterations"]         = @500;
         self.settings[@"Alpha"]              = @0.1;
