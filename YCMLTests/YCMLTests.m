@@ -158,7 +158,7 @@
     trainer.settings[@"C"]                 = @8;
     trainer.settings[@"Hidden Layer Size"] = @900;
     
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:7.0];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:7.5];
 }
 
 - (void)testBackPropHousing
