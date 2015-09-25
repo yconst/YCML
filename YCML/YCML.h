@@ -48,8 +48,8 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCOLSPRESSTrainer.h"
 
 #import "YCBinaryRBM.h"
-#import "YCBinaryRBMTrainer.h"
-#import "YCBinaryRBMProblem.h"
+#import "YCCDTrainer.h"
+#import "YCCDProblem.h"
 
 #import "YCProblem.h"
 #import "YCGradientDescent.h"
