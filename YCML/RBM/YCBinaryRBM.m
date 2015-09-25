@@ -90,13 +90,13 @@
     // visible: NxS
     Matrix *wxb = [self prePropagateToHidden:visible]; // HxN * NxS = HxS (wxb)
     [wxb applyFunction:^double(double value) { return log(1 + exp(value)); }];
-    Matrix *hidden = [wxb sumsOfColumns]; // 1xS (hidden)
+    Matrix *ht = [wxb sumsOfColumns]; // 1xS (hidden)
     
-    Matrix *negativeVisible = [self.visibleBiases matrixByTransposingAndMultiplyingWithRight:visible]; // (Nx1)T * NxS = 1xS (vBias)
+    Matrix *av = [self.visibleBiases matrixByTransposingAndMultiplyingWithRight:visible]; // (Nx1)T * NxS = 1xS (vBias)
     
-    [negativeVisible add:hidden]; // hidden + vbias
-    [negativeVisible negate]; // - hidden - vbias
-    return negativeVisible; // 1xS
+    [av add:ht]; // hidden + vis
+    [av negate]; // - hidden - vis
+    return av; // 1xS
 }
 
 - (int)visibleSize
