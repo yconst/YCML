@@ -39,10 +39,10 @@
 		CB5216171B4179B600A4AF01 /* YCNSGAII.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5216151B4179B600A4AF01 /* YCNSGAII.m */; };
 		CB52161A1B43FEEF00A4AF01 /* NSIndexSet+Sampling.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5216181B43FEEF00A4AF01 /* NSIndexSet+Sampling.h */; };
 		CB52161B1B43FEEF00A4AF01 /* NSIndexSet+Sampling.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5216191B43FEEF00A4AF01 /* NSIndexSet+Sampling.m */; };
-		CB5D4C2A1B6A8F6B00B00B84 /* YCBinaryRBMTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5D4C281B6A8F6B00B00B84 /* YCBinaryRBMTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB5D4C2B1B6A8F6B00B00B84 /* YCBinaryRBMTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5D4C291B6A8F6B00B00B84 /* YCBinaryRBMTrainer.m */; };
-		CB5D4C2E1B6A8F7C00B00B84 /* YCBinaryRBMProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5D4C2C1B6A8F7C00B00B84 /* YCBinaryRBMProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB5D4C2F1B6A8F7C00B00B84 /* YCBinaryRBMProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5D4C2D1B6A8F7C00B00B84 /* YCBinaryRBMProblem.m */; };
+		CB5D4C2A1B6A8F6B00B00B84 /* YCCDTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5D4C281B6A8F6B00B00B84 /* YCCDTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB5D4C2B1B6A8F6B00B00B84 /* YCCDTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5D4C291B6A8F6B00B00B84 /* YCCDTrainer.m */; };
+		CB5D4C2E1B6A8F7C00B00B84 /* YCCDProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CB5D4C2C1B6A8F7C00B00B84 /* YCCDProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB5D4C2F1B6A8F7C00B00B84 /* YCCDProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5D4C2D1B6A8F7C00B00B84 /* YCCDProblem.m */; };
 		CB6494B51B972EF000BA3FE2 /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6494B31B972EF000BA3FE2 /* OrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB6494B61B972EF000BA3FE2 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6494B41B972EF000BA3FE2 /* OrderedDictionary.m */; };
 		CB6ECD421AEFB6DF000E70A7 /* YCCrossValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -150,10 +150,10 @@
 		CB5216151B4179B600A4AF01 /* YCNSGAII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCNSGAII.m; path = "Optimization/Genetic Algorithms/YCNSGAII.m"; sourceTree = "<group>"; };
 		CB5216181B43FEEF00A4AF01 /* NSIndexSet+Sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+Sampling.h"; path = "Data Frame/NSIndexSet+Sampling.h"; sourceTree = "<group>"; };
 		CB5216191B43FEEF00A4AF01 /* NSIndexSet+Sampling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+Sampling.m"; path = "Data Frame/NSIndexSet+Sampling.m"; sourceTree = "<group>"; };
-		CB5D4C281B6A8F6B00B00B84 /* YCBinaryRBMTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCBinaryRBMTrainer.h; path = RBM/YCBinaryRBMTrainer.h; sourceTree = "<group>"; };
-		CB5D4C291B6A8F6B00B00B84 /* YCBinaryRBMTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCBinaryRBMTrainer.m; path = RBM/YCBinaryRBMTrainer.m; sourceTree = "<group>"; };
-		CB5D4C2C1B6A8F7C00B00B84 /* YCBinaryRBMProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCBinaryRBMProblem.h; path = RBM/YCBinaryRBMProblem.h; sourceTree = "<group>"; };
-		CB5D4C2D1B6A8F7C00B00B84 /* YCBinaryRBMProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCBinaryRBMProblem.m; path = RBM/YCBinaryRBMProblem.m; sourceTree = "<group>"; };
+		CB5D4C281B6A8F6B00B00B84 /* YCCDTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCDTrainer.h; path = RBM/YCCDTrainer.h; sourceTree = "<group>"; };
+		CB5D4C291B6A8F6B00B00B84 /* YCCDTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCDTrainer.m; path = RBM/YCCDTrainer.m; sourceTree = "<group>"; };
+		CB5D4C2C1B6A8F7C00B00B84 /* YCCDProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCDProblem.h; path = RBM/YCCDProblem.h; sourceTree = "<group>"; };
+		CB5D4C2D1B6A8F7C00B00B84 /* YCCDProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCDProblem.m; path = RBM/YCCDProblem.m; sourceTree = "<group>"; };
 		CB6494B31B972EF000BA3FE2 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = "Data Frame/OrderedDictionary.h"; sourceTree = "<group>"; };
 		CB6494B41B972EF000BA3FE2 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OrderedDictionary.m; path = "Data Frame/OrderedDictionary.m"; sourceTree = "<group>"; };
 		CB6ECD401AEFB6DF000E70A7 /* YCCrossValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCrossValidation.h; path = Testing/YCCrossValidation.h; sourceTree = "<group>"; };
@@ -524,10 +524,10 @@
 			children = (
 				CBF7B4451B6A696900F25DF8 /* YCBinaryRBM.h */,
 				CBF7B4461B6A696900F25DF8 /* YCBinaryRBM.m */,
-				CB5D4C281B6A8F6B00B00B84 /* YCBinaryRBMTrainer.h */,
-				CB5D4C291B6A8F6B00B00B84 /* YCBinaryRBMTrainer.m */,
-				CB5D4C2C1B6A8F7C00B00B84 /* YCBinaryRBMProblem.h */,
-				CB5D4C2D1B6A8F7C00B00B84 /* YCBinaryRBMProblem.m */,
+				CB5D4C281B6A8F6B00B00B84 /* YCCDTrainer.h */,
+				CB5D4C291B6A8F6B00B00B84 /* YCCDTrainer.m */,
+				CB5D4C2C1B6A8F7C00B00B84 /* YCCDProblem.h */,
+				CB5D4C2D1B6A8F7C00B00B84 /* YCCDProblem.m */,
 			);
 			name = RBM;
 			sourceTree = "<group>";
@@ -580,10 +580,10 @@
 				CB6494B51B972EF000BA3FE2 /* OrderedDictionary.h in Headers */,
 				CB52160E1B415B4900A4AF01 /* YCPopulationBasedOptimizer.h in Headers */,
 				CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */,
-				CB5D4C2A1B6A8F6B00B00B84 /* YCBinaryRBMTrainer.h in Headers */,
+				CB5D4C2A1B6A8F6B00B00B84 /* YCCDTrainer.h in Headers */,
 				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
 				CBD606821B0FC48300DCA6AD /* YCOLSPRESSTrainer.h in Headers */,
-				CB5D4C2E1B6A8F7C00B00B84 /* YCBinaryRBMProblem.h in Headers */,
+				CB5D4C2E1B6A8F7C00B00B84 /* YCCDProblem.h in Headers */,
 				CBFCED111B833317002A19CC /* YCGenericTrainer.h in Headers */,
 				CB2A4AB71B61248100770421 /* YCCompoundProblem.h in Headers */,
 				CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */,
@@ -779,9 +779,9 @@
 				CB7E6D121AE7D01A00B37EA4 /* YCOLSTrainer.m in Sources */,
 				CB7E6D0E1AE7D00100B37EA4 /* YCRBFNet.m in Sources */,
 				CB6494B61B972EF000BA3FE2 /* OrderedDictionary.m in Sources */,
-				CB5D4C2F1B6A8F7C00B00B84 /* YCBinaryRBMProblem.m in Sources */,
+				CB5D4C2F1B6A8F7C00B00B84 /* YCCDProblem.m in Sources */,
 				CB7E6D341AEA382400B37EA4 /* YCDataframe+Transform.m in Sources */,
-				CB5D4C2B1B6A8F6B00B00B84 /* YCBinaryRBMTrainer.m in Sources */,
+				CB5D4C2B1B6A8F6B00B00B84 /* YCCDTrainer.m in Sources */,
 				CB6ECD431AEFB6DF000E70A7 /* YCCrossValidation.m in Sources */,
 				CBFCED121B833317002A19CC /* YCGenericTrainer.m in Sources */,
 				CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */,
