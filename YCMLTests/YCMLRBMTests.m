@@ -119,7 +119,7 @@
     model.hiddenBiases = [Matrix matrixOfRows:3 Columns:1];
     model.visibleBiases = [Matrix matrixOfRows:5 Columns:1];
     
-    YCBinaryRBMProblem *prob = [[YCBinaryRBMProblem alloc] initWithInputMatrix:im model:model];
+    YCCDProblem *prob = [[YCCDProblem alloc] initWithInputMatrix:im model:model];
     
     int parameterCount = model.visibleSize * model.hiddenSize + model.visibleSize + model.hiddenSize;
     
@@ -140,6 +140,7 @@
 - (void)testBinaryRBMTraining
 {
     double samples[] = {
+        // M T W T F S S
         1,0,0,0,0,0,0,
         0,1,0,0,0,0,0,
         1,0,0,0,0,0,0,
@@ -150,7 +151,7 @@
         0,0,1,0,0,0,0,
         0,0,0,0,0,0,1};
     Matrix *samplesMatrix = [[Matrix matrixFromArray:samples Rows:4 Columns:7] matrixByTransposing];
-    YCBinaryRBMTrainer *trainer = [YCBinaryRBMTrainer trainer];
+    YCCDTrainer *trainer = [YCCDTrainer trainer];
     YCBinaryRBM *model = [trainer train:nil inputMatrix:samplesMatrix];
     Matrix *s1 = [Matrix matrixFromNSArray:@[@1, @0, @0, @0, @0, @0, @0] Rows:7 Columns:1];
     Matrix *s2 = [Matrix matrixFromNSArray:@[@0, @1, @0, @0, @0, @0, @0] Rows:7 Columns:1];
@@ -165,7 +166,7 @@
 - (void)testBinaryRBMTrainingMNIST
 {
     Matrix *mnist = [self matrixWithCSVName:@"mnist_train_1_to_37"];
-    YCBinaryRBMTrainer *trainer = [YCBinaryRBMTrainer trainer];
+    YCCDTrainer *trainer = [YCCDTrainer trainer];
     [trainer train:nil inputMatrix:mnist];
 }
 

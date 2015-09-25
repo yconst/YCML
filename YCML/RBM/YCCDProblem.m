@@ -20,10 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCBinaryRBMProblem.h"
+#import "YCCDProblem.h"
 #import "YCBinaryRBM.h"
 
-@implementation YCBinaryRBMProblem
+@implementation YCCDProblem
 
 - (instancetype)initWithInputMatrix:(Matrix *)inputMatrix model:(YCBinaryRBM *)model
 {

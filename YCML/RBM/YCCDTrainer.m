@@ -20,15 +20,15 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCBinaryRBMTrainer.h"
+#import "YCCDTrainer.h"
 #import "YCBinaryRBM.h"
-#import "YCBinaryRBMProblem.h"
+#import "YCCDProblem.h"
 #import "YCDataframe.h"
 #import "YCDataframe+Matrix.h"
 #import "YCOptimizer.h"
 #import "YCGradientDescent.h"
 
-@implementation YCBinaryRBMTrainer
+@implementation YCCDTrainer
 
 + (Class)optimizerClass
 {
@@ -93,7 +93,7 @@
     [self initialize:model withInputSize:inputSize hiddenSize:hiddenSize];
     
     // Step III. Defining the Backprop problem and GD properties
-    YCBinaryRBMProblem *p      = [[YCBinaryRBMProblem alloc] initWithInputMatrix:input
+    YCCDProblem *p      = [[YCCDProblem alloc] initWithInputMatrix:input
                                                                            model:model];
     p.lambda                          = [self.settings[@"Lambda"] doubleValue];
     p.sampleCount                     = [self.settings[@"Samples"] intValue];

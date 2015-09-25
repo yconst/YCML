@@ -24,7 +24,7 @@
 #import "YCGenericTrainer.h"
 @class YCBinaryRBM, YCDataframe, Matrix;
 
-@interface YCBinaryRBMTrainer : YCGenericTrainer
+@interface YCCDTrainer : YCGenericTrainer
 
 + (Class)optimizerClass;
 

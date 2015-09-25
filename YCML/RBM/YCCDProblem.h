@@ -24,7 +24,7 @@
 #import "YCDerivativeProblem.h"
 @class YCBinaryRBM, Matrix;
 
-@interface YCBinaryRBMProblem : NSObject <YCDerivativeProblem>
+@interface YCCDProblem : NSObject <YCDerivativeProblem>
 {
     Matrix *_inputMatrix;
 }
