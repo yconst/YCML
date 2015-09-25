@@ -89,17 +89,10 @@
 
 - (Matrix *)rows:(NSIndexSet *)indexes
 {
-    // TODO: Speed up retrieval of rows
-    __block Matrix *result;
+    __block int count = 0;
+    Matrix *result = [Matrix matrixOfRows:(int)[indexes count] Columns:self.columns];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        if (result)
-        {
-            result = [result appendRow:[self row:(int)idx]];
-        }
-        else
-        {
-            result = [self row:(int)idx];
-        }
+        [result setRow:count++ Value:[self row:(int)idx]];
     }];
     return result;
 }
@@ -150,17 +143,10 @@
 
 - (Matrix *)columns:(NSIndexSet *)indexes
 {
-    // TODO: Speed up retrieval of columns
-    __block Matrix *result;
+    __block int count = 0;
+    Matrix *result = [Matrix matrixOfRows:self.rows Columns:(int)[indexes count]];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        if (result)
-        {
-            result = [result appendColumn:[self column:(int)idx]];
-        }
-        else
-        {
-            result = [self column:(int)idx];
-        }
+        [result setColumn:count++ Value:[self column:(int)idx]];
     }];
     return result;
 }

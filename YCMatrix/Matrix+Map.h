@@ -64,17 +64,72 @@ static inline BOOL YCEqualDomains(YCDomain domain1, YCDomain domain2)
 
 @interface Matrix (Map)
 
-// Transform matrix |mtx| using transformation bi-vector |transform|
+/**
+ Returns the result of a row-wise linear mapping of the receiver using the 
+ supplied mapping matrix.
+ 
+ @param transform A two-column matrix describing the linear row-wise mapping.
+ 
+ @return A matrix containing the mapped values.
+ */
 - (Matrix *)matrixByRowWiseMapUsing:(Matrix *)transform;
 
+/**
+ Returns a two-column matrix that describes a linear row-wise mapping of the receiver
+ to a supplied domain.
+ 
+ @param domain The domain to map the rows to
+ @param basis  Whether to use min and max values for deriving the source domain, or the
+                row values' standard deviation.
+ 
+ @return A two-column descriptor matrix with the linear row-wise map coefficients
+ */
 - (Matrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
 
+/**
+ Returns a two-column matrix that describes an inverse linear row-wise mapping of 
+ the receiver from a supplied domain.
+ 
+ @param domain The domain to map the rows from.
+ @param basis  Whether to use min and max values for deriving the target domain, or the
+ row values' standard deviation.
+ 
+ @return A two-column descriptor matrix with the inverse linear row-wise map coefficients
+ */
 - (Matrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
 
+/**
+ Returns the result of a column-wise linear mapping of the receiver using the 
+ supplied mapping matrix.
+ 
+ @param transform A two-column matrix describing the linear column-wise mapping.
+ 
+ @return A matrix containing the mapped values.
+ */
 - (Matrix *)matrixByColumnWiseMapUsing:(Matrix *)transform;
 
+/**
+ Returns a two-column matrix that describes a linear column-wise mapping of the receiver
+ to a supplied domain.
+ 
+ @param domain The domain to map the column to.
+ @param basis  Whether to use min and max values for deriving the source domain, or the
+ column values' standard deviation.
+ 
+ @return A two-column descriptor matrix with the linear column-wise map coefficients
+ */
 - (Matrix *)columnWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
 
+/**
+ Returns a two-column matrix that describes an inverse linear column-wise mapping of
+ the receiver from a supplied domain.
+ 
+ @param domain The domain to map the column from.
+ @param basis  Whether to use min and max values for deriving the target domain, or the
+ column values' standard deviation.
+ 
+ @return A two-column descriptor matrix with the inverse linear column-wise map coefficients
+ */
 - (Matrix *)columnWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
 
 @end
