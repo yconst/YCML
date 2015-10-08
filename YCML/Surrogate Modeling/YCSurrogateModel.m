@@ -24,6 +24,12 @@
 @import YCMatrix;
 
 @implementation YCSurrogateModel
+{
+    YCSupervisedModel *_model;
+    Matrix *_modes;
+    Matrix *_parameterBoundsCache;
+    BOOL _maximize;
+}
 
 - (int)objectiveCount
 {
@@ -40,21 +46,37 @@
     return 0;
 }
 
+- (Matrix *)modes
+{
+    if (!_modes)
+    {
+        _modes = [Matrix matrixOfRows:self.objectiveCount Columns:1];
+        for (int i=0, j=self.objectiveCount; i<j; i++)
+        {
+            [_modes i:i j:0 set:self.maximize ? 1 : 0];
+        }
+    }
+    return _modes;
+}
+
 - (Matrix *)parameterBounds
 {
-    NSArray *order = self.model.properties[@"InputConversionArray"];
-    NSDictionary *inputMinValues = self.model.properties[@"InputMinValues"];
-    NSDictionary *inputMaxValues = self.model.properties[@"InputMaxValues"];
-    Matrix *inputMinMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMinValues
-                                                    toArrayWithKeyOrder:order]
-                                                  Rows:self.model.inputSize
-                                               Columns:1];
-    Matrix *inputMaxMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMaxValues
-                                                    toArrayWithKeyOrder:order]
-                                                  Rows:self.model.inputSize
-                                               Columns:1];
-    Matrix *bounds = [Matrix matrixFromColumns:@[inputMinMatrix, inputMaxMatrix]];
-    return bounds;
+    if (!_parameterBoundsCache)
+    {
+        NSArray *order = self.model.properties[@"InputConversionArray"];
+        NSDictionary *inputMinValues = self.model.properties[@"InputMinValues"];
+        NSDictionary *inputMaxValues = self.model.properties[@"InputMaxValues"];
+        Matrix *inputMinMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMinValues
+                                                        toArrayWithKeyOrder:order]
+                                                      Rows:self.model.inputSize
+                                                   Columns:1];
+        Matrix *inputMaxMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMaxValues
+                                                        toArrayWithKeyOrder:order]
+                                                      Rows:self.model.inputSize
+                                                   Columns:1];
+        _parameterBoundsCache = [Matrix matrixFromColumns:@[inputMinMatrix, inputMaxMatrix]];
+    }
+    return _parameterBoundsCache;
 }
 
 - (Matrix *)initialValuesRangeHint
@@ -94,6 +116,28 @@
         }
     }
     return output;
+}
+
+- (YCSupervisedModel *)model
+{
+    return _model;
+}
+
+- (void)setModel:(YCSupervisedModel *)model
+{
+    _model = model;
+    _parameterBoundsCache = nil;
+}
+
+- (BOOL)maximize
+{
+    return _maximize;
+}
+
+- (void)setMaximize:(BOOL)maximize
+{
+    _maximize = maximize;
+    _modes = nil;
 }
 
 @end

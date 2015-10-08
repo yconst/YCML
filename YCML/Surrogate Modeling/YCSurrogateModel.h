@@ -28,4 +28,6 @@
 
 @property YCSupervisedModel *model;
 
+@property BOOL maximize;
+
 @end
