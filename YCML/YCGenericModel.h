@@ -22,6 +22,10 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ A generic predictive model class. Includes basic facilities for 
+ storing settings and statistics.
+ */
 @interface YCGenericModel : NSObject <NSCopying, NSCoding>
 
 /**

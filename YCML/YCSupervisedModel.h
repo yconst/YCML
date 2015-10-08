@@ -24,6 +24,11 @@
 #import "YCGenericModel.h"
 @class Matrix, YCDataframe;
 
+/**
+ The base class for all supervised predictive models. Extends the base model
+ class with methods for activating the receiver using either datasets or matrices,
+ as well as properties for determining the input and output size of the receiver.
+ */
 @interface YCSupervisedModel : YCGenericModel
 
 /**
