@@ -136,6 +136,22 @@
     return labels;
 }
 
+- (Matrix *)modes
+{
+    // TODO: Cache this value.
+    Matrix *modes = [Matrix matrixOfRows:self.objectiveCount Columns:1];
+    int count = 0;
+    for (id<YCProblem> p in self.problems)
+    {
+        Matrix *pModes = p.modes;
+        for (int i=0, j=p.objectiveCount; i<j; i++)
+        {
+            [modes i:count++ j:0 set:[pModes i:i j:0]];
+        }
+    }
+    return modes;
+}
+
 - (NSArray *)dictionary:(NSDictionary *)dictionary toArrayWithKeyOrder:(NSArray *)order
 {
     NSMutableArray *output = [NSMutableArray array];

@@ -37,6 +37,8 @@
 
 @property (readonly) int constraintCount;
 
+@property (readonly) Matrix *modes;
+
 @optional
 
 @property (readonly) NSArray *parameterLabels;

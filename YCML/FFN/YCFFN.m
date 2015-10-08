@@ -181,12 +181,12 @@
     // Print input and output transform matrices
     if (self.inputTransform)
     {
-        [description appendFormat:@"\nInput Transform (%d x %d)\n%@",self.inputTransform.rows,
+        [description appendFormat:@"\nInput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.inputTransform.rows,
          self.inputTransform.columns, self.inputTransform];
     }
     if (self.outputTransform)
     {
-        [description appendFormat:@"\nOutput Transform (%d x %d)\n%@",self.outputTransform.rows,
+        [description appendFormat:@"\nOutput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.outputTransform.rows,
          self.outputTransform.columns, self.outputTransform];
     }
     [self.weightMatrices enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {

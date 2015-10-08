@@ -37,7 +37,6 @@
         self.state                           = [NSMutableDictionary dictionary];
         self.settings                        = [NSMutableDictionary dictionary];
         self.settings[@"Iterations"]         = @20;
-        self.settings[@"Maximize"]           = @NO;
         self.settings[@"Notify"]             = @YES;
         self.statistics                      = [NSMutableDictionary dictionary];
         self.problem                         = aProblem;

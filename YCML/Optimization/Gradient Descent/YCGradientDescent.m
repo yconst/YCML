@@ -38,6 +38,7 @@
 
 - (BOOL)iterate:(int)iteration
 {
+    BOOL maximize = [self.problem.modes i:0 j:0] > 0;
     int k = self.problem.parameterCount;
     
     if (iteration == 0)
@@ -63,7 +64,7 @@
         double alpha = [self.settings[@"Alpha"] doubleValue];
         [(NSObject<YCDerivativeProblem> *)self.problem derivatives:gradients parameters:values];
         [gradients multiplyWithScalar:alpha];
-        if ([self.settings[@"Maximize"] boolValue])
+        if (maximize)
         {
             [values add:gradients];
         }
@@ -77,7 +78,6 @@
     {
         Matrix *values = self.state[@"values"];
         double target = [self.settings[@"Target"] doubleValue];
-        BOOL maximize = [self.settings[@"Maximize"] boolValue];
         
         Matrix *objectiveValues = [Matrix matrixOfRows:self.problem.objectiveCount Columns:1];
         [self.problem evaluate:objectiveValues parameters:values];

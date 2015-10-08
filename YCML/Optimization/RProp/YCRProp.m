@@ -47,7 +47,8 @@
     double etaMinus     = [self.settings[@"etaMinus"] doubleValue];
     double etaMax       = [self.settings[@"etaMax"] doubleValue];
     double etaMin       = [self.settings[@"etaMin"] doubleValue];
-    int direction       = [self.settings[@"Maximize"] boolValue] ? 1 : -1;
+    BOOL maximize       = [self.problem.modes i:0 j:0] > 0;
+    int direction       = maximize ? 1 : -1;
     
     if (iteration == 0)
     {
@@ -112,7 +113,6 @@
     {
         Matrix *values = self.state[@"values"];
         double target = [self.settings[@"Target"] doubleValue];
-        BOOL maximize = [self.settings[@"Maximize"] boolValue];
         
         Matrix *objectiveValues = [Matrix matrixOfRows:self.problem.objectiveCount Columns:1];
         [self.problem evaluate:objectiveValues parameters:values];

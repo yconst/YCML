@@ -101,13 +101,14 @@
     NSInteger objectivesCount = 0;
     if ([feasible count])
     {
-        objectivesCount = [[feasible[0] objectiveFunctionValues] count];
+        objectivesCount = self.problem.objectiveCount;
     }
-    //bool maximize = [self.settings[@"Maximize"] boolValue];
     
     int maxRank = 0;
 
     NSMutableSet *currentFront = [NSMutableSet set];
+    
+    Matrix *modes = self.problem.modes; // Minimize or maximize each objective?
     
     for (YCNSGAIndividual *p in feasible)
     {
@@ -123,11 +124,11 @@
             {
                 double vp = [p.objectiveFunctionValues valueAtRow:i Column:0];
                 double vq = [q.objectiveFunctionValues valueAtRow:i Column:0];
-                if (vp < vq)
+                if ((vp < vq && [modes i:i j:0] == 0) || (vp > vq && [modes i:i j:0] != 0))
                 {
                     pFlag = YES;
                 }
-                else if (vq < vp)
+                else if ((vq < vp  && [modes i:i j:0] == 0) || (vq > vp  && [modes i:i j:0] != 0))
                 {
                     qFlag = YES;
                 }
@@ -180,10 +181,14 @@
 
 // Calculates the rank-wise crowding distance for individuals in |aPopulation|.
 // This method supposes working variables are already zeroed-out beforehand.
+// WARNING:
+// During the sorting of the individuals maximization/minimization preference
+// is not taken into account for setting order. This should be ok normally, but
+// it remains to be verified.
 - (void)crowdingDistanceCalculationWithPopulation:(NSArray *)aPopulation
 {
     int maxRank = 0;
-    NSUInteger objectiveCount = [[aPopulation[0] objectiveFunctionValues] count];
+    NSUInteger objectiveCount = self.problem.objectiveCount;
     
     for (YCNSGAIndividual *ind in aPopulation)
     {
