@@ -1,6 +1,6 @@
 //
 //  YCMLTests.m
-//  YCMLTests
+//  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
 //  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
