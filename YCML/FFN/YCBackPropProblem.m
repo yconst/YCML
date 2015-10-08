@@ -312,4 +312,9 @@
     return 0;
 }
 
+- (Matrix *)modes
+{
+    return [Matrix matrixOfRows:1 Columns:1 Value:0];
+}
+
 @end
