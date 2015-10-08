@@ -70,7 +70,7 @@
 
 - (void)stop
 {
-    self->_shouldStop = true;
+    self.shouldStop = true;
 }
 
 @end

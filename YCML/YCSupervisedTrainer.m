@@ -28,8 +28,6 @@
 
 @implementation YCSupervisedTrainer
 
-@synthesize settings;
-
 - (YCSupervisedModel *)train:(YCSupervisedModel *)model
                        input:(YCDataframe *)input
                       output:(YCDataframe *)output
