@@ -218,9 +218,10 @@
         [_data setValue:newDataArray forKey:ident];
     }
     
-    if ([_attributeTypes objectForKey:ident]) return;
-    
-    [_attributeTypes setObject:@0 forKey:ident];
+    if (![_attributeTypes objectForKey:ident])
+    {
+        [_attributeTypes setObject:@0 forKey:ident];
+    }
     
     [self willChangeValueForKey:@"attributeCount"];
     [self didChangeValueForKey:@"attributeCount"];
