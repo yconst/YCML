@@ -127,6 +127,8 @@
         }
         
         [models addObject:model];
+        
+        if (trainer.shouldStop) break;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -138,7 +140,8 @@
     {
         cumulativeStats[key] = [cumulativeStats[key] mean];
     }
-    return cumulativeStats;
+    
+    return trainer.shouldStop ? nil : cumulativeStats;
 }
 
 - (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
