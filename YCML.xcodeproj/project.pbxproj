@@ -69,6 +69,7 @@
 		CB9695921AAEECA8003BAE48 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
 		CBACE52B1BA1A6A800CAF160 /* mnist_train_1_to_37.csv in Resources */ = {isa = PBXBuildFile; fileRef = CBACE52A1BA1A6A800CAF160 /* mnist_train_1_to_37.csv */; };
 		CBB1C3DF1B939FFE00CB9762 /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB1C3DE1B939FFE00CB9762 /* CHCSVParser.m */; };
+		CBC345C91BC3B62D00241339 /* YCMLMetricsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */; };
 		CBC7A4EE1ABA330300464DD2 /* YCDerivativeProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A4EF1ABA330300464DD2 /* YCProblem.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4ED1ABA330300464DD2 /* YCProblem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -187,6 +188,7 @@
 		CBACE52A1BA1A6A800CAF160 /* mnist_train_1_to_37.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mnist_train_1_to_37.csv; sourceTree = "<group>"; };
 		CBB1C3DD1B939FFE00CB9762 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
 		CBB1C3DE1B939FFE00CB9762 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
+		CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLMetricsTests.m; sourceTree = "<group>"; };
 		CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDerivativeProblem.h; path = Optimization/YCDerivativeProblem.h; sourceTree = "<group>"; };
 		CBC7A4ED1ABA330300464DD2 /* YCProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCProblem.h; path = Optimization/YCProblem.h; sourceTree = "<group>"; };
 		CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOptimizer.h; path = Optimization/YCOptimizer.h; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				CB96956F1AAEEB64003BAE48 /* YCMLTests.m */,
 				CBFCED091B832F98002A19CC /* YCMLRBMTests.m */,
 				CBF75B141AC747E400495246 /* YCMLOptimizationTest.m */,
+				CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */,
 				CB96956D1AAEEB64003BAE48 /* Supporting Files */,
 			);
 			path = YCMLTests;
@@ -810,6 +813,7 @@
 			files = (
 				CBB1C3DF1B939FFE00CB9762 /* CHCSVParser.m in Sources */,
 				CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */,
+				CBC345C91BC3B62D00241339 /* YCMLMetricsTests.m in Sources */,
 				CBF75B151AC747E400495246 /* YCMLOptimizationTest.m in Sources */,
 				CBFCED0A1B832F98002A19CC /* YCMLRBMTests.m in Sources */,
 			);

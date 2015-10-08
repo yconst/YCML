@@ -36,7 +36,8 @@ YCML also contains some optimization algorithms as support for deriving predicti
 ###Other
 
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
-- NSArray category for basic statistics (mean, median, quartiles, min and max, variance, sd etc.)
+- Text-based exporting of models.
+- NSArray category for basic statistics (mean, median, quartiles, min and max, variance, sd etc.).
 
 ##Getting started
 
