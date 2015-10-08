@@ -31,7 +31,12 @@
 
 Matrix *conditionalConvertToMatrix(id object);
 
-double MSE(YCDataframe *trueData, YCDataframe *predictedData)
+// TODO:
+// These methods say they accept dataframes, but they can also be
+// provided with matrices. In fact, this is what the -conditionalConvertToMatrix
+// method is doing. This should be better implemented and clearly explained.
+
+double MSE(id trueData, id predictedData)
 {
     Matrix *trueMatrix = conditionalConvertToMatrix(trueData);
     Matrix *predictedMatrix = conditionalConvertToMatrix(predictedData);
@@ -41,8 +46,11 @@ double MSE(YCDataframe *trueData, YCDataframe *predictedData)
     return [means meansOfColumns]->matrix[0];
 }
 
-double RSquared(YCDataframe *trueData, YCDataframe *predictedData)
+
+double RSquared(id trueData, id predictedData)
 {
+    // Calculates 1 - RSS/TSS
+    
     Matrix *trueMatrix = conditionalConvertToMatrix(trueData);
     Matrix *predictedMatrix = conditionalConvertToMatrix(predictedData);
     

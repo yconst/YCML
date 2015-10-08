@@ -29,6 +29,6 @@
 @import Foundation;
 @class YCDataframe;
 
-double MSE(YCDataframe *trueData, YCDataframe *predictedData);
+double MSE(id trueData, id predictedData);
 
-double RSquared(YCDataframe *trueData, YCDataframe *predictedData);
+double RSquared(id trueData, id predictedData);
