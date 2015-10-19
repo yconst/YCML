@@ -41,17 +41,21 @@ YCML also contains some optimization algorithms as support for deriving predicti
 
 ##Getting started
 
+###Setting Up
+
 Import the project in your workspace by dragging the .xcodeproj file. YCML depends on YCMatrix. Since version 0.2.0, YCML includes YCMatrix as a separate target (including copies of YCMatrix files), so you practically don't need to include anything apart from the framework itself.
 
-Cocoapods support might come at a later time.
+YCML defines a module. As such, you may import it at the beginning of your files as shown below:
 
-##Getting Help
+    @import YCML;
 
-YCML documentation is compiled using Appledoc. 
+In addition, it is possible to import the YCMatrix library, bundled together with YCML, to perform calculations on matrices:
 
-##Example Usage
+    @import YCMatrix;
 
-Here's the simplest training call to an YCML trainer, which returns a trained model:
+###Your first predictive model
+
+Here's a simple training call to an YCML trainer, which returns a trained model, given existing input and output datasets:
 
     YCFFN *theModel = [[YCRpropTrainer trainer] train:nil input:trainingInput output:trainingOutput];
 
@@ -59,9 +63,27 @@ YCML models and trainers may use YCMatrix instances in place of a dataframe. In 
 
     YCFFN *theModel = [[YCRpropTrainer trainer] train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
 
+The resulting model may subsequently be used to make predictions, given a dataset or matrix:
 
+    YCDataframe *prediction = [theModel predict:testInput];
 
-Basic training and activation (Objective-C, using Matrices):
+###Working with YCML Dataframes
+
+Using the YCDataframe class, it is easy to prepare your data. To add examples to an instance of YCDataframe, call the -addSampleWithData: method, passing a NSDictionary with the data to be added. If the attributes indicated in the supplied dictionary are not in the dataframe yet, they are created automatically (including data). The example below shows how to create a new dataframe, and add a couple of records:
+
+    YCDataframe *frame = [YCDataframe dataframe];
+    [frame addSampleWithData:@{@"X1" : @1.0, @"X2" : @2.0, @"X3" : @-5.0}];
+    [frame addSampleWithData:@{@"X1" : @5.5, @"X2" : @-3.0, @"X3" : @-1.5}];
+
+With two dataframes, one for input (independent variables) and one for output (dependent variables), you may easily train a predictive model, as described previously.
+
+###Further Help
+
+For the complete reference, you may compile YCML documentation using Appledoc. 
+
+##Examples
+
+###Training and activation (Objective-C, using Matrices):
 
     YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
     YCMatrix *trainingOutput = [trainingData getRow:13]; // Output row == 13
@@ -103,7 +125,7 @@ Cross-validation example, from data input to presentation of results:
 
     NSLog(@"Results:\n %@", [cv test:trainer input:input output:output]);
 
-Train and Test example in Swift (sorry for my Swift illiteracy btw):
+###Training and activation (Swift, using Matrices):
 
     var trainingData = self.matrixWithCSVName("housing", removeFirst: true)
     trainingData.shuffleColumns()
@@ -126,6 +148,16 @@ Train and Test example in Swift (sorry for my Swift illiteracy btw):
     var RMSE = sqrt(1.0 / Double(predictedOutput.columns) * predictedOutput.sum)
     NSLog("%@", RMSE)
     XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
+
+##Framework Architecture
+
+The basic predictive model building block is the `YCGenericModel` class. It's training algorithm counterpart inherits from the `YCGenericTrainer` class. Most of the models included in the library are supervised learning models, and they inherit from a subclass of `YCGenericModel`, `YCSupervisedModel`. Their corresponding training algorithms inherit from the `YCSupervisedTrainer` class. These classes offer basic infrastructure to support training and activation, such as optional scaling and normalization of inputs, conversion between datasets and matrices etc. As such, the models and trainers themselves only contain algorithm implementations (for the most part).
+
+A significant supervised learning model is the Feed Forward Network, which is implemented in the `YCFFN` class. `YCFFN` is a flexible class that can be used to represent a wide array of feed-forward models, including one with large number of layers, such as Deep Neural Nets. `YCFFN` is a model that consists of several layer modules, each corresponding to a layer of activation in a hypothetical Neural Net. The layers are subclasses of the `YCModelLayer` class. In particular, for classic neural nets, layers are subclasses of `YCFullyConnectedLayer`, itself a subclass of `YCModelLayer`. 
+
+In forward propagation, the input signal is being propagated through each single layer, and appears as the output. Propagation in a densely connected layer involves application of weights and biases to the input, and transformation by the activation function. The scaling/normalization of the model input and output happen separately from the layers.
+
+Currently implemented FFN layers differ in their activation function. Linear, Sigmoid and Tanh -based layers have been implemented.
 
 ##References
 
