@@ -109,7 +109,7 @@
 {
     int sampleCount = inputMatrix->columns;
     NSUInteger attributeCount = MIN(inputMatrix->rows, [conversionArray count]);
-    NSMutableDictionary *convertedDictionary = [NSMutableDictionary dictionary];
+    MutableOrderedDictionary *convertedDictionary = [MutableOrderedDictionary dictionary];
     int iter = 0;
     for (id element in conversionArray)
     {
