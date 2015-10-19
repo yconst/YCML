@@ -49,7 +49,6 @@
 
 - (instancetype)initWithSettings:(NSDictionary *)settings
                        evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *,
-                                                    YCDataframe *, YCDataframe *,
                                                     YCDataframe *))evaluator
 {
     self = [super init];
@@ -64,33 +63,26 @@
         }
         else
         {
-            self.evaluator = ^NSDictionary *(YCDataframe *tri, YCDataframe *tro,
-                                             YCDataframe *tsi, YCDataframe *tso, YCDataframe *po)
+            self.evaluator = ^NSDictionary *(YCDataframe *ti, YCDataframe *to, YCDataframe *po)
             {
-                return @{@"RMSE" : @(sqrt(MSE(tso, po))),
-                         @"RSquared" : @(RSquared(tso, po))};
+                return @{@"RMSE" : @(sqrt(MSE(to, po))),
+                         @"RSquared" : @(RSquared(to, po))};
             };
         }
     }
     return self;
 }
 
-- (NSDictionary *)test:(YCSupervisedTrainer *)trainer
-         trainingInput:(YCDataframe *)trainingInput trainingOutput:(YCDataframe *)trainingOutput
-             testInput:(YCDataframe *)testInput testOutput:(YCDataframe *)testOutput
+- (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
 {
-    NSAssert([trainingInput dataCount] == [trainingOutput dataCount] &&
-             [testInput dataCount] == [testOutput dataCount] &&
-             [trainingInput dataCount] == [testInput dataCount], @"Sample counts differ");
-    NSAssert([trainingInput attributeCount] == [testInput attributeCount] &&
-             [trainingOutput attributeCount] == [testOutput attributeCount], @"Sample sizes differ");
+    NSAssert([input dataCount] == [output dataCount], @"Sample counts differ");
     
     NSMutableDictionary *cumulativeStats = [NSMutableDictionary dictionary];
     NSMutableArray *models = [NSMutableArray array];
     
     int folds = [self.settings[@"Folds"] intValue];
     
-    int foldLength = (int)([testInput dataCount] / folds);
+    int foldLength = (int)([input dataCount] / folds);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleTrainingStep:)
@@ -102,20 +94,19 @@
         
         NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*foldLength, foldLength)];
         
-        YCDataframe *trimmedTrainingInput = [YCDataframe dataframe];
-        [trimmedTrainingInput addSamplesWithData:[trainingInput samplesNotInIndexes:testIndexes]];
-        YCDataframe *trimmedTrainingOutput = [YCDataframe dataframe];
-        [trimmedTrainingOutput addSamplesWithData:[trainingOutput samplesNotInIndexes:testIndexes]];
+        YCDataframe *trimmedInput = [YCDataframe dataframe];
+        [trimmedInput addSamplesWithData:[input samplesNotInIndexes:testIndexes]];
+        YCDataframe *trimmedOutput = [YCDataframe dataframe];
+        [trimmedOutput addSamplesWithData:[output samplesNotInIndexes:testIndexes]];
         YCDataframe *trimmedTestInput = [YCDataframe dataframe];
-        [trimmedTestInput addSamplesWithData:[testInput samplesAtIndexes:testIndexes]];
+        [trimmedTestInput addSamplesWithData:[input samplesAtIndexes:testIndexes]];
         YCDataframe *trimmedTestOutput = [YCDataframe dataframe];
-        [trimmedTestOutput addSamplesWithData:[testOutput samplesAtIndexes:testIndexes]];
+        [trimmedTestOutput addSamplesWithData:[output samplesAtIndexes:testIndexes]];
         
-        YCSupervisedModel *model = [trainer train:nil input:trimmedTrainingInput output:trimmedTrainingOutput];
+        YCSupervisedModel *model = [trainer train:nil input:trimmedInput output:trimmedOutput];
         YCDataframe *predictedOutput = [model activateWithDataframe:trimmedTestInput];
         
-        NSDictionary *output = self.evaluator(trimmedTrainingInput, trimmedTrainingOutput,
-                                              trimmedTestInput, trimmedTestOutput, predictedOutput);
+        NSDictionary *output = self.evaluator(trimmedTestInput, trimmedTestOutput, predictedOutput);
         
         for (NSString *key in output.allKeys)
         {
@@ -142,11 +133,7 @@
     }
     
     return trainer.shouldStop ? nil : cumulativeStats;
-}
 
-- (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
-{
-    return [self test:trainer trainingInput:input trainingOutput:output testInput:input testOutput:output];
 }
 
 #pragma mark Notifications

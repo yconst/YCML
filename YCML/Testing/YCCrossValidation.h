@@ -31,19 +31,13 @@
 
 - (instancetype)initWithSettings:(NSDictionary *)settings
                        evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *,
-                                                    YCDataframe *, YCDataframe *,
                                                     YCDataframe *))evaluator;
 
 - (NSDictionary *)test:(YCSupervisedTrainer *)trainer
-         trainingInput:(YCDataframe *)trainingInput trainingOutput:(YCDataframe *)trainingOutput
-             testInput:(YCDataframe *)testInput testOutput:(YCDataframe *)testOutput;
-
-- (NSDictionary *)test:(YCSupervisedTrainer *)trainer
-                 input:(YCDataframe *)input
-                output:(YCDataframe *)output;
+                 input:(YCDataframe *)trainingInput
+                output:(YCDataframe *)trainingOutput;
 
 @property (copy) NSDictionary *(^evaluator)(YCDataframe *, YCDataframe *,
-                                            YCDataframe *, YCDataframe *,
                                             YCDataframe *);
 
 @property NSMutableDictionary *settings;
