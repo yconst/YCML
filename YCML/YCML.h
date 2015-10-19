@@ -44,8 +44,14 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCRpropTrainer.h"
 #import "YCRBFNet.h"
 #import "YCOLSTrainer.h"
-
 #import "YCOLSPRESSTrainer.h"
+
+#import "YCModelLayer.h"
+#import "YCFullyConnectedLayer.h"
+#import "YCSigmoidLayer.h"
+#import "YCTanhLayer.h"
+#import "YCLinearLayer.h"
+#import "YCReLULayer.h"
 
 #import "YCBinaryRBM.h"
 #import "YCCDTrainer.h"

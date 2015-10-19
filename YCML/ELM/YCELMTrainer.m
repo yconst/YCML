@@ -45,6 +45,8 @@
 
 #import "YCELMTrainer.h"
 #import "YCFFN.h"
+#import "YCTanhLayer.h"
+#import "YCLinearLayer.h"
 @import YCMatrix;
 
 @implementation YCELMTrainer
@@ -88,17 +90,17 @@
     Matrix *scaledOutput    = [output matrixByRowWiseMapUsing:outputTransform];
     
     // Step II. Randomized input weights and biases and calculation of hidden layer output
-    Matrix *inputWeights = [Matrix randomValuesMatrixOfRows:inputSize
+    YCTanhLayer *hiddenLayer = [[YCTanhLayer alloc] initWithInputSize:inputSize
+                                                           outputSize:hiddenSize];
+    hiddenLayer.weightMatrix = [Matrix randomValuesMatrixOfRows:inputSize
                                                         columns:hiddenSize
                                                          domain:hiddenDomain];
     
-    Matrix *inputBiases = [Matrix randomValuesMatrixOfRows:hiddenSize
+    hiddenLayer.biasVector = [Matrix randomValuesMatrixOfRows:hiddenSize
                                                       columns:1
                                                        domain:hiddenDomain];
     
-    Matrix *H = [inputWeights matrixByTransposingAndMultiplyingWithRight:scaledInput]; // (NxH)T * NxS = HxS
-    [H addColumn:inputBiases];
-    [H applyFunction:model.function];
+    Matrix *H = [hiddenLayer forward:scaledInput];
     
     // Step III. Calculating output weights
     // outW = ( eye(nHiddenNeurons)/C + H * H') \ H * targets';
@@ -112,16 +114,18 @@
     
     Matrix *outputBiases  = [Matrix matrixOfRows:outputSize Columns:1];
     
-    model.weightMatrices    = @[inputWeights, outputWeights];
-    model.biasVectors       = @[inputBiases, outputBiases];
+    YCLinearLayer *outputLayer = [[YCLinearLayer alloc] initWithInputSize:hiddenSize
+                                                               outputSize:outputSize];
+    outputLayer.weightMatrix = outputWeights;
+    outputLayer.biasVector = outputBiases;
+    
+    model.layers = @[hiddenLayer, outputLayer];
     
     // Step IV. Copy transform matrices to model
     // TRANSFORM MATRICES SHOULD BE COPIED AFTER TRAINING OTHERWISE
     // THE MODEL WILL SCALE OUTPUTS AND RETURN FALSE ERRORS
     model.inputTransform      = inputTransform;
     model.outputTransform     = invOutTransform;
-    
-    model.linearOutputs = YES;
 }
 
 @end

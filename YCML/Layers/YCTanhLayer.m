@@ -1,9 +1,9 @@
 //
-//  FFNModel.h
+//  YCTanhLayer.m
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
-//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 11/10/15.
+//  Copyright © 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -20,28 +20,23 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCSupervisedModel.h"
+#import "YCTanhLayer.h"
+@import YCMatrix;
 
-@interface YCFFN : YCSupervisedModel
+@implementation YCTanhLayer
 
-/**
- Returns an array containing the receiver's layers.
- */
-@property NSArray *layers;
+- (void)activationFunction:(Matrix *)inputCopy
+{
+    [inputCopy applyFunction:^double(double value) {
+        return tanh(value);
+    }];
+}
 
-/**
- Returns the input transformation matrix of the receiver.
- */
-@property Matrix *inputTransform;
-
-/**
- Returns the output reverse transformation matrix of the receiver.
- */
-@property Matrix *outputTransform;
-
-/**
- Returns the number of hidden layers of the receiver.
- */
-@property (readonly) int hiddenLayerCount;
+- (void)activationFunctionGradient:(Matrix *)outputCopy
+{
+    [outputCopy applyFunction:^double(double value) {
+        return 1.0 - value*value; // 1 - (f(x)) ^ 2
+    }];
+}
 
 @end

@@ -40,34 +40,15 @@
  */
 
 #import "YCFFN.h"
+#import "YCFullyConnectedLayer.h"
 @import YCMatrix;
 
 @implementation YCFFN
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self initFunctions];
-    }
-    return self;
-}
-
-- (void)initFunctions
-{
-    self.function = ^double(double value) {
-        return 1.0 / (1.0 + exp(-value));
-    };
-    self.yDerivative = ^double(double value) {
-        return value * (1.0 - value); // f(x) * (1 - f(x))
-    };
-}
-
 - (Matrix *)activateWithMatrix:(Matrix *)matrix
 {
-    NSAssert([self.weightMatrices count], @"Model not trained");
-    NSAssert([matrix rows] == [self.weightMatrices[0] rows], @"Input size mismatch");
+    NSAssert([self.layers count], @"Model not trained");
+    NSAssert([matrix rows] == self.inputSize, @"Input size mismatch");
     
     // 1. Scale input
     Matrix *scaledInput = matrix; // NxS
@@ -76,27 +57,14 @@
         scaledInput = [matrix matrixByRowWiseMapUsing:self.inputTransform];
     }
     
-    // 2. Calculate layer-by-layer (and store activations)
-    NSMutableArray *lastActivations = [NSMutableArray array];
+    // 2. Calculate layer-by-layer
     
     Matrix *output = scaledInput;
     
-    for (int i=0, j=(int)self.hiddenLayerCount; i<j; i++)
+    for (int i=0, j=(int)[self.layers count]; i<j; i++)
     {
-        output = [self.weightMatrices[i]
-                  matrixByTransposingAndMultiplyingWithRight:output]; // (HxH)T * HxS = HxS
-        [output addColumn:self.biasVectors[i]];
-        [output applyFunction:self.function];
-        [lastActivations addObject:output];
+        output = [self.layers[i] forward:output];
     }
-    NSUInteger outputsIndex = [self.weightMatrices count] - 1;
-    output = [self.weightMatrices[outputsIndex]
-              matrixByTransposingAndMultiplyingWithRight:output]; // (HxO)T * HxS = OxS
-    output = [output matrixByAddingColumn:self.biasVectors[outputsIndex]];
-    if (!self.linearOutputs) [output applyFunction:self.function];
-    [lastActivations addObject:output];
-    
-    self->_lastActivations = lastActivations;
     
     // 5. Scale output and return
     if (self.outputTransform)
@@ -108,22 +76,17 @@
 
 - (int)inputSize
 {
-    return ((Matrix *)[self.weightMatrices firstObject]).rows;
+    return ((YCFullyConnectedLayer *)[self.layers firstObject]).inputSize;
 }
 
 - (int)outputSize
 {
-    return ((Matrix *)[self.weightMatrices lastObject]).columns;
+    return ((YCFullyConnectedLayer *)[self.layers lastObject]).outputSize;
 }
 
 - (int)hiddenLayerCount
 {
-    return (int)[self.weightMatrices count] - 1;
-}
-
-- (int)hiddenLayerSize
-{
-    return self.hiddenLayerCount ? ((Matrix *)[self.weightMatrices firstObject]).columns : 0;
+    return (int)[self.layers count] - 1;
 }
 
 #pragma mark NSCopying Implementation
@@ -133,13 +96,9 @@
     YCFFN *copy = [super copyWithZone:zone];
     if (copy)
     {
-        copy.weightMatrices = [self.weightMatrices copy];
-        copy.biasVectors = [self.biasVectors copy];
-        copy->_lastActivations = [self.lastActivations copy];
+        copy.layers = [self.layers copy];
         copy.inputTransform = [self.inputTransform copy];
         copy.outputTransform = [self.outputTransform copy];
-        [copy setFunction:[self.function copy]];
-        [copy setYDerivative:[self.yDerivative copy]];
     }
     return copy;
 }
@@ -149,9 +108,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.weightMatrices forKey:@"weightMatrices"];
-    [aCoder encodeObject:self.biasVectors forKey:@"biasVectors"];
-    [aCoder encodeObject:self.lastActivations forKey:@"lastActivations"];
+    [aCoder encodeObject:self.layers forKey:@"layers"];
     [aCoder encodeObject:self.inputTransform forKey:@"inputTransform"];
     [aCoder encodeObject:self.outputTransform forKey:@"outputTransform"];
 }
@@ -160,12 +117,9 @@
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        self.weightMatrices = [aDecoder decodeObjectForKey:@"weightMatrices"];
-        self.biasVectors = [aDecoder decodeObjectForKey:@"biasVectors"];
-        self->_lastActivations = [aDecoder decodeObjectForKey:@"lastActivations"];
+        self.layers = [aDecoder decodeObjectForKey:@"layers"];
         self.inputTransform = [aDecoder decodeObjectForKey:@"inputTransform"];
         self.outputTransform = [aDecoder decodeObjectForKey:@"outputTransform"];
-        [self initFunctions];
     }
     return self;
 }
@@ -189,56 +143,42 @@
         [description appendFormat:@"\nOutput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.outputTransform.rows,
          self.outputTransform.columns, self.outputTransform];
     }
-    [self.weightMatrices enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
-        [description appendFormat:@"\nWeights\n"];
-        Matrix *weights = obj;
+    [self.layers enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
+        [description appendFormat:@"\nLayers\n"];
+        
+        YCFullyConnectedLayer *layer = obj;
         if (self.hiddenLayerCount == 0)
         {
-            [description appendFormat:@"\nInput to Output (%d x %d)\n%@",weights.rows,
-             weights.columns, weights];
+            [description appendFormat:@"\nInput to Output Weights (%d x %d)\n%@",layer.inputSize,
+             layer.outputSize, layer.weightMatrix];
+            
+            [description appendFormat:@"\nInput to Output Biases (%d x 1)\n%@",layer.outputSize, layer.biasVector];
         }
         else if (idx == 0)
         {
             // Print input-hidden layer weights
-            [description appendFormat:@"\nInput to H1 (%d x %d)\n%@",weights.rows,
-             weights.columns, weights];
+            [description appendFormat:@"\nInput to H1 Weights (%d x %d)\n%@",layer.inputSize,
+             layer.outputSize, layer.weightMatrix];
+            
+            [description appendFormat:@"\nInput to H1 Biases (%d x 1)\n%@",layer.outputSize, layer.biasVector];
         }
         else if (idx == self.hiddenLayerCount)
         {
             // Print hidden-output layer weights
-            [description appendFormat:@"\nH%lu to Output (%d x %d)\n%@",(unsigned long)idx,
-             weights.rows, weights.columns, weights];
+            [description appendFormat:@"\nH%lu to Output Weights (%d x %d)\n%@",(unsigned long)idx,
+             layer.inputSize, layer.outputSize, layer.weightMatrix];
+            
+            [description appendFormat:@"\nH%lu to Output Biases (%d x 1)\n%@",(unsigned long)idx,
+             layer.outputSize, layer.biasVector];
         }
         else
         {
             // Print hidden-hidden layer weights
-            [description appendFormat:@"\nH%lu to H%lu (%d x %d)\n%@",(unsigned long)idx,
-             (unsigned long)idx + 1, weights.rows, weights.columns, weights];
-        }
-    }];
-    [self.biasVectors enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
-        [description appendFormat:@"\nBiases\n"];
-        Matrix *biases = obj;
-        if (self.hiddenLayerCount == 0)
-        {
-            [description appendFormat:@"\nInput to Output (%d x 1)\n%@",biases.rows, biases];
-        }
-        else if (idx == 0)
-        {
-            // Print input-hidden layer biases
-            [description appendFormat:@"\nInput to H1 (%d x 1)\n%@",biases.rows, biases];
-        }
-        else if (idx == self.hiddenLayerCount)
-        {
-            // Print hidden-output layer biases
-            [description appendFormat:@"\nH%lu to Output (%d x 1)\n%@",(unsigned long)idx,
-             biases.rows, biases];
-        }
-        else
-        {
-            // Print hidden-hidden layer biases
-            [description appendFormat:@"\nH%lu to H%lu (%d x 1)\n%@",(unsigned long)idx,
-             (unsigned long)idx + 1, biases.rows, biases];
+            [description appendFormat:@"\nH%lu to H%lu Weights (%d x %d)\n%@",(unsigned long)idx,
+             (unsigned long)idx + 1, layer.inputSize, layer.outputSize, layer.weightMatrix];
+            
+            [description appendFormat:@"\nH%lu to H%lu Biases (%d x 1)\n%@",(unsigned long)idx,
+             (unsigned long)idx + 1, layer.outputSize, layer.biasVector];
         }
     }];
     return description;

@@ -25,6 +25,9 @@
 #import "YCBackPropProblem.h"
 #import "YCFFN.h"
 #import "YCGradientDescent.h"
+#import "YCFullyConnectedLayer.h"
+#import "YCSigmoidLayer.h"
+#import "YCLinearLayer.h"
 
 // N: Size of input
 // S: Number of samples
@@ -53,7 +56,8 @@
     {
         self.settings[@"Hidden Layer Count"] = @1;
         self.settings[@"Hidden Layer Size"]  = @5;
-        self.settings[@"Lambda"]             = @0.0001;
+        self.settings[@"L1"]                 = @0;
+        self.settings[@"L2"]                 = @0.0000;
         self.settings[@"Iterations"]         = @500;
         self.settings[@"Alpha"]              = @0.1;
         self.settings[@"Target"]             = @-1;
@@ -76,18 +80,27 @@
     Matrix *scaledInput     = [input matrixByRowWiseMapUsing:inputTransform];
     Matrix *scaledOutput    = [output matrixByRowWiseMapUsing:outputTransform];
     
-    // Step II. Populating network with properly sized matrices
+    // Step II. Populating network with properly sized layers if required
     int hiddenCount      = [self.settings[@"Hidden Layer Count"] intValue];
     int hiddenSize       = [self.settings[@"Hidden Layer Size"] intValue];
     int inputSize             = scaledInput.rows;
     int outputSize            = scaledOutput.rows;
-    [self initialize:model withInputSize:inputSize hiddenSize:hiddenSize hiddenCount:hiddenCount outputSize:outputSize];
+
+    if (!model || model.layers.count == 0)
+    {
+        [self initialize:model
+           withInputSize:inputSize
+              hiddenSize:hiddenSize
+             hiddenCount:hiddenCount
+              outputSize:outputSize
+                      L1:[self.settings[@"L1"] doubleValue]
+                      L2:[self.settings[@"L2"] doubleValue]];
+    }
     
     // Step III. Defining the Backprop problem and GD properties
     YCBackPropProblem *p      = [[[[self class] problemClass] alloc] initWithInputMatrix:scaledInput
                                                                             outputMatrix:scaledOutput
                                                                                    model:model];
-    p.lambda                          = [self.settings[@"Lambda"] doubleValue];
     p.sampleCount                     = [self.settings[@"Samples"] intValue];
     YCOptimizer *optimizer      = [[[[self class] optimizerClass] alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
@@ -97,7 +110,8 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(respondToIterationNotification:) name:@"iterationComplete"
+                                             selector:@selector(respondToIterationNotification:)
+                                                 name:@"iterationComplete"
                                                object:nil];
     
     // Step IV. Optimizing
@@ -109,9 +123,12 @@
     model.statistics[@"Iterations"] = optimizer.state[@"currentIteration"];
     
     NSArray *weights          = [p modelWeightsWithParameters:optimizer.state[@"values"]];
-    model.weightMatrices      = [[NSArray alloc] initWithArray:weights copyItems:YES];
     NSArray *biases           = [p modelBiasesWithParameters:optimizer.state[@"values"]];
-    model.biasVectors         = [[NSArray alloc] initWithArray:biases copyItems:YES];
+    [model.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        YCFullyConnectedLayer *layer = obj;
+        layer.weightMatrix = [weights[idx] copy];
+        layer.biasVector = [biases[idx] copy];
+    }];
     
     // Step VI. Copy transform matrices to model
     // TRANSFORM MATRICES SHOULD BE COPIED AFTER TRAINING OTHERWISE
@@ -125,42 +142,48 @@
         hiddenSize:(int)hiddenSize
        hiddenCount:(int)hiddenCount
         outputSize:(int)outputSize
+                L1:(double)L1
+                L2:(double)L2
 {
-    if (hiddenCount == 0)
+    NSMutableArray *layerSizes = [NSMutableArray array];
+    [layerSizes addObject:@(inputSize)];
+    for (int i=0; i<hiddenCount; i++)
     {
-        NSMutableArray *weightMatrices = [NSMutableArray array];
-        NSMutableArray *biasVectors = [NSMutableArray array];
-        [weightMatrices addObject:[Matrix matrixOfRows:inputSize Columns:outputSize]]; // NxO
-        [biasVectors addObject:[Matrix matrixOfRows:outputSize Columns:1]]; // Ox1
-        model.weightMatrices = weightMatrices;
-        model.biasVectors = biasVectors;
+        [layerSizes addObject:@(hiddenSize)];
     }
-    else
-    {
-        NSMutableArray *weightMatrices = [NSMutableArray array];
-        NSMutableArray *biasVectors = [NSMutableArray array];
-        [weightMatrices addObject:[Matrix matrixOfRows:inputSize Columns:hiddenSize]]; // NxH
-        [biasVectors addObject:[Matrix matrixOfRows:hiddenSize Columns:1]]; // Hx1
-        for (int i=0; i<hiddenCount-1; i++)
+    [layerSizes addObject:@(outputSize)];
+    
+    NSMutableArray *layers = [NSMutableArray array];
+    
+    [layerSizes enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == 0) return;
+        YCFullyConnectedLayer *layer;
+        if (idx < layerSizes.count - 1)
         {
-            [weightMatrices addObject:[Matrix matrixOfRows:hiddenSize Columns:hiddenSize]]; // HxH
-            [biasVectors addObject:[Matrix matrixOfRows:hiddenSize Columns:1]]; // Hx1
+            layer = [[YCSigmoidLayer alloc] initWithInputSize: [layerSizes[idx - 1] doubleValue]
+                                                   outputSize: [layerSizes[idx] doubleValue]];
         }
-        [weightMatrices addObject:[Matrix matrixOfRows:hiddenSize Columns:outputSize]]; // HxO
-        [biasVectors addObject:[Matrix matrixOfRows:outputSize Columns:1]]; // Ox1
-        model.weightMatrices = weightMatrices;
-        model.biasVectors = biasVectors;
-    }
+        else
+        {
+            layer = [[YCLinearLayer alloc] initWithInputSize: [layerSizes[idx - 1] doubleValue]
+                                                  outputSize: [layerSizes[idx] doubleValue]];
+        }
+        //layer.L1 = L1;
+        layer.L2 = L2;
+        [layers addObject:layer];
+    }];
+    model.layers = layers;
 }
 
 - (void)respondToIterationNotification:(NSNotification *)notification
 {
     NSDictionary *state = notification.userInfo;
+    NSDictionary *uInfo = @{@"Status" : @"Optimizing Weights",
+                            @"Hidden Units" : self.settings[@"Hidden Layer Size"],
+                            @"Iteration" : state[@"currentIteration"]};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
                                                         object:self
-                                                      userInfo:@{@"Status" : @"Optimizing Weights",
-                                                                 @"Hidden Units" : self.settings[@"Hidden Layer Size"],
-                                                                 @"Iteration" : state[@"currentIteration"]}];
+                                                      userInfo:uInfo];
 }
 
 

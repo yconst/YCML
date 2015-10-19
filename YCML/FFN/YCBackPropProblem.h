@@ -45,8 +45,6 @@
 
 @property YCFFN *trainedModel;
 
-@property double lambda;
-
 @property int sampleCount;
 
 @end

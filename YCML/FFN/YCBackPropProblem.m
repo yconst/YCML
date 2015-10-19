@@ -24,6 +24,7 @@
 #import "YCBackPropProblem.h"
 #import "YCFFN.h"
 #import "NSIndexSet+Sampling.h"
+#import "YCFullyConnectedLayer.h"
 
 // N: Size of input
 // S: Number of samples
@@ -61,9 +62,17 @@
 
 - (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters
 {
-    self.trainedModel.weightMatrices = [self modelWeightsWithParameters:parameters];
-    self.trainedModel.biasVectors    = [self modelBiasesWithParameters:parameters];
-    Matrix *residual               = [self->_trainedModel activateWithMatrix:self->_inputMatrix];
+    NSArray *weights = [self modelWeightsWithParameters:parameters];
+    NSArray *biases  = [self modelBiasesWithParameters:parameters];
+    NSAssert(weights.count == self.trainedModel.layers.count, @"Weights and layers counts mismatch");
+    NSAssert(biases.count == self.trainedModel.layers.count, @"Biases and layers counts mismatch");
+    [self.trainedModel.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        YCFullyConnectedLayer *layer = obj;
+        layer.weightMatrix = weights[idx];
+        layer.biasVector = biases[idx];
+    }];
+    
+    Matrix *residual = [self->_trainedModel activateWithMatrix:self->_inputMatrix];
     
     // Calculate sum-of-squares error
     [residual subtract:self->_outputMatrix];
@@ -72,14 +81,15 @@
     }];
     
     // Calculate regularization term
-    int n = self->_outputMatrix->columns;
-    int s = self->_outputMatrix->rows;
-    Matrix *weights = [parameters matrixWithRowsInRange:NSMakeRange(0, [self weightParameterCount])];
-    [weights elementWiseMultiply:weights];
-    double ws2 = [weights sum];
+    double r = 0;
+    for (YCFullyConnectedLayer *layer in self.trainedModel.layers)
+    {
+        r += [layer regularizationLoss];
+    }
     
     // Add and return
-    double cost = [residual sum] / (n * s) + self.lambda * ws2/n;
+    double s = self->_inputMatrix.columns;
+    double cost = [residual sum] / (self.trainedModel.outputSize * s) + r/s;
     [target setValue:cost Row:0 Column:0];
 }
 
@@ -89,8 +99,15 @@
     YCFFN *tm = self.trainedModel;
     
     // Initialization
-    tm.weightMatrices = [self modelWeightsWithParameters:parameters];
-    tm.biasVectors    = [self modelBiasesWithParameters:parameters];
+    NSArray *weights = [self modelWeightsWithParameters:parameters];
+    NSArray *biases  = [self modelBiasesWithParameters:parameters];
+    NSAssert(weights.count == self.trainedModel.layers.count, @"Weights and layers counts mismatch");
+    NSAssert(biases.count == self.trainedModel.layers.count, @"Biases and layers counts mismatch");
+    [self.trainedModel.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        YCFullyConnectedLayer *layer = obj;
+        layer.weightMatrix = weights[idx];
+        layer.biasVector = biases[idx];
+    }];
     int hiddenCount   = tm.hiddenLayerCount;
     
     // Prepare Matrices and Arrays
@@ -129,7 +146,7 @@
     [tm activateWithMatrix:inputMatrix];
     
     NSMutableArray *activationArrays = [NSMutableArray array];
-    for (Matrix *m in [tm lastActivations])
+    for (Matrix *m in [tm.layers valueForKey:@"lastActivation"])
     {
         [activationArrays addObject:[m columnsAsNSArray]];
     }
@@ -139,8 +156,8 @@
     NSMutableArray *biasGradients   = [NSMutableArray array];
     for (int l=0; l<=hiddenCount; l++)
     {
-        [weightGradients addObject:[Matrix matrixLike:tm.weightMatrices[l]]];
-        [biasGradients addObject:[Matrix matrixLike:tm.biasVectors[l]]];
+        [weightGradients addObject:[Matrix matrixLike:weights[l]]];
+        [biasGradients addObject:[Matrix matrixLike:biases[l]]];
     }
     
     // For every sample:
@@ -150,16 +167,21 @@
         NSMutableArray *deltas = [NSMutableArray array];
         Matrix *expectedOutput = outputMatrixArray[s];
         Matrix *modelOutput    = [activationArrays lastObject][s];
+        
+        Matrix *modelOutputGradient = [modelOutput copy];
+        [[tm.layers lastObject] activationFunctionGradient:modelOutputGradient];
+        
         Matrix *delta          = [modelOutput matrixBySubtracting:expectedOutput];
-        [delta elementWiseMultiply:[modelOutput matrixByApplyingFunction:tm.yDerivative]];
+        [delta elementWiseMultiply:modelOutputGradient];
         
         [deltas addObject:delta];
         
         // Calculate Deltas for Hidden Layers
         for (int l=hiddenCount; l>=1; l--)
         {
-            delta                     = [tm.weightMatrices[l] matrixByMultiplyingWithRight:delta];
-            Matrix *layerDerivative = [activationArrays[l-1][s] matrixByApplyingFunction:tm.yDerivative];
+            delta                     = [[tm.layers[l] weightMatrix] matrixByMultiplyingWithRight:delta];
+            Matrix *layerDerivative = [activationArrays[l-1][s] copy];
+            [tm.layers[l-1] activationFunctionGradient:layerDerivative];
             [delta elementWiseMultiply:layerDerivative];
             [deltas insertObject:delta atIndex:0];
         }
@@ -167,11 +189,11 @@
         // Find Derivatives for each weight and bias
         for (int l=0; l<=hiddenCount; l++)
         {
-            Matrix *weights = self.trainedModel.weightMatrices[l];
+            Matrix *weights = [self.trainedModel.layers[l] weightMatrix];
             Matrix *incoming = l==0 ? inputMatrixArray[s] : activationArrays[l-1][s];
             delta              = deltas[l];
             Matrix *loss = [delta matrixByTransposingAndMultiplyingWithLeft:incoming];
-            [loss add:[weights matrixByMultiplyingWithScalar:self.lambda]];
+            [loss add:[weights matrixByMultiplyingWithScalar:[self.trainedModel.layers[l] L2]]];
             [weightGradients[l] add:loss];
             
             [biasGradients[l] add:delta];
@@ -195,34 +217,18 @@
 {
     double *weightsPointer = parameters->matrix;
     NSMutableArray *result = [NSMutableArray array];
-    YCFFN *tm              = self.trainedModel;
-    int hlSize             = tm.hiddenLayerSize;
-    int hlCount            = tm.hiddenLayerCount;
-    int inputSize          = tm.inputSize;
-    int outputSize         = tm.outputSize;
+    int offset = 0;
     
-    // TODO: Handle case of no hidden layer
-    
-    Matrix *inputToHidden = [Matrix matrixFromArray:weightsPointer
-                                                   Rows:inputSize
-                                                Columns:hlSize
-                                                   Mode:YCMWeak]; //  NxH
-    [result addObject:inputToHidden];
-    int stride = (int)inputToHidden.count;
-    for (int i=0; i<hlCount-1; i++)
+    for (YCFullyConnectedLayer *layer in self.trainedModel.layers)
     {
-        Matrix *hiddenToHidden = [Matrix matrixFromArray:weightsPointer+stride
-                                                        Rows:hlSize
-                                                     Columns:hlSize
-                                                        Mode:YCMWeak]; // HxH
-        [result addObject:hiddenToHidden];
-        stride += (int)hiddenToHidden.count;
+        int weightSize = (int)layer.weightMatrix.count;
+        Matrix *weights = [Matrix matrixFromArray:weightsPointer+offset
+                                             Rows:layer.weightMatrix.rows
+                                          Columns:layer.weightMatrix.columns
+                                             Mode:YCMWeak];
+        offset += weightSize;
+        [result addObject:weights];
     }
-    Matrix *hiddenToOutput = [Matrix matrixFromArray:weightsPointer+stride
-                                                    Rows:hlSize
-                                                 Columns:outputSize
-                                                    Mode:YCMWeak]; // HxO
-    [result addObject:hiddenToOutput];
     return result;
 }
 
@@ -230,70 +236,59 @@
 {
     double *biasPointer    = parameters->matrix + [self weightParameterCount];
     NSMutableArray *result = [NSMutableArray array];
-    int hlSize             = self.trainedModel.hiddenLayerSize;
-    int hlCount            = self.trainedModel.hiddenLayerCount;
-    int outputSize         = self.trainedModel.outputSize;
+    int offset = 0;
     
-    // TODO: Handle case of no hidden layer
-    
-    Matrix *inputToHidden = [Matrix matrixFromArray:biasPointer
-                                                   Rows:hlSize
-                                                Columns:1
-                                                   Mode:YCMWeak]; // Hx1
-    [result addObject:inputToHidden];
-    int stride = (int)inputToHidden.count;
-    for (int i=0; i<hlCount-1; i++)
+    for (YCFullyConnectedLayer *layer in self.trainedModel.layers)
     {
-        Matrix *hiddenToHidden = [Matrix matrixFromArray:biasPointer+stride
-                                                        Rows:hlSize
-                                                     Columns:1
-                                                        Mode:YCMWeak]; // Hx1
-        [result addObject:hiddenToHidden];
-        stride += (int)[hiddenToHidden count];
+        int biasSize = (int)layer.biasVector.count;
+        Matrix *biases = [Matrix matrixFromArray:biasPointer+offset
+                                            Rows:biasSize
+                                         Columns:1
+                                            Mode:YCMWeak];
+        offset += biasSize;
+        [result addObject:biases];
+
     }
-    Matrix *hiddenToOutput = [Matrix matrixFromArray:biasPointer+stride
-                                                    Rows:outputSize
-                                                 Columns:1
-                                                    Mode:YCMWeak]; // Ox1
-    [result addObject:hiddenToOutput];
     return result;
 }
 
 - (int)weightParameterCount
 {
-    int hlSize     = self.trainedModel.hiddenLayerSize;
-    int hlCount    = self.trainedModel.hiddenLayerCount;
-    int inputSize  = self.trainedModel.inputSize;
-    int outputSize = self.trainedModel.outputSize;
-    return MAX(0, hlCount - 1) * (hlSize * hlSize) +
-    inputSize * hlSize + outputSize * hlSize;
+    int sum = 0;
+    for (YCFullyConnectedLayer *l in self.trainedModel.layers)
+    {
+        sum += l.weightMatrix.count;
+    }
+    return sum;
 }
 
 - (int)biasParameterCount
 {
-    int hlSize     = self.trainedModel.hiddenLayerSize;
-    int hlCount    = self.trainedModel.hiddenLayerCount;
-    int outputSize = self.trainedModel.outputSize;
-    return MAX(0, hlCount - 1) * hlSize + hlSize + outputSize;
+    int sum = 0;
+    for (YCFullyConnectedLayer *l in self.trainedModel.layers)
+    {
+        sum += l.biasVector.count;
+    }
+    return sum;
 }
 
 - (void)storeWeights:(NSArray *)weights biases:(NSArray *)biases toVector:(Matrix *)vector
 {
-    // Some really low-level shit going on here. Need to amend.
+    // FIXME: Some really low-level shit going on here. Need to amend.
     double* parameterArray = vector->matrix;
     
-    int stride = 0;
+    int offset = 0;
     for (Matrix *weightMatrix in weights)
     {
         NSUInteger count = [weightMatrix count];
-        memcpy(&parameterArray[stride], weightMatrix->matrix, count * sizeof(double));
-        stride += count;
+        memcpy(&parameterArray[offset], weightMatrix->matrix, count * sizeof(double));
+        offset += count;
     }
     for (Matrix *biasMatrix in biases)
     {
         NSUInteger count = [biasMatrix count];
-        memcpy(&parameterArray[stride], biasMatrix->matrix, count * sizeof(double));
-        stride += count;
+        memcpy(&parameterArray[offset], biasMatrix->matrix, count * sizeof(double));
+        offset += count;
     }
 }
 
