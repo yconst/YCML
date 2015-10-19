@@ -20,6 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
+@import Foundation;
 @import XCTest;
 @import YCML;
 @import YCMatrix;
@@ -45,7 +46,7 @@
     Matrix *input = [Matrix matrixFromArray:inputArray Rows:3 Columns:1];
     
     // Here create expected output
-    double outputArray[1] = {0.0031514511414750075};
+    double outputArray[1] = {-5.75673582497026004};
     Matrix *expected = [Matrix matrixFromArray:outputArray Rows:1 Columns:1];
     // Here create weight and biases matrices
     NSMutableArray *weights = [NSMutableArray array];
@@ -68,8 +69,23 @@
     [biases addObject:[Matrix matrixFromArray:layer12b Rows:1 Columns:1]];
     
     // Here apply weight ans biases matrices to net
-    net.weightMatrices = weights;
-    net.biasVectors = biases;
+    NSMutableArray *layers = [NSMutableArray array];
+    for (int i=0; i<weights.count; i++)
+    {
+        YCFullyConnectedLayer *l;
+        if (i < weights.count - 1)
+        {
+            l =  [[YCSigmoidLayer alloc] init];
+        }
+        else
+        {
+            l =  [[YCLinearLayer alloc] init];
+        }
+        l.weightMatrix = weights[i];
+        l.biasVector = biases[i];
+        [layers addObject: l];
+    }
+    net.layers = layers;
     
     // Here test net
     Matrix *actual = [net activateWithMatrix:input];
@@ -87,10 +103,11 @@
     Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:3];
     
     YCFFN *model = [[YCFFN alloc] init];
-    model.weightMatrices = @[[Matrix matrixOfRows:3 Columns:5],
-                             [Matrix matrixOfRows:5 Columns:1]];
-    model.biasVectors = @[[Matrix matrixOfRows:5 Columns:1],
-                          [Matrix matrixOfRows:1 Columns:1]];
+    
+    YCSigmoidLayer *hl = [YCSigmoidLayer layerWithInputSize:3 outputSize:5];
+    YCSigmoidLayer *ol = [YCSigmoidLayer layerWithInputSize:5 outputSize:1];
+    
+    model.layers = @[hl, ol];
     
     YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
                                                                 outputMatrix:om
@@ -106,25 +123,51 @@
     XCTAssertEqualObjects(params, trialParams, @"Converted parameter vector is not equal");
 }
 
-- (void)testFFNNumericalGradients
+- (void)testFFNSigSigNumericalGradients
 {
-    double ia[9] = {0.4084028, 0.14962953, 0.912,
-        0.27, 0.1076, 0.691,
-        0.7603, 0.4902, 0.8019};
-    double oa[3] = {0.1, 0.95, 0.45};
-    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:3];
-    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:3];
+    YCFullyConnectedLayer *hl = [YCSigmoidLayer layerWithInputSize:3 outputSize:2];
+    YCFullyConnectedLayer *ol = [YCSigmoidLayer layerWithInputSize:2 outputSize:1];
+    [self numericalGradientsWithLayers:@[hl, ol]];
+}
+
+- (void)testFFNSigLinNumericalGradients
+{
+    YCFullyConnectedLayer *hl = [YCSigmoidLayer layerWithInputSize:3 outputSize:2];
+    YCFullyConnectedLayer *ol = [YCLinearLayer layerWithInputSize:2 outputSize:1];
+    [self numericalGradientsWithLayers:@[hl, ol]];
+}
+
+- (void)testFFNTanhLinNumericalGradients
+{
+    YCFullyConnectedLayer *hl = [YCTanhLayer layerWithInputSize:3 outputSize:2];
+    YCFullyConnectedLayer *ol = [YCLinearLayer layerWithInputSize:2 outputSize:1];
+    [self numericalGradientsWithLayers:@[hl, ol]];
+}
+
+- (void)testFFNReLULinNumericalGradients
+{
+    YCFullyConnectedLayer *hl = [YCReLULayer layerWithInputSize:3 outputSize:2];
+    YCFullyConnectedLayer *ol = [YCLinearLayer layerWithInputSize:2 outputSize:1];
+    [self numericalGradientsWithLayers:@[hl, ol]];
+}
+
+- (void)numericalGradientsWithLayers:(NSArray *)layers
+{
+    double ia[12] = {0.4084028, 0.14962953, 0.912, 0.877,
+        0.27, 0.1076, 0.691, 0.052,
+        0.7603, 0.4902, 0.8019, 0.23};
+    double oa[4] = {0.1, 0.95, 0.45, 0.21};
+    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:4];
+    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:4];
     
     YCFFN *model = [[YCFFN alloc] init];
-    model.weightMatrices = @[[Matrix matrixOfRows:3 Columns:2],
-                             [Matrix matrixOfRows:2 Columns:1]];
-    model.biasVectors = @[[Matrix matrixOfRows:2 Columns:1],
-                          [Matrix matrixOfRows:1 Columns:1]];
+    
+    model.layers = layers;
     
     YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
                                                                 outputMatrix:om
                                                                        model:model];
-    Matrix *lo     = [Matrix matrixOfRows:11 Columns:1 Value:-1.0]; // 3x2 + 2 + 1x2 + 1
+    Matrix *lo     = [Matrix matrixOfRows:11 Columns:1 Value:-1.0]; // 3x2 + 2 + 1x2 + 1 = 11
     Matrix *hi     = [Matrix matrixOfRows:11 Columns:1 Value:1.0];
     Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
     
@@ -132,7 +175,7 @@
     [prob derivatives:theoreticalGradients parameters:params];
     Matrix *numericalGradients   = [Matrix matrixLike:theoreticalGradients];
     Matrix *perturbed            = [Matrix matrixFromMatrix:params];
-    double e                       = 1E-4;
+    double e                     = 1E-4;
     Matrix *resultMin = [Matrix matrixOfRows:1 Columns:1];
     Matrix *resultMax = [Matrix matrixOfRows:1 Columns:1];
     for (int i=0; i<[perturbed count]; i++)
@@ -155,10 +198,10 @@
 - (void)testELMHousing
 {
     YCELMTrainer *trainer                  = [YCELMTrainer trainer];
-    trainer.settings[@"C"]                 = @8;
+    trainer.settings[@"C"]                 = @1;
     trainer.settings[@"Hidden Layer Size"] = @900;
     
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:7.5];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:8.0];
 }
 
 - (void)testBackPropHousing
@@ -181,13 +224,14 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-- (void)testStochasticRPropHousing
+- (void)testStochasticBackPropHousing
 {
-    YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
+    YCBackPropTrainer *trainer                 = [YCBackPropTrainer trainer];
     trainer.settings[@"Hidden Layer Size"]  = @8;
     trainer.settings[@"Lambda"]             = @0.0001;
-    trainer.settings[@"Iterations"]         = @300;
-    trainer.settings[@"Samples"] = @50;
+    trainer.settings[@"Iterations"]         = @5000;
+    trainer.settings[@"Alpha"]              = @0.5;
+    trainer.settings[@"Samples"]            = @10;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.5];
 }
 
