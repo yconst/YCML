@@ -23,6 +23,8 @@
 #import "YCCompoundProblem.h"
 @import YCMatrix;
 
+// TODO: Implement as Immutable Type
+
 @implementation YCCompoundProblem
 
 - (instancetype)init
@@ -89,9 +91,10 @@
     
     for (id<YCProblem> p in self.problems)
     {
-        Matrix *result = [Matrix matrixOfRows:[p objectiveCount] + [p constraintCount] Columns:1];
+        Matrix *result = [Matrix matrixOfRows:[p objectiveCount] + [p constraintCount]
+                                      columns:target.columns];
         [p evaluate:result parameters:parameters];
-        NSArray *resultArray = [result numberArray];
+        NSArray *resultArray = [result rowsAsNSArray];
         NSArray *objectiveArray = [resultArray subarrayWithRange:NSMakeRange(0,
                                                                              [p objectiveCount])];
         NSArray *constraintArray = [resultArray subarrayWithRange:NSMakeRange([p objectiveCount] - 1,
@@ -101,9 +104,7 @@
     }
     
     [compoundObjectives addObjectsFromArray:compoundConstraints];
-    Matrix *compoundMatrix = [Matrix matrixFromNSArray:compoundObjectives
-                                                  Rows:(int)compoundObjectives.count
-                                               Columns:1];
+    Matrix *compoundMatrix = [Matrix matrixFromRows:compoundObjectives];
     [target copyValuesFrom:compoundMatrix];
 }
 
@@ -139,7 +140,7 @@
 - (Matrix *)modes
 {
     // TODO: Cache this value.
-    Matrix *modes = [Matrix matrixOfRows:self.objectiveCount Columns:1];
+    Matrix *modes = [Matrix matrixOfRows:self.objectiveCount columns:1];
     int count = 0;
     for (id<YCProblem> p in self.problems)
     {
@@ -150,6 +151,16 @@
         }
     }
     return modes;
+}
+
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    int mode = INT_MAX;
+    for (id<YCProblem> problem in self.problems)
+    {
+        mode = MIN(mode, [problem supportedEvaluationMode]);
+    }
+    return mode;
 }
 
 - (NSArray *)dictionary:(NSDictionary *)dictionary toArrayWithKeyOrder:(NSArray *)order

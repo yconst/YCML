@@ -29,7 +29,7 @@
 
 - (instancetype)init
 {
-    return [self initWithRandomValuesInBounds:[Matrix matrixOfRows:0 Columns:0]];
+    return [self initWithRandomValuesInBounds:[Matrix matrixOfRows:0 columns:0]];
 }
 
 - (instancetype)initWithRandomValuesInBounds:(Matrix *)bounds
@@ -40,10 +40,10 @@
     {
         for (int i=0; i<m; i++)
         {
-            double min = [bounds valueAtRow:i Column:0];
-            double max = [bounds valueAtRow:i Column:1];
+            double min = [bounds valueAtRow:i column:0];
+            double max = [bounds valueAtRow:i column:1];
             double newValue = min + ((double)arc4random() / ARC4RANDOM_MAX) * (max-min);
-            [self.decisionVariableValues setValue:newValue Row:i Column:0];
+            [self.decisionVariableValues setValue:newValue row:i column:0];
         }
     }
     return self;
@@ -54,9 +54,9 @@
     self = [super init];
     if (self)
     {
-        self.decisionVariableValues = [Matrix matrixOfRows:count Columns:1];
-        self.objectiveFunctionValues = [Matrix matrixOfRows:0 Columns:0];
-        self.constraintValues = [Matrix matrixOfRows:0 Columns:0];
+        self.decisionVariableValues = [Matrix matrixOfRows:count columns:1];
+        self.objectiveFunctionValues = [Matrix matrixOfRows:0 columns:0];
+        self.constraintValues = [Matrix matrixOfRows:0 columns:0];
         self.evaluated = NO;
     }
     return self;

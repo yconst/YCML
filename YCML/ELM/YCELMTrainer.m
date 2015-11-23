@@ -104,7 +104,7 @@
     
     // Step III. Calculating output weights
     // outW = ( eye(nHiddenNeurons)/C + H * H') \ H * targets';
-    Matrix *oneOverC      = [Matrix identityOfRows:hiddenSize Columns:hiddenSize];
+    Matrix *oneOverC      = [Matrix identityOfRows:hiddenSize columns:hiddenSize];
     [oneOverC multiplyWithScalar:1.0/C];
     [oneOverC add:[H matrixByTransposingAndMultiplyingWithLeft:H]];
     Matrix *invA          = [oneOverC pseudoInverse];
@@ -112,7 +112,7 @@
     Matrix *HTargetsT     = [scaledOutput matrixByTransposingAndMultiplyingWithLeft:H];
     Matrix *outputWeights = [invA matrixByMultiplyingWithRight:HTargetsT];
     
-    Matrix *outputBiases  = [Matrix matrixOfRows:outputSize Columns:1];
+    Matrix *outputBiases  = [Matrix matrixOfRows:outputSize columns:1];
     
     YCLinearLayer *outputLayer = [[YCLinearLayer alloc] initWithInputSize:hiddenSize
                                                                outputSize:outputSize];
