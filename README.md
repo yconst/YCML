@@ -118,7 +118,7 @@ Cross-validation example, from data input to presentation of results:
     [input removeAttributeWithIdentifier:eAttribute];
     [output addAttributeWithIdentifier:eAttribute data:outputData];
 
-    YCCrossValidation *cv = [[YCCrossValidation alloc] initWithSettings:@{@"Folds" : @10}];
+    YCkFoldValidation *cv = [[YCkFoldValidation alloc] initWithSettings:@{@"Folds" : @10}];
     
     // Choose the trainer/model that you wish to test
     YCBackPropTrainer *trainer = [YCRpropTrainer trainer];
@@ -157,7 +157,7 @@ A significant supervised learning model is the Feed Forward Network, which is im
 
 In forward propagation, the input signal is being propagated through each single layer, and appears as the output. Propagation in a densely connected layer involves application of weights and biases to the input, and transformation by the activation function. The scaling/normalization of the model input and output happen separately from the layers.
 
-Currently implemented FFN layers differ in their activation function. Linear, Sigmoid and Tanh -based layers have been implemented.
+Currently implemented FFN layers differ in their activation function. Linear, Sigmoid, ReLU and Tanh -based layers have been implemented.
 
 ##References
 
@@ -178,6 +178,8 @@ Currently implemented FFN layers differ in their activation function. Linear, Si
 [8] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
 
 ##License 
+
+Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 
 YCML is licensed under the GPLv3. For other licensing options, please contact the author.
 
