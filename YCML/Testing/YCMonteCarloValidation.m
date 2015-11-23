@@ -26,13 +26,16 @@
 #import "YCDataframe.h"
 #import "YCRegressionMetrics.h"
 #import "NSArray+Statistics.h"
+#import "NSIndexSet+Sampling.h"
 
 @implementation YCMonteCarloValidation
 {
     double _currentIteration;
 }
 
-- (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
+- (NSDictionary *)performTest:(YCSupervisedTrainer *)trainer
+                        input:(YCDataframe *)input
+                       output:(YCDataframe *)output
 {
     NSAssert([input dataCount] == [output dataCount], @"Sample counts differ");
     
@@ -41,7 +44,7 @@
     
     int iterations = [self.settings[@"Iterations"] intValue];
     
-    int testSize = (int)([input dataCount] * [self.settings[@"Iterations"] doubleValue]);
+    int testSize = (int)([input dataCount] * [self.settings[@"TestFactor"] doubleValue]);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleTrainingStep:)
@@ -51,7 +54,9 @@
     {
         _currentIteration = i;
         
-        NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*testSize, testSize)];
+        NSIndexSet *testIndexes = [NSIndexSet indexesForSampling:testSize
+                                                         inRange:NSMakeRange(0, input.dataCount)
+                                                     replacement:NO];
         
         YCDataframe *trimmedInput = [YCDataframe dataframe];
         [trimmedInput addSamplesWithData:[input samplesNotInIndexes:testIndexes]];
@@ -73,6 +78,7 @@
             {
                 cumulativeStats[key] = [NSMutableArray array];
             }
+            NSAssert(!isnan([output[key] doubleValue]), @"Prediction value is NaN");
             [cumulativeStats[key] addObject:output[key]];
         }
         

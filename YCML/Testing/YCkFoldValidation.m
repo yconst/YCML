@@ -3,7 +3,7 @@
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 28/4/15.
-//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Copyright © 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -32,48 +32,9 @@
     int _currentFold;
 }
 
-+ (instancetype)validationWithSettings:(NSDictionary *)settings
-{
-    return [[self alloc] initWithSettings:settings];
-}
-
-- (instancetype)init
-{
-    return [self initWithSettings:nil evaluator:nil];
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings
-{
-    return [self initWithSettings:settings evaluator:nil];
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings
-                       evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *,
-                                                    YCDataframe *))evaluator
-{
-    self = [super init];
-    if (self)
-    {
-        self.settings = [NSMutableDictionary dictionary];
-        self.settings[@"Folds"] = @5;
-        if (settings) [self.settings addEntriesFromDictionary:settings];
-        if (evaluator)
-        {
-            self.evaluator = evaluator;
-        }
-        else
-        {
-            self.evaluator = ^NSDictionary *(YCDataframe *ti, YCDataframe *to, YCDataframe *po)
-            {
-                return @{@"RMSE" : @(sqrt(MSE(to, po))),
-                         @"RSquared" : @(RSquared(to, po))};
-            };
-        }
-    }
-    return self;
-}
-
-- (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
+- (NSDictionary *)performTest:(YCSupervisedTrainer *)trainer
+                        input:(YCDataframe *)input
+                       output:(YCDataframe *)output
 {
     NSAssert([input dataCount] == [output dataCount], @"Sample counts differ");
     
