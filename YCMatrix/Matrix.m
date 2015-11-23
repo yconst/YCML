@@ -31,41 +31,62 @@
 
 #pragma mark Factory Methods
 
-+ (instancetype)matrixOfRows:(int)m Columns:(int)n
++ (instancetype)matrixOfRows:(int)m columns:(int)n
 {
-    return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:0];
+    return [self matrixOfRows:m columns:n valuesInDiagonal:nil value:0];
 }
 
 + (instancetype)matrixLike:(Matrix *)other
 {
-    return [self matrixOfRows:other->rows Columns:other->columns];
+    return [self matrixOfRows:other->rows columns:other->columns];
 }
 
 + (instancetype)onesLike:(Matrix *)other
 {
-    return [self matrixOfRows:other->rows Columns:other->columns Value:1.0];
+    return [self matrixOfRows:other->rows columns:other->columns value:1.0];
 }
 
-+ (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
++ (instancetype)dirtyMatrixOfRows:(int)m columns:(int)n
 {
     double *new_m = malloc(m*n * sizeof(double));
-	Matrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
+	Matrix *mt = [self matrixFromArray:new_m rows:m columns:n mode:YCMWeak];
     mt->freeData = YES;
     return mt;
 }
 
-+ (instancetype)matrixOfRows:(int)m Columns:(int)n Value:(double)val
++ (instancetype)matrixOfRows:(int)m columns:(int)n value:(double)val
 {
-	return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:val];
+	return [self matrixOfRows:m columns:n valuesInDiagonal:nil value:val];
 }
 
 + (instancetype)matrixOfRows:(int)m
-                     Columns:(int)n
-            ValuesInDiagonal:(double *)diagonal
-                       Value:(double)val
+                     columns:(int)n
+             valueInDiagonal:(double)diagonal
+                       value:(double)val
+{
+    double *new_m = malloc(m*n*sizeof(double));
+    Matrix *mt = [self matrixFromArray:new_m rows:m columns:n mode:YCMWeak];
+    mt->freeData = YES;
+    int len = m*n;
+    for (int i=0; i<len; i++)
+    {
+        mt->matrix[i] = val;
+    }
+    int mind = MIN(m, n);
+    for (int i=0; i<mind; i++)
+    {
+        mt->matrix[i*(n+1)] = diagonal;
+    }
+    return mt;
+}
+
++ (instancetype)matrixOfRows:(int)m
+                     columns:(int)n
+            valuesInDiagonal:(double *)diagonal
+                       value:(double)val
 {
 	double *new_m = malloc(m*n*sizeof(double));
-	Matrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
+	Matrix *mt = [self matrixFromArray:new_m rows:m columns:n mode:YCMWeak];
     mt->freeData = YES;
 	int len = m*n;
 	for (int i=0; i<len; i++)
@@ -83,12 +104,12 @@
 	return mt;
 }
 
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n
++ (instancetype)matrixFromArray:(double *)arr rows:(int)m columns:(int)n
 {
-	return [self matrixFromArray:arr Rows:m Columns:n Mode:YCMCopy];
+	return [self matrixFromArray:arr rows:m columns:n mode:YCMCopy];
 }
 
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Mode:(refMode)mode
++ (instancetype)matrixFromArray:(double *)arr rows:(int)m columns:(int)n mode:(refMode)mode
 {
 	Matrix *mt = [[Matrix alloc] init];
 	if (mode == YCMCopy)
@@ -109,13 +130,13 @@
 	return mt;
 }
 
-+ (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n
++ (instancetype)matrixFromNSArray:(NSArray *)arr rows:(int)m columns:(int)n
 {
 	if([arr count] != m*n)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size does not match that of the input array."
 		        userInfo:nil];
-	Matrix *newMatrix = [Matrix matrixOfRows:m Columns:n];
+	Matrix *newMatrix = [Matrix matrixOfRows:m columns:n];
 	double *cArray = newMatrix->matrix;
 	NSUInteger j=[arr count];
 	for (int i=0; i<j; i++)
@@ -127,11 +148,11 @@
 
 + (instancetype)matrixFromMatrix:(Matrix *)other
 {
-	Matrix *mt = [Matrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
+	Matrix *mt = [Matrix matrixFromArray:other->matrix rows:other->rows columns:other->columns];
 	return mt;
 }
 
-+ (instancetype)identityOfRows:(int)m Columns:(int)n
++ (instancetype)identityOfRows:(int)m columns:(int)n
 {
 	double *new_m = calloc(m*n, sizeof(double));
 	int minsize = m;
@@ -139,36 +160,36 @@
 	for(int i=0; i<minsize; i++) {
 		new_m[(n + 1)*i] = 1.0;
 	}
-	return [Matrix matrixFromArray:new_m Rows:m Columns:n];
+	return [Matrix matrixFromArray:new_m rows:m columns:n];
 }
 
 #pragma mark Instance Methods
 
-- (double)valueAtRow:(int)row Column:(int)column
+- (double)valueAtRow:(int)row column:(int)column
 {
-	[self checkBoundsForRow:row Column:column];
+	[self checkBoundsForRow:row column:column];
 	return matrix[row*columns + column];
 }
 
 - (double)i:(int)i j:(int)j
 {
-	[self checkBoundsForRow:i Column:j];
+	[self checkBoundsForRow:i column:j];
 	return matrix[i*columns + j];
 }
 
-- (void)setValue:(double)vl Row:(int)row Column:(int)column
+- (void)setValue:(double)vl row:(int)row column:(int)column
 {
-	[self checkBoundsForRow:row Column:column];
+	[self checkBoundsForRow:row column:column];
 	matrix[row*columns + column] = vl;
 }
 
 - (void)i:(int)i j:(int)j set:(double)vl
 {
-	[self checkBoundsForRow:i Column:j];
+	[self checkBoundsForRow:i column:j];
 	matrix[i*columns + j] = vl;
 }
 
-- (void)checkBoundsForRow:(int)row Column:(int)column
+- (void)checkBoundsForRow:(int)row column:(int)column
 {
 	if(column >= columns)
 		@throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
@@ -286,7 +307,7 @@
 	enum CBLAS_TRANSPOSE rT = transposeRight ? CblasTrans : CblasNoTrans;
 
 	Matrix *result = addend ?[Matrix matrixFromMatrix:addend] :[Matrix matrixOfRows:M
-	                                                                Columns:N];
+	                                                                columns:N];
 	cblas_dgemm(CblasRowMajor, lT,          rT,         M,
 	            N,              K,          factor,     matrix,
 	            lda,            mt->matrix, ldb,        1,
@@ -329,7 +350,7 @@
 
 - (Matrix *)matrixByTransposing
 {
-	Matrix *trans = [Matrix dirtyMatrixOfRows:columns Columns:rows];
+	Matrix *trans = [Matrix dirtyMatrixOfRows:columns columns:rows];
 	vDSP_mtransD(self->matrix, 1, trans->matrix, 1, trans->rows, trans->columns);
 	return trans;
 }
@@ -440,7 +461,7 @@
 		sqsum += v*v;
 	}
 	double invmag = 1/sqrt(sqsum);
-	Matrix *norm = [Matrix matrixOfRows:rows Columns:columns];
+	Matrix *norm = [Matrix matrixOfRows:rows columns:columns];
 	double *normMatrix = norm->matrix;
 	for (int i=0; i<len; i++)
 	{
@@ -475,10 +496,10 @@
 - (Matrix *)diagonal
 {
     int minDim = MIN(rows, columns);
-    Matrix *result = [Matrix matrixOfRows:minDim Columns:1];
+    Matrix *result = [Matrix matrixOfRows:minDim columns:1];
     for (int i=0; i<minDim; i++)
     {
-        [result setValue:[self valueAtRow:i Column:i] Row:i Column:0];
+        [result setValue:[self valueAtRow:i column:i] row:i column:0];
     }
     return result;
 }
@@ -629,8 +650,8 @@
 - (instancetype)copyWithZone:(NSZone *)zone
 {
 	Matrix *newMatrix = [Matrix matrixFromArray:self->matrix
-	                       Rows:self->rows
-	                       Columns:self->columns];
+	                       rows:self->rows
+	                       columns:self->columns];
 	return newMatrix;
 }
 

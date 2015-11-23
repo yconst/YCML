@@ -78,7 +78,7 @@
  @param rowIndex The index of the row to replace.
  @param rowValue The values to replace with.
  */
-- (void)setRow:(int)rowIndex Value:(Matrix *)rowValue;
+- (void)setRow:(int)rowIndex value:(Matrix *)rowValue;
 
 /**
  Returns an NSArray of row matrices, each representing one row of the receiver.
@@ -86,6 +86,15 @@
  @return The NSArray of row matrices.
  */
 - (NSArray *)rowsAsNSArray;
+
+/**
+ Partitions the receiver into row chunks of size s.
+ 
+ @param s The size of each row chunk.
+ 
+ @return The array of matrices resulting from the partitioning.
+ */
+- (NSArray *)rowWisePartition:(int)size;
 
 /**
  Returns the values of column |colIndex| as a column matrix.
@@ -111,7 +120,7 @@
  @param colNumber   The index of the column to replace.
  @param columnValue The values to replace with.
  */
-- (void)setColumn:(int)colNumber Value:(Matrix *)columnValue;
+- (void)setColumn:(int)colNumber value:(Matrix *)columnValue;
 
 /**
  Creates column matrices from the columns of the matrix and returns them as an NSArray.
@@ -119,6 +128,15 @@
  @return The NSArray containing the columns of the receiver.
  */
 - (NSArray *)columnsAsNSArray;
+
+/**
+ Partitions the receiver into column chunks of size s.
+ 
+ @param s The size of each column chunk.
+ 
+ @return The array of matrices resulting from the partitioning.
+ */
+- (NSArray *)columnWisePartition:(int)size;
 
 /**
  Returns a matrix resulting from adding the values in the 
@@ -322,7 +340,7 @@
  
  @return The matrix resulting from the sampling.
  */
-- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
+- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount replacement:(BOOL)replacement;
 
 /**
  Returns a matrix resulting from uniform random sampling of |sampleCount|
@@ -333,6 +351,6 @@
  
  @return The matrix resulting from the sampling.
  */
-- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
+- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount replacement:(BOOL)replacement;
 
 @end

@@ -33,7 +33,7 @@
 {
     double *mtxArray = self->matrix;
     double *transformArray = transform->matrix;
-    Matrix *transformed = [Matrix matrixOfRows:rows Columns:columns];
+    Matrix *transformed = [Matrix matrixOfRows:rows columns:columns];
     double *transformedArray = transformed->matrix;
     dispatch_apply(rows, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i)
                    {
@@ -52,7 +52,7 @@
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self rowsAsNSArray];
-    Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
+    Matrix *transform = [Matrix matrixOfRows:numRows columns:2];
     int i=0;
     double tmean = domain.location + domain.length * 0.5;
     double trange = domain.length;
@@ -88,8 +88,8 @@
         }
         a = trange / frange;
         b = tmean - fmean * (trange / frange);
-        [transform setValue:a Row:i Column:0];
-        [transform setValue:b Row:i++ Column:1];
+        [transform setValue:a row:i column:0];
+        [transform setValue:b row:i++ column:1];
     }
     return transform;
 }
@@ -99,7 +99,7 @@
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self rowsAsNSArray];
-    Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
+    Matrix *transform = [Matrix matrixOfRows:numRows columns:2];
     int i=0;
     double fmean = domain.location + domain.length * 0.5;
     double frange = domain.length;
@@ -135,8 +135,8 @@
         }
         a = trange / frange;
         b = tmean - fmean * (trange / frange);
-        [transform setValue:a Row:i Column:0];
-        [transform setValue:b Row:i++ Column:1];
+        [transform setValue:a row:i column:0];
+        [transform setValue:b row:i++ column:1];
     }
     return transform;
 }

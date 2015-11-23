@@ -32,16 +32,16 @@
 + (Matrix *)matrixFromRows:(NSArray *)rows
 {
     NSUInteger rowCount = [rows count];
-    if (rowCount == 0) return [Matrix matrixOfRows:0 Columns:0];
+    if (rowCount == 0) return [Matrix matrixOfRows:0 columns:0];
     Matrix *firstRow = rows[0];
     int columnCount = firstRow->columns;
-    Matrix *ret = [Matrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    Matrix *ret = [Matrix matrixOfRows:(int)rowCount columns:(int)columnCount];
     for (int i=0; i<rowCount; i++)
     {
         Matrix *currentRow = rows[i];
         for (int j=0; j<columnCount; j++)
         {
-            [ret setValue:currentRow->matrix[j] Row:i Column:j];
+            [ret setValue:currentRow->matrix[j] row:i column:j];
         }
     }
     return ret;
@@ -50,16 +50,16 @@
 + (Matrix *)matrixFromColumns:(NSArray *)columns
 {
     NSUInteger columnCount = [columns count];
-    if (columnCount == 0) return [Matrix matrixOfRows:0 Columns:0];
+    if (columnCount == 0) return [Matrix matrixOfRows:0 columns:0];
     Matrix *firstCol = columns[0];
     int rowCount = firstCol->rows;
-    Matrix *ret = [Matrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    Matrix *ret = [Matrix matrixOfRows:(int)rowCount columns:(int)columnCount];
     for (int i=0; i<columnCount; i++)
     {
         Matrix *currentCol = columns[i];
         for (int j=0; j<rowCount; j++)
         {
-            [ret setValue:currentCol->matrix[j] Row:j Column:i];
+            [ret setValue:currentCol->matrix[j] row:j column:i];
         }
     }
     return ret;
@@ -81,7 +81,7 @@
     }
     // http://stackoverflow.com/questions/5850000/how-to-split-array-into-two-arrays-in-c
     int startIndex = rowIndex * self->columns;
-    Matrix *rowmatrix = [Matrix matrixOfRows:1 Columns:self->columns];
+    Matrix *rowmatrix = [Matrix matrixOfRows:1 columns:self->columns];
     double *row = rowmatrix->matrix;
     memcpy(row, self->matrix + startIndex, self->columns * sizeof(double));
     return rowmatrix;
@@ -90,14 +90,14 @@
 - (Matrix *)rows:(NSIndexSet *)indexes
 {
     __block int count = 0;
-    Matrix *result = [Matrix matrixOfRows:(int)[indexes count] Columns:self.columns];
+    Matrix *result = [Matrix matrixOfRows:(int)[indexes count] columns:self.columns];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [result setRow:count++ Value:[self row:(int)idx]];
+        [result setRow:count++ value:[self row:(int)idx]];
     }];
     return result;
 }
 
-- (void)setRow:(int)rowIndex Value:(Matrix *)rowValue
+- (void)setRow:(int)rowIndex value:(Matrix *)rowValue
 {
     if (rowIndex > self->rows - 1)
     {
@@ -124,6 +124,29 @@
     return rowsArray;
 }
 
+- (NSArray *)rowWisePartition:(int)size
+{
+    int remainder = self.rows % size;
+    int partitions = self.rows / size;
+    if (remainder > 0)
+    {
+        partitions++;
+    }
+    NSMutableArray *result = [NSMutableArray array];
+    for (int i=0; i<partitions; i++)
+    {
+        int sLim = size;
+        if (i == partitions - 1)
+        {
+            sLim = remainder;
+        }
+        NSRange partitionRange = NSMakeRange(i * size, sLim);
+        Matrix *partition = [self rows:[NSIndexSet indexSetWithIndexesInRange:partitionRange]];
+        [result addObject:partition];
+    }
+    return result;
+}
+
 - (Matrix *)column:(int) colIndex
 {
     if (colIndex > self->columns - 1)
@@ -132,7 +155,7 @@
                                        reason:@"Column index input is out of bounds."
                                      userInfo:nil];
     }
-    Matrix *columnmatrix = [Matrix matrixOfRows:self->rows Columns:1];
+    Matrix *columnmatrix = [Matrix matrixOfRows:self->rows columns:1];
     double *column = columnmatrix->matrix;
     for (int i=0; i<self->rows; i++)
     {
@@ -144,14 +167,14 @@
 - (Matrix *)columns:(NSIndexSet *)indexes
 {
     __block int count = 0;
-    Matrix *result = [Matrix matrixOfRows:self.rows Columns:(int)[indexes count]];
+    Matrix *result = [Matrix matrixOfRows:self.rows columns:(int)[indexes count]];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [result setColumn:count++ Value:[self column:(int)idx]];
+        [result setColumn:count++ value:[self column:(int)idx]];
     }];
     return result;
 }
 
-- (void)setColumn:(int)colNumber Value:(Matrix *)columnValue
+- (void)setColumn:(int)colNumber value:(Matrix *)columnValue
 {
     if (colNumber > self->columns - 1)
     {
@@ -179,6 +202,29 @@
         [columnsArray addObject: [self column:i]];
     }
     return columnsArray;
+}
+
+- (NSArray *)columnWisePartition:(int)size
+{
+    int remainder = self.columns % size;
+    int partitions = self.columns / size;
+    if (remainder > 0)
+    {
+        partitions++;
+    }
+    NSMutableArray *result = [NSMutableArray array];
+    for (int i=0; i<partitions; i++)
+    {
+        int sLim = size;
+        if (i == partitions - 1)
+        {
+            sLim = remainder;
+        }
+        NSRange partitionRange = NSMakeRange(i * size, sLim);
+        Matrix *partition = [self columns:[NSIndexSet indexSetWithIndexesInRange:partitionRange]];
+        [result addObject:partition];
+    }
+    return result;
 }
 
 - (Matrix *)matrixByAddingRow:(Matrix *)row
@@ -234,7 +280,7 @@
     int valueOffset = (int)range.location * self->columns;
     int valueCount = (int)range.length * self->columns;
     
-    Matrix *newMatrix = [Matrix matrixOfRows:(int)range.length Columns:self->columns];
+    Matrix *newMatrix = [Matrix matrixOfRows:(int)range.length columns:self->columns];
     memcpy(newMatrix->matrix, self->matrix+valueOffset, valueCount * sizeof(double));
     
     return newMatrix;
@@ -251,7 +297,7 @@
     int rowOffset = (int)range.location;
     int rowLength = (int)range.length;
     
-    Matrix *newMatrix = [Matrix matrixOfRows:self->rows Columns:rowLength];
+    Matrix *newMatrix = [Matrix matrixOfRows:self->rows columns:rowLength];
     
     for (int i=0; i<self->rows; i++)
     {
@@ -399,7 +445,7 @@
     double *newMatrix = malloc(columns * (rows + 1) * sizeof(double));
     memcpy(newMatrix, self->matrix, columns * rows * sizeof(double));
     memcpy(newMatrix + columns*rows, newRow->matrix, columns * sizeof(double));
-    return [Matrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns Mode:YCMStrong];
+    return [Matrix matrixFromArray:newMatrix rows:rows + 1 columns:columns mode:YCMStrong];
 }
 
 - (Matrix *)appendColumn:(Matrix *)newColumn
@@ -417,7 +463,7 @@
         memcpy(newMatrix + newCols * i, self->matrix + columns * i, columns * sizeof(double));
         newMatrix[newCols * i + columns] = newColumn->matrix[i];
     }
-    return [Matrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1 Mode:YCMStrong];
+    return [Matrix matrixFromArray:newMatrix rows:rows columns:columns + 1 mode:YCMStrong];
 }
 
 - (Matrix *)removeRow:(int)rowNumber
@@ -435,7 +481,7 @@
         int idx = i >= rowNumber ? i+1 : i;
         memcpy(newMatrix + columns * i, self->matrix + columns * idx, columns * sizeof(double));
     }
-    return [Matrix matrixFromArray:newMatrix Rows:newRows Columns:columns];
+    return [Matrix matrixFromArray:newMatrix rows:newRows columns:columns];
 }
 
 - (Matrix *)removeColumn:(int)columnNumber
@@ -457,7 +503,7 @@
                self->matrix + columnNumber + 1  + i*self->columns,
                (newCols - columnNumber) * sizeof(double));
     }
-    return [Matrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
+    return [Matrix matrixFromArray:newMatrix rows:rows columns:newCols];
 }
 
 - (Matrix *)appendValueAsRow:(double)value
@@ -470,7 +516,7 @@
     double *newArray = malloc(columns * newRows * sizeof(double));
     memcpy(newArray, matrix, columns * rows * sizeof(double));
     newArray[columns * newRows - 1] = value;
-    return [Matrix matrixFromArray:newArray Rows:newRows Columns:columns];
+    return [Matrix matrixFromArray:newArray rows:newRows columns:columns];
 }
 
 // Fisher-Yates Inside-out Shuffle
@@ -548,12 +594,12 @@
     }
 }
 
-- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
     int colMemory = colSize * sizeof(double);
-    Matrix *new = [Matrix matrixOfRows:(int)sampleCount Columns:colSize];
+    Matrix *new = [Matrix matrixOfRows:(int)sampleCount columns:colSize];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
@@ -583,17 +629,17 @@
     return new;
 }
 
-- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
-    Matrix *new = [Matrix matrixOfRows:rowSize Columns:(int)sampleCount];
+    Matrix *new = [Matrix matrixOfRows:rowSize columns:(int)sampleCount];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
         {
             int rnd = arc4random_uniform((int)self->rows);
-            [new setColumn:i Value:[self column:rnd]];
+            [new setColumn:i value:[self column:rnd]];
         }
     }
     else
@@ -607,7 +653,7 @@
         {
             if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                [new setColumn:samples - n Value:[self column:i]];
+                [new setColumn:samples - n value:[self column:i]];
                 n--;
             }
             i++;

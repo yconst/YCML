@@ -59,7 +59,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 + (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain
 {
-    Matrix *result = [Matrix matrixOfRows:rows Columns:columns];
+    Matrix *result = [Matrix matrixOfRows:rows columns:columns];
     for (int i=0, j=(int)[result count]; i<j; i++)
     {
         result->matrix[i] = ((double)arc4random() / ARC4RANDOM_MAX) * domain.length + domain.location;
@@ -69,7 +69,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)pseudoInverse
 {
-    Matrix *ret = [Matrix matrixOfRows:self->columns Columns:self->rows];
+    Matrix *ret = [Matrix matrixOfRows:self->columns columns:self->rows];
     
     pInv(self->matrix, self->rows, self->columns, ret->matrix);
     return ret;
@@ -83,9 +83,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     SVDColumnMajor([self matrixByTransposing]->matrix, (__CLPK_integer)rows, (__CLPK_integer)columns, &sa, &ua, &va);
     
-    Matrix *U = [[Matrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
-    Matrix *S = [Matrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
-    Matrix *V = [Matrix matrixFromArray:va Rows:self->columns Columns:self->columns Mode:YCMWeak]; // nxn
+    Matrix *U = [[Matrix matrixFromArray:ua rows:self->columns columns:self->rows mode:YCMWeak] matrixByTransposing]; // mxm
+    Matrix *S = [Matrix matrixOfRows:self->columns columns:self->columns valuesInDiagonal:sa value:0]; // mxn
+    Matrix *V = [Matrix matrixFromArray:va rows:self->columns columns:self->columns mode:YCMWeak]; // nxn
     
     return @{@"U" : U, @"S" : S, @"V" : V};
 }
@@ -171,7 +171,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     MEVV(self->matrix, self->rows, self->columns, evArray, nil, nil, nil);
     
-    return [Matrix matrixFromArray:evArray Rows:1 Columns:self->columns];
+    return [Matrix matrixFromArray:evArray rows:1 columns:self->columns];
 }
 
 - (NSDictionary *)eigenvaluesAndEigenvectors
@@ -185,9 +185,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     MEVV(self->matrix, m, n, evArray, nil, leVecArray, reVecArray);
     
-    Matrix *evMatrix = [Matrix matrixFromArray:evArray Rows:1 Columns:n];
-    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray Rows:m Columns:n];
-    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray Rows:m Columns:n];
+    Matrix *evMatrix = [Matrix matrixFromArray:evArray rows:1 columns:n];
+    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray rows:m columns:n];
+    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray rows:m columns:n];
     return @{@"Eigenvalues":evMatrix,
              @"Left Eigenvectors":leVecMatrix,
              @"Right Eigenvectors":reVecMatrix};
@@ -235,7 +235,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)sumsOfRows
 {
-    Matrix *result = [Matrix matrixOfRows:self->rows Columns:1];
+    Matrix *result = [Matrix matrixOfRows:self->rows columns:1];
     for (int i=0; i<self->rows; i++)
     {
         double sum = 0;
@@ -250,7 +250,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)sumsOfColumns
 {
-    Matrix *result = [Matrix matrixOfRows:1 Columns:self->columns];
+    Matrix *result = [Matrix matrixOfRows:1 columns:self->columns];
     for (int i=0; i<self->columns; i++)
     {
         double sum = 0;
@@ -265,7 +265,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)meansOfRows
 {
-    Matrix *means = [Matrix matrixOfRows:self->rows Columns:1];
+    Matrix *means = [Matrix matrixOfRows:self->rows columns:1];
     for (int i=0; i<rows; i++)
     {
         double rowMean = 0;
@@ -281,7 +281,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)meansOfColumns
 {
-    Matrix *means = [Matrix matrixOfRows:1 Columns:self->columns];
+    Matrix *means = [Matrix matrixOfRows:1 columns:self->columns];
     for (int i=0; i<columns; i++)
     {
         double columnMean = 0;

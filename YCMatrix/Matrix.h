@@ -47,7 +47,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixOfRows:(int)m Columns:(int)n;
++ (instancetype)matrixOfRows:(int)m columns:(int)n;
 
 /**
  Initializes and returns a new matrix with the same number of rows and columns as |other|.
@@ -76,7 +76,23 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixOfRows:(int)m Columns:(int)n Value:(double)val;
++ (instancetype)matrixOfRows:(int)m columns:(int)n value:(double)val;
+
+/**
+ Initializes and returns a new matrix of |m| rows and |n| columns, with value |diagonal|
+ representing values in the matrix diagonal, and each other cell containing value |val|.
+ 
+ @param m        The number of rows.
+ @param n        The number of columns.
+ @param diagonal The value to insert to the diagonal.
+ @param val      The value to insert to the rest of the matrix.
+ 
+ @return A new matrix of |m| rows and |n| columns.
+ */
++ (instancetype)matrixOfRows:(int)m
+                     columns:(int)n
+            valueInDiagonal:(double)diagonal
+                       value:(double)val;
 
 /**
  Initializes and returns a new matrix of |m| rows and |n| columns, with values in array |diagonal|
@@ -90,9 +106,9 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @return A new matrix of |m| rows and |n| columns.
  */
 + (instancetype)matrixOfRows:(int)m
-                     Columns:(int)n
-            ValuesInDiagonal:(double *)diagonal
-                       Value:(double)val;
+                     columns:(int)n
+            valuesInDiagonal:(double *)diagonal
+                       value:(double)val;
 
 /**
  Initializes and returns a new matrix of |m| rows and |n| columns,
@@ -104,7 +120,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n;
++ (instancetype)matrixFromArray:(double *)arr rows:(int)m columns:(int)n;
 
 /**
  Initializes and returns a new matrix of |m| rows and |n| columns,
@@ -117,7 +133,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Mode:(refMode)mode;
++ (instancetype)matrixFromArray:(double *)arr rows:(int)m columns:(int)n mode:(refMode)mode;
 
 /**
  Initializes and returns a new matrix of |m| rows and |n| columns,
@@ -129,7 +145,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n;
++ (instancetype)matrixFromNSArray:(NSArray *)arr rows:(int)m columns:(int)n;
 
 /**
  Initializes and returns a new matrix by copying matrix |other|.
@@ -148,7 +164,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  
  @return A new matrix of |m| rows and |n| columns.
  */
-+ (instancetype)identityOfRows:(int)m Columns:(int)n;
++ (instancetype)identityOfRows:(int)m columns:(int)n;
 
 
 /// @name Accessing and setting data
@@ -161,7 +177,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  
  @return A double corresponding to the value at position |row|, |column|.
  */
-- (double)valueAtRow:(int)row Column:(int)column;
+- (double)valueAtRow:(int)row column:(int)column;
 
 /**
  Returns the value at position |i|, |j| of the receiver.
@@ -180,7 +196,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @param row    The row.
  @param column The column.
  */
-- (void)setValue:(double)vl Row:(int)row Column:(int)column;
+- (void)setValue:(double)vl row:(int)row column:(int)column;
 
 /**
  Sets value |vl| at |i|, |j| of the receiver.
@@ -419,7 +435,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @param row    The row index to check.
  @param column The column index to check.
  */
-- (void)checkBoundsForRow:(int)row Column:(int)column;
+- (void)checkBoundsForRow:(int)row column:(int)column;
 
 /**
  Checks if the receiver is square. Throws YCMatrixException if not.
