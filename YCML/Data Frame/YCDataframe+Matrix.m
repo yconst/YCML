@@ -44,17 +44,20 @@
 {
     NSUInteger sampleCount = [self dataCount];
     if (sampleCount == 0) return nil;
-    Matrix *convertedMatrix = [Matrix matrixOfRows:0 Columns:(int)sampleCount];
+    Matrix *convertedMatrix = [Matrix matrixOfRows:0 columns:(int)sampleCount];
     for (id element in conversionArray)
     {
+        NSAssert([element isKindOfClass:[NSString class]] ||
+                 [element isKindOfClass:[NSDictionary class]],
+                 @"Conversion array element is neither String or Dictionary");
         if ([element isKindOfClass:[NSString class]])
         {
             NSString *label = element;
-            Matrix *rowMatrix = [Matrix matrixOfRows:1 Columns:(int)sampleCount];
+            Matrix *rowMatrix = [Matrix matrixOfRows:1 columns:(int)sampleCount];
             int iter = 0;
-            for (id val in [self->_data objectForKey:label])
+            for (id val in [self allValuesForAttribute:label])
             {
-                [rowMatrix setValue:[val doubleValue] Row:0 Column:iter++];
+                [rowMatrix setValue:[val doubleValue] row:0 column:iter++];
             }
             convertedMatrix = [convertedMatrix appendRow:rowMatrix];
         }
@@ -66,23 +69,18 @@
             NSMutableDictionary *newRows = [NSMutableDictionary dictionary];
             for (int i=0; i<count; i++)
             {
-                newRows[classes[i]] = [Matrix matrixOfRows:1 Columns:(int)sampleCount];
+                newRows[classes[i]] = [Matrix matrixOfRows:1 columns:(int)sampleCount];
             }
             int iter = 0;
             for (id class in [self->_data objectForKey:label])
             {
-                [newRows[class] setValue:1 Row:0 Column:iter++];
+                [newRows[class] setValue:1 row:0 column:iter++];
             }
             for (id class in classes)
             {
                 convertedMatrix = [convertedMatrix appendRow:newRows[class]];
             }
         }
-        else
-        {
-            // Exception
-        }
-        
     }
     return convertedMatrix;
 }
@@ -90,7 +88,11 @@
 - (NSArray *)conversionArray
 {
     NSMutableArray *conversionArray = [NSMutableArray array];
-    for (NSString *label in [self->_data allKeys])
+    // Below the keys array is sorted; we need this in order to
+    // be consistent between conversions, even in differently sorted datasets
+    NSArray *sortedKeys = [[self attributeKeys] sortedArrayUsingSelector:
+                           @selector(localizedCaseInsensitiveCompare:)];
+    for (NSString *label in sortedKeys)
     {
         if ([self.attributeTypes[label] intValue] == Ordinal)
         {
@@ -107,8 +109,8 @@
 
 - (void)setDataWithMatrix:(Matrix *)inputMatrix conversionArray:(NSArray *)conversionArray
 {
-    int sampleCount = inputMatrix->columns;
-    NSUInteger attributeCount = MIN(inputMatrix->rows, [conversionArray count]);
+    int sampleCount = inputMatrix.columns;
+    NSUInteger attributeCount = MIN(inputMatrix.rows, [conversionArray count]);
     MutableOrderedDictionary *convertedDictionary = [MutableOrderedDictionary dictionary];
     int iter = 0;
     for (id element in conversionArray)
@@ -119,7 +121,7 @@
             NSString *label = element;
             for (int i=0; i<sampleCount; i++)
             {
-                double value = [inputMatrix valueAtRow:iter Column:i];
+                double value = [inputMatrix valueAtRow:iter column:i];
                 [attributeSamples addObject:@(value)];
             }
             [convertedDictionary setValue:attributeSamples forKey:label];
