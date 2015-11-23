@@ -45,6 +45,49 @@
     return newDataframe;
 }
 
+- (instancetype)randomWalkSteps:(int)steps restarts:(int)restarts relativeStepSize:(double)stepSize
+{
+    YCDataframe *newDataframe = [YCDataframe dataframe];
+    NSDictionary *mins = [self stat:@"min"];
+    NSDictionary *maxs = [self stat:@"max"];
+    NSArray *attributeKeys = [self attributeKeys];
+
+    for (int i=0; i<restarts; i++)
+    {
+        NSMutableDictionary *position = [NSMutableDictionary dictionary];
+        for (id key in attributeKeys)
+        {
+            double min = [mins[key] doubleValue];
+            double max = [maxs[key] doubleValue];
+            double val = ((double)arc4random() / 0x100000000) * (max - min) + min;
+            position[key] = @(val);
+        }
+        [newDataframe addSampleWithData:position];
+        for (int j=1; j<steps; j++)
+        {
+            for (id key in attributeKeys)
+            {
+                double min = [mins[key] doubleValue];
+                double max = [maxs[key] doubleValue];
+                double val = [position[key] doubleValue];
+                double range = (max - min) * stepSize;
+                double newVal = val + (2 * ((double)arc4random() / 0x100000000) - 1) * range;
+                if (newVal > max)
+                {
+                    newVal -= (max - min);
+                }
+                else if (newVal < min)
+                {
+                    newVal += (max - min);
+                }
+                position[key] = @(newVal);
+            }
+            [newDataframe addSampleWithData:position];
+        }
+    }
+    return newDataframe;
+}
+
 - (void)corruptWithProbability:(double)probability relativeMagnitude:(double)relativeMagnitude
 {
     NSDictionary *mins = [self stat:@"min"];

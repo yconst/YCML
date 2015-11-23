@@ -27,6 +27,8 @@
 
 - (instancetype)randomSamplesWithCount:(int)count;
 
+- (instancetype)randomWalkSteps:(int)steps restarts:(int)restarts relativeStepSize:(double)stepSize;
+
 - (void)corruptWithProbability:(double)probability relativeMagnitude:(double)relativeMagnitude;
 
 - (instancetype)dataframeByRandomSampling:(int)numberOfElements replacement:(BOOL)replacement;
