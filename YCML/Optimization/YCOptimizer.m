@@ -26,29 +26,34 @@
 
 - (instancetype)init
 {
-    return [self initWithProblem:nil]; // Here change to a simple toy problem
+    return [self initWithProblem:nil];
 }
 
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem
 {
+    return [self initWithProblem:aProblem settings:nil];
+}
+
+- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
+{
     self = [super init];
     if (self)
     {
-        self.state                           = [NSMutableDictionary dictionary];
-        self.settings                        = [NSMutableDictionary dictionary];
-        self.settings[@"Iterations"]         = @20;
-        self.settings[@"Notify"]             = @YES;
-        self.statistics                      = [NSMutableDictionary dictionary];
-        self.problem                         = aProblem;
+        self.state                              = [NSMutableDictionary dictionary];
+        self.settings                           = [NSMutableDictionary dictionary];
+        self.settings[@"Iterations"]            = @20;
+        self.settings[@"Notification Interval"] = @20;
+        if (settings) [self.settings addEntriesFromDictionary:settings];
+        self.problem                            = aProblem;
     }
     return self;
 }
 
 - (void)run
 {
-    BOOL notify = [self.settings[@"Notify"] boolValue];
-    int currentIteration = [self.state[@"currentIteration"] intValue];
-    int endIteration     = [self.settings[@"Iterations"] intValue] + currentIteration;
+    int notificationInterval = [self.settings[@"Notification Interval"] intValue];
+    int currentIteration     = [self.state[@"currentIteration"] intValue];
+    int endIteration         = [self.settings[@"Iterations"] intValue] + currentIteration;
     
     for (; currentIteration<endIteration; currentIteration++)
     {
@@ -56,10 +61,14 @@
         {
             BOOL shouldContinue = [self iterate:currentIteration];
             self.state[@"currentIteration"] = @(currentIteration);
-            if (notify) [self postIterationNotification];
-            if (!shouldContinue) break;
+            if (notificationInterval > 0 && currentIteration % notificationInterval == 0)
+            {
+                [self postIterationNotification];
+            }
+            if (!shouldContinue || self.shouldStop) break;
         }
     }
+    self.shouldStop = NO;
 }
 
 // Implement in Subclass
@@ -128,6 +137,11 @@
     [aCoder encodeObject:self.settings forKey:@"settings"];
     [aCoder encodeObject:self.state forKey:@"state"];
     [aCoder encodeObject:self.statistics forKey:@"statistics"];
+}
+
+- (void)stop
+{
+    self.shouldStop = true;
 }
 
 @end

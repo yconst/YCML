@@ -32,9 +32,9 @@
 
 @implementation YCNSGAII
 
-- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem
+- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
 {
-    self = [super initWithProblem:aProblem];
+    self = [super initWithProblem:aProblem settings:settings];
     if (self)
     {
         self.settings[@"Crossover Probability"] = @0.9;
@@ -122,8 +122,8 @@
             
             for (int i=0; i<objectivesCount; i++)
             {
-                double vp = [p.objectiveFunctionValues valueAtRow:i Column:0];
-                double vq = [q.objectiveFunctionValues valueAtRow:i Column:0];
+                double vp = [p.objectiveFunctionValues valueAtRow:i column:0];
+                double vq = [q.objectiveFunctionValues valueAtRow:i column:0];
                 if ((vp < vq && [modes i:i j:0] == 0) || (vp > vq && [modes i:i j:0] != 0))
                 {
                     pFlag = YES;
@@ -214,8 +214,8 @@
         for (int i=0; i<objectiveCount; i++)
         {
             NSArray *sortedFront = [front sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                double v1 = [[obj1 objectiveFunctionValues] valueAtRow:i Column:0];
-                double v2 = [[obj2 objectiveFunctionValues] valueAtRow:i Column:0];
+                double v1 = [[obj1 objectiveFunctionValues] valueAtRow:i column:0];
+                double v2 = [[obj2 objectiveFunctionValues] valueAtRow:i column:0];
                 if (v1 < v2)
                 {
                     return NSOrderedAscending;
@@ -233,8 +233,8 @@
             for (int j=1; j <frontCount-1; j++)
             {
                 double newCD = [sortedFront[j] crowdingDistance];
-                newCD += fabs([[sortedFront[j-1] objectiveFunctionValues] valueAtRow:i Column:0] -
-                             [[sortedFront[j+1] objectiveFunctionValues] valueAtRow:i Column:0]);
+                newCD += fabs([[sortedFront[j-1] objectiveFunctionValues] valueAtRow:i column:0] -
+                             [[sortedFront[j+1] objectiveFunctionValues] valueAtRow:i column:0]);
                 [sortedFront[j] setCrowdingDistance:newCD];
             }
         }
@@ -332,13 +332,13 @@
             
             for (int j=0; j<variablesCount; j++)
             {
-                double i1v = [i1.decisionVariableValues valueAtRow:j Column:0];
-                double i2v = [i2.decisionVariableValues valueAtRow:j Column:0];
+                double i1v = [i1.decisionVariableValues valueAtRow:j column:0];
+                double i2v = [i2.decisionVariableValues valueAtRow:j column:0];
                 
                 if ( i1v != i2v && (double)arc4random() / ARC4RANDOM_MAX <= 0.5 )
                 {
-                    double xl = [self.problem.parameterBounds valueAtRow:j Column:0];
-                    double xu = [self.problem.parameterBounds valueAtRow:j Column:1];
+                    double xl = [self.problem.parameterBounds valueAtRow:j column:0];
+                    double xu = [self.problem.parameterBounds valueAtRow:j column:1];
                     double x1 = MIN(i1v, i2v);
                     double x2 = MAX(i1v, i2v);
                     
@@ -385,8 +385,8 @@
                     }
                 }
                 
-                [c1.decisionVariableValues setValue:i1v Row:j Column:0];
-                [c2.decisionVariableValues setValue:i2v Row:j Column:0];
+                [c1.decisionVariableValues setValue:i1v row:j column:0];
+                [c2.decisionVariableValues setValue:i2v row:j column:0];
             }
             c1.evaluated = NO;
             c2.evaluated = NO;
@@ -418,11 +418,11 @@
             
             for (int j=0; j<variablesCount; j++)
             {
-                double x = [ind.decisionVariableValues valueAtRow:j Column:0];
+                double x = [ind.decisionVariableValues valueAtRow:j column:0];
                 if ( (double)arc4random() / ARC4RANDOM_MAX < indmp )
                 {
-                    double xl = [self.problem.parameterBounds valueAtRow:j Column:0];
-                    double xu = [self.problem.parameterBounds valueAtRow:j Column:1];
+                    double xl = [self.problem.parameterBounds valueAtRow:j column:0];
+                    double xu = [self.problem.parameterBounds valueAtRow:j column:1];
                     
                     double delta1 = (x - xl) / (xu - xl);
                     double delta2 = (xu - x) / (xu - xl);
@@ -447,7 +447,7 @@
                     x = x + deltaq * (xu - xl);
                     x = MIN(MAX(x, xl), xu);
                 }
-                [mut.decisionVariableValues setValue:x Row:j Column:0];
+                [mut.decisionVariableValues setValue:x row:j column:0];
             }
             mut.evaluated = NO;
             [mutated addObject:mut];

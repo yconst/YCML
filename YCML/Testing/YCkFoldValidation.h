@@ -23,7 +23,7 @@
 @import Foundation;
 @class YCSupervisedTrainer, YCDataframe;
 
-@interface YCCrossValidation : NSObject
+@interface YCkFoldValidation : NSObject
 
 + (instancetype)validationWithSettings:(NSDictionary *)settings;
 

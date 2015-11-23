@@ -1,9 +1,9 @@
 //
-//  CrossValidation.m
+//  YCMonteCraloValidation.m
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 28/4/15.
-//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 19/10/15.
+//  Copyright © 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -18,59 +18,18 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with YCML.  If not, see <http://www.gnu.org/licenses/>..
+// along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCCrossValidation.h"
+#import "YCMonteCarloValidation.h"
 #import "YCSupervisedModel.h"
 #import "YCSupervisedTrainer.h"
 #import "YCDataframe.h"
 #import "YCRegressionMetrics.h"
 #import "NSArray+Statistics.h"
 
-@implementation YCCrossValidation
+@implementation YCMonteCarloValidation
 {
-    int _currentFold;
-}
-
-+ (instancetype)validationWithSettings:(NSDictionary *)settings
-{
-    return [[self alloc] initWithSettings:settings];
-}
-
-- (instancetype)init
-{
-    return [self initWithSettings:nil evaluator:nil];
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings
-{
-    return [self initWithSettings:settings evaluator:nil];
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings
-                       evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *,
-                                                    YCDataframe *))evaluator
-{
-    self = [super init];
-    if (self)
-    {
-        self.settings = [NSMutableDictionary dictionary];
-        self.settings[@"Folds"] = @5;
-        if (settings) [self.settings addEntriesFromDictionary:settings];
-        if (evaluator)
-        {
-            self.evaluator = evaluator;
-        }
-        else
-        {
-            self.evaluator = ^NSDictionary *(YCDataframe *ti, YCDataframe *to, YCDataframe *po)
-            {
-                return @{@"RMSE" : @(sqrt(MSE(to, po))),
-                         @"RSquared" : @(RSquared(to, po))};
-            };
-        }
-    }
-    return self;
+    double _currentIteration;
 }
 
 - (NSDictionary *)test:(YCSupervisedTrainer *)trainer input:(YCDataframe *)input output:(YCDataframe *)output
@@ -80,19 +39,19 @@
     NSMutableDictionary *cumulativeStats = [NSMutableDictionary dictionary];
     NSMutableArray *models = [NSMutableArray array];
     
-    int folds = [self.settings[@"Folds"] intValue];
+    int iterations = [self.settings[@"Iterations"] intValue];
     
-    int foldLength = (int)([input dataCount] / folds);
+    int testSize = (int)([input dataCount] * [self.settings[@"Iterations"] doubleValue]);
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleTrainingStep:)
                                                  name:@"TrainingStep"
                                                object:trainer];
-    for (int i=0; i<folds; i++)
+    for (int i=0; i<iterations; i++)
     {
-        _currentFold = i;
+        _currentIteration = i;
         
-        NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*foldLength, foldLength)];
+        NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*testSize, testSize)];
         
         YCDataframe *trimmedInput = [YCDataframe dataframe];
         [trimmedInput addSamplesWithData:[input samplesNotInIndexes:testIndexes]];
@@ -133,7 +92,7 @@
     }
     
     return trainer.shouldStop ? nil : cumulativeStats;
-
+    
 }
 
 #pragma mark Notifications
@@ -141,8 +100,8 @@
 - (void)handleTrainingStep:(NSNotification *)aNotification
 {
     NSMutableDictionary *userInfo = [aNotification.userInfo mutableCopy];
-    userInfo[@"Total Folds"] = self.settings[@"Folds"];
-    userInfo[@"Current Fold"] = @(_currentFold);
+    userInfo[@"Total Iterations"] = self.settings[@"Iterations"];
+    userInfo[@"Current Iteration"] = @(_currentIteration);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CVStep"
                                                         object:self
                                                       userInfo:userInfo];

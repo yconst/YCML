@@ -26,9 +26,9 @@
 
 @implementation YCRProp
 
-- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem
+- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
 {
-    self = [super initWithProblem:aProblem];
+    self = [super initWithProblem:aProblem settings:settings];
     if (self)
     {
         self.settings[@"etaPlus"]    = @1.2;
@@ -52,22 +52,22 @@
     
     if (iteration == 0)
     {
-        Matrix *newValues = [Matrix matrixOfRows:k Columns:1];
+        Matrix *newValues = [Matrix matrixOfRows:k columns:1];
         
         Matrix *initialRanges = [self.problem initialValuesRangeHint];
         
         for (int i=0; i<k; i++)
         {
-            double start = [initialRanges valueAtRow:i Column:0];
-            double range = [initialRanges valueAtRow:i Column:1] - start;
+            double start = [initialRanges valueAtRow:i column:0];
+            double range = [initialRanges valueAtRow:i column:1] - start;
             [newValues setValue:((double)arc4random() / 0x100000000) * range + start
-                            Row:i Column:0];
+                            row:i column:0];
         }
         self.state[@"values"] = newValues;
-        self.state[@"gradients"]    = [Matrix matrixOfRows:k Columns:1];
-        self.state[@"oldGradients"] = [Matrix matrixOfRows:k Columns:1];
-        self.state[@"stepSizes"]    = [Matrix matrixOfRows:k Columns:1 Value:0.1]; // Rprop suggested
-        self.state[@"previousSteps"]= [Matrix matrixOfRows:k Columns:1];
+        self.state[@"gradients"]    = [Matrix matrixOfRows:k columns:1];
+        self.state[@"oldGradients"] = [Matrix matrixOfRows:k columns:1];
+        self.state[@"stepSizes"]    = [Matrix matrixOfRows:k columns:1 value:0.1]; // Rprop suggested
+        self.state[@"previousSteps"]= [Matrix matrixOfRows:k columns:1];
     }
     else
     {
@@ -114,7 +114,7 @@
         Matrix *values = self.state[@"values"];
         double target = [self.settings[@"Target"] doubleValue];
         
-        Matrix *objectiveValues = [Matrix matrixOfRows:self.problem.objectiveCount Columns:1];
+        Matrix *objectiveValues = [Matrix matrixOfRows:self.problem.objectiveCount columns:1];
         [self.problem evaluate:objectiveValues parameters:values];
         double best = [objectiveValues sum];
         self.state[@"best"] = @(best);

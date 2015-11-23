@@ -26,9 +26,9 @@
 
 @implementation YCPopulationBasedOptimizer
 
-- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem
+- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
 {
-    self = [super initWithProblem:aProblem];
+    self = [super initWithProblem:aProblem settings:settings];
     if (self)
     {
         self.population = [NSMutableArray array];
@@ -40,25 +40,58 @@
 - (void)evaluateIndividuals:(NSArray *)individuals
 {
     NSAssert(self.problem, @"Property 'problem' is nil");
-
+    
+    int parameterCount = self.problem.parameterCount;
     int objectiveCount = self.problem.objectiveCount;
     int constraintCount = self.problem.constraintCount;
+    int populationCount = (int)self.population.count;
     
-    Matrix *result = [Matrix matrixOfRows:(objectiveCount+constraintCount) Columns:1];
-    
-    for (YCIndividual *i in individuals)
+    if (self.problem.supportedEvaluationMode == YCProvidesParallelImplementation)
     {
-        if (i.evaluated) continue;
+        Matrix *parameters = [Matrix matrixOfRows:parameterCount
+                                          columns:populationCount];
+        [individuals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YCIndividual *individual = obj;
+            [parameters setColumn:(int)idx value:individual.decisionVariableValues];
+        }];
         
-        [self.problem evaluate:result parameters:i.decisionVariableValues];
+        Matrix *results = [Matrix matrixOfRows:(objectiveCount+constraintCount)
+                                      columns:populationCount];
         
-        NSRange constraintRange = NSMakeRange(0, constraintCount);
-        i.constraintValues = [result matrixWithRowsInRange:constraintRange];
+        [self.problem evaluate:results parameters:parameters];
         
-        NSRange objectiveRange = NSMakeRange(constraintCount, objectiveCount);
-        i.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
+        [individuals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            YCIndividual *individual = obj;
+            Matrix *result = [results column:(int)idx];
+            
+            NSRange constraintRange = NSMakeRange(0, constraintCount);
+            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
+            
+            NSRange objectiveRange = NSMakeRange(constraintCount, objectiveCount);
+            individual.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
+            
+            individual.evaluated = YES;
+
+        }];
+    }
+    else
+    {
+        Matrix *result = [Matrix matrixOfRows:(objectiveCount+constraintCount) columns:1];
         
-        i.evaluated = YES;
+        for (YCIndividual *individual in individuals)
+        {
+            if (individual.evaluated) continue;
+            
+            [self.problem evaluate:result parameters:individual.decisionVariableValues];
+            
+            NSRange constraintRange = NSMakeRange(0, constraintCount);
+            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
+            
+            NSRange objectiveRange = NSMakeRange(constraintCount, objectiveCount);
+            individual.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
+            
+            individual.evaluated = YES;
+        }
     }
 }
 
@@ -89,7 +122,6 @@
     }
     return opt;
 }
-
 
 #pragma mark NSCoding implementation
 

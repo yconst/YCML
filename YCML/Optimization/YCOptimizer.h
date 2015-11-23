@@ -28,11 +28,26 @@
 
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem;
 
+- (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings;
+
 - (void)run;
 
 - (BOOL)iterate:(int)iteration;
 
+/**
+ Resets the receiver's state. Settings are kept.
+ */
 - (void)reset;
+
+/**
+ Sends a request to the receiver to stop any ongoing processing.
+ */
+- (void)stop;
+
+/**
+ Holds whether the receiver is bound to stop.
+ */
+@property BOOL shouldStop;
 
 @property NSObject<YCProblem> *problem;
 
