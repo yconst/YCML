@@ -73,4 +73,6 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 
 #import "NSArray+Statistics.h"
 #import "YCRegressionMetrics.h"
-#import "YCCrossValidation.h"
+#import "YCValidation.h"
+#import "YCkFoldValidation.h"
+#import "YCMonteCarloValidation.h"
