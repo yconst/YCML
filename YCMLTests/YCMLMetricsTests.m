@@ -35,17 +35,17 @@
 
 - (void)testRSquared
 {
-    Matrix *groundTruth = [Matrix matrixFromNSArray:@[@10, @0, @5, @20, @3, @17, @12, @8, @0, @15] Rows:1 Columns:10];
+    Matrix *groundTruth = [Matrix matrixFromNSArray:@[@10, @0, @5, @20, @3, @17, @12, @8, @0, @15] rows:1 columns:10];
     double r2 = RSquared(groundTruth, groundTruth);
     XCTAssert(r2 == 1, "Identical Predictor R2 != 1");
     CleanLog(@"Identical Predictor: %f", r2);
     
-    Matrix *prediction = [Matrix matrixFromNSArray:@[@9, @1, @5, @18, @3, @13, @13, @9, @1, @14] Rows:1 Columns:10];
+    Matrix *prediction = [Matrix matrixFromNSArray:@[@9, @1, @5, @18, @3, @13, @13, @9, @1, @14] rows:1 columns:10];
     r2 = RSquared(groundTruth, prediction);
     XCTAssert(r2 > 0.9, "Good Predictor R2 < 0.9");
     CleanLog(@"Good Predictor: %f", r2);
     
-    prediction = [Matrix matrixOfRows:1 Columns:10 Value:[groundTruth meansOfRows]->matrix[0]];
+    prediction = [Matrix matrixOfRows:1 columns:10 value:[groundTruth meansOfRows]->matrix[0]];
     r2 = RSquared(groundTruth, prediction);
     XCTAssert(r2 == 0, "Mean Predictor R2 != 0");
     CleanLog(@"Mean Predictor: %f", r2);
@@ -54,7 +54,7 @@
     r2 = RSquared(groundTruth, prediction);
     CleanLog(@"Uniform Random Predictor: %f", r2);
     
-    prediction = [Matrix matrixFromNSArray:@[@19, @0, @15, @4, @3, @2, @19, @1, @7, @12] Rows:1 Columns:10];
+    prediction = [Matrix matrixFromNSArray:@[@19, @0, @15, @4, @3, @2, @19, @1, @7, @12] rows:1 columns:10];
     r2 = RSquared(groundTruth, prediction);
     CleanLog(@"Bad Predictor: %f", r2);
     

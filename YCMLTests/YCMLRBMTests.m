@@ -42,24 +42,24 @@
     
     // Here create input
     double inputArray[3] = {1.0, 0.0, 0.0};
-    Matrix *input = [Matrix matrixFromArray:inputArray Rows:3 Columns:1];
+    Matrix *input = [Matrix matrixFromArray:inputArray rows:3 columns:1];
     
     double w[12] = {3.40, -1.14, 6.18,
         2.32, -12.10, -0.50,
         1.22, 1.49, -1.30,
         -0.20, 1.01, 0.12};
-    model.weights = [Matrix matrixFromArray:w Rows:4 Columns:3];
+    model.weights = [Matrix matrixFromArray:w rows:4 columns:3];
     
     double vb[3] = {-1.4,
         1.07,
         0.190};
-    model.visibleBiases = [Matrix matrixFromArray:vb Rows:3 Columns:1];
+    model.visibleBiases = [Matrix matrixFromArray:vb rows:3 columns:1];
     
     double hb[4] = {-5.4,
         1.2,
         0.21,
         -0.44};
-    model.hiddenBiases = [Matrix matrixFromArray:hb Rows:4 Columns:1];
+    model.hiddenBiases = [Matrix matrixFromArray:hb rows:4 columns:1];
     
     // Here test net
     Matrix *actual = [model propagateToHidden:input];
@@ -68,7 +68,7 @@
         0.971252,
         0.806901,
         0.345247};
-    Matrix *expected = [Matrix matrixFromArray:e Rows:4 Columns:1];
+    Matrix *expected = [Matrix matrixFromArray:e rows:4 columns:1];
     
     CleanLog(@"%@", actual);
     XCTAssert([expected isEqualToMatrix:actual tolerance:0.00001],
@@ -85,24 +85,24 @@
     YCBinaryRBM *model = [[YCBinaryRBM alloc] init];
     
     double inputArray[3] = {0.0, 0.0, 0.0};
-    Matrix *input = [Matrix matrixFromArray:inputArray Rows:3 Columns:1];
+    Matrix *input = [Matrix matrixFromArray:inputArray rows:3 columns:1];
     
     double w[12] = {3.40, -1.14, 6.18,
         2.32, -12.10, -0.50,
         1.22, 1.49, -1.30,
         -0.20, 1.01, 0.12};
-    model.weights = [Matrix matrixFromArray:w Rows:4 Columns:3];
+    model.weights = [Matrix matrixFromArray:w rows:4 columns:3];
     
     double vb[3] = {-1.4,
         1.07,
         0.190};
-    model.visibleBiases = [Matrix matrixFromArray:vb Rows:3 Columns:1];
+    model.visibleBiases = [Matrix matrixFromArray:vb rows:3 columns:1];
     
     double hb[4] = {-5.4,
         1.2,
         0.21,
         -0.44};
-    model.hiddenBiases = [Matrix matrixFromArray:hb Rows:4 Columns:1];
+    model.hiddenBiases = [Matrix matrixFromArray:hb rows:4 columns:1];
     
     CleanLog(@"%@", [model freeEnergy:input]);
 }
@@ -112,19 +112,19 @@
     double ia[9] = {9.4084028, -1.14962953, 6.912,
         2.27, -12.1076, -9.691,
         1.7603, 1.4902, -3.8019};
-    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:3];
+    Matrix *im = [Matrix matrixFromArray:ia rows:3 columns:3];
     
     YCBinaryRBM *model = [[YCBinaryRBM alloc] init];
-    model.weights = [Matrix matrixOfRows:3 Columns:5];
-    model.hiddenBiases = [Matrix matrixOfRows:3 Columns:1];
-    model.visibleBiases = [Matrix matrixOfRows:5 Columns:1];
+    model.weights = [Matrix matrixOfRows:3 columns:5];
+    model.hiddenBiases = [Matrix matrixOfRows:3 columns:1];
+    model.visibleBiases = [Matrix matrixOfRows:5 columns:1];
     
     YCCDProblem *prob = [[YCCDProblem alloc] initWithInputMatrix:im model:model];
     
     int parameterCount = model.visibleSize * model.hiddenSize + model.visibleSize + model.hiddenSize;
     
-    Matrix *lo = [Matrix matrixOfRows:parameterCount Columns:1 Value:0.0];
-    Matrix *hi = [Matrix matrixOfRows:parameterCount Columns:1 Value:5.0];
+    Matrix *lo = [Matrix matrixOfRows:parameterCount columns:1 value:0.0];
+    Matrix *hi = [Matrix matrixOfRows:parameterCount columns:1 value:5.0];
     Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
     
     Matrix *weights = [prob weightsWithParameters:params];
@@ -150,13 +150,13 @@
         0,1,0,0,0,0,0,
         0,0,1,0,0,0,0,
         0,0,0,0,0,0,1};
-    Matrix *samplesMatrix = [[Matrix matrixFromArray:samples Rows:4 Columns:7] matrixByTransposing];
+    Matrix *samplesMatrix = [[Matrix matrixFromArray:samples rows:4 columns:7] matrixByTransposing];
     YCCDTrainer *trainer = [YCCDTrainer trainer];
     YCBinaryRBM *model = [trainer train:nil inputMatrix:samplesMatrix];
-    Matrix *s1 = [Matrix matrixFromNSArray:@[@1, @0, @0, @0, @0, @0, @0] Rows:7 Columns:1];
-    Matrix *s2 = [Matrix matrixFromNSArray:@[@0, @1, @0, @0, @0, @0, @0] Rows:7 Columns:1];
-    Matrix *s3 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @1, @0, @0] Rows:7 Columns:1];
-    Matrix *s4 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @0, @0, @1] Rows:7 Columns:1];
+    Matrix *s1 = [Matrix matrixFromNSArray:@[@1, @0, @0, @0, @0, @0, @0] rows:7 columns:1];
+    Matrix *s2 = [Matrix matrixFromNSArray:@[@0, @1, @0, @0, @0, @0, @0] rows:7 columns:1];
+    Matrix *s3 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @1, @0, @0] rows:7 columns:1];
+    Matrix *s4 = [Matrix matrixFromNSArray:@[@0, @0, @0, @0, @0, @0, @1] rows:7 columns:1];
     CleanLog(@"Out Mon: %@, E: %@", [model gibbsStep:s1], [model freeEnergy:s1]);
     CleanLog(@"Out Tue: %@, E: %@", [model gibbsStep:s2], [model freeEnergy:s2]);
     CleanLog(@"Out Fri: %@, E: %@", [model gibbsStep:s3], [model freeEnergy:s3]);
@@ -182,7 +182,7 @@
     NSMutableArray *cols = [NSMutableArray array];
     for (NSArray *a in arrays)
     {
-        [cols addObject:[Matrix matrixFromNSArray:a Rows:(int)(a.count) Columns:1]];
+        [cols addObject:[Matrix matrixFromNSArray:a rows:(int)(a.count) columns:1]];
     }
     return [Matrix matrixFromColumns:cols]; // Transpose to have one sample per column
 }

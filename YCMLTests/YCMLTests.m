@@ -43,11 +43,11 @@
     
     // Here create input
     double inputArray[3] = {1.0, 0.4, 0.1};
-    Matrix *input = [Matrix matrixFromArray:inputArray Rows:3 Columns:1];
+    Matrix *input = [Matrix matrixFromArray:inputArray rows:3 columns:1];
     
     // Here create expected output
     double outputArray[1] = {-5.75673582497026004};
-    Matrix *expected = [Matrix matrixFromArray:outputArray Rows:1 Columns:1];
+    Matrix *expected = [Matrix matrixFromArray:outputArray rows:1 columns:1];
     // Here create weight and biases matrices
     NSMutableArray *weights = [NSMutableArray array];
     NSMutableArray *biases = [NSMutableArray array];
@@ -55,18 +55,18 @@
     double layer01w[9] = {9.408402885852626, -1.1496369471492953, 6.189778876161912,
         2.3211275791148727, -12.103229230238776, -9.508202761587691,
         1.222394739197603, 1.4906291343919522, -13.304211439238019};
-    [weights addObject:[Matrix matrixFromArray:layer01w Rows:3 Columns:3]];
+    [weights addObject:[Matrix matrixFromArray:layer01w rows:3 columns:3]];
     double layer12w[3] = {11.892952707820495,
         -13.023554005003948,
         -11.998042608132318};
-    [weights addObject:[Matrix matrixFromArray:layer12w Rows:3 Columns:1]];
+    [weights addObject:[Matrix matrixFromArray:layer12w rows:3 columns:1]];
     
     double layer01b[3] = {-5.421832727047451,
         8.272508982078136,
         10.113971776662758};
-    [biases addObject:[Matrix matrixFromArray:layer01b Rows:3 Columns:1]];
+    [biases addObject:[Matrix matrixFromArray:layer01b rows:3 columns:1]];
     double layer12b[1] = {6.395286202809748};
-    [biases addObject:[Matrix matrixFromArray:layer12b Rows:1 Columns:1]];
+    [biases addObject:[Matrix matrixFromArray:layer12b rows:1 columns:1]];
     
     // Here apply weight ans biases matrices to net
     NSMutableArray *layers = [NSMutableArray array];
@@ -99,8 +99,8 @@
         2.27, -12.1076, -9.691,
         1.7603, 1.4902, -3.8019};
     double oa[3] = {11.895, -3.0235540050, -1.2318};
-    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:3];
-    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:3];
+    Matrix *im = [Matrix matrixFromArray:ia rows:3 columns:3];
+    Matrix *om = [Matrix matrixFromArray:oa rows:1 columns:3];
     
     YCFFN *model = [[YCFFN alloc] init];
     
@@ -112,8 +112,8 @@
     YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
                                                                 outputMatrix:om
                                                                        model:model];
-    Matrix *lo = [Matrix matrixOfRows:26 Columns:1 Value:0.0]; // 3x5 + 5 + 1x5 + 1
-    Matrix *hi = [Matrix matrixOfRows:26 Columns:1 Value:5.0];
+    Matrix *lo = [Matrix matrixOfRows:26 columns:1 value:0.0]; // 3x5 + 5 + 1x5 + 1
+    Matrix *hi = [Matrix matrixOfRows:26 columns:1 value:5.0];
     Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
     NSArray *weights = [prob modelWeightsWithParameters:params];
     NSArray *biases = [prob modelBiasesWithParameters:params];
@@ -157,8 +157,8 @@
         0.27, 0.1076, 0.691, 0.052,
         0.7603, 0.4902, 0.8019, 0.23};
     double oa[4] = {0.1, 0.95, 0.45, 0.21};
-    Matrix *im = [Matrix matrixFromArray:ia Rows:3 Columns:4];
-    Matrix *om = [Matrix matrixFromArray:oa Rows:1 Columns:4];
+    Matrix *im = [Matrix matrixFromArray:ia rows:3 columns:4];
+    Matrix *om = [Matrix matrixFromArray:oa rows:1 columns:4];
     
     YCFFN *model = [[YCFFN alloc] init];
     
@@ -167,8 +167,8 @@
     YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
                                                                 outputMatrix:om
                                                                        model:model];
-    Matrix *lo     = [Matrix matrixOfRows:11 Columns:1 Value:-1.0]; // 3x2 + 2 + 1x2 + 1 = 11
-    Matrix *hi     = [Matrix matrixOfRows:11 Columns:1 Value:1.0];
+    Matrix *lo     = [Matrix matrixOfRows:11 columns:1 value:-1.0]; // 3x2 + 2 + 1x2 + 1 = 11
+    Matrix *hi     = [Matrix matrixOfRows:11 columns:1 value:1.0];
     Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
     
     Matrix *theoreticalGradients = [Matrix matrixLike:params];
@@ -176,8 +176,8 @@
     Matrix *numericalGradients   = [Matrix matrixLike:theoreticalGradients];
     Matrix *perturbed            = [Matrix matrixFromMatrix:params];
     double e                     = 1E-4;
-    Matrix *resultMin = [Matrix matrixOfRows:1 Columns:1];
-    Matrix *resultMax = [Matrix matrixOfRows:1 Columns:1];
+    Matrix *resultMin = [Matrix matrixOfRows:1 columns:1];
+    Matrix *resultMax = [Matrix matrixOfRows:1 columns:1];
     for (int i=0; i<[perturbed count]; i++)
     {
         perturbed->matrix[i] -= e;
@@ -208,7 +208,7 @@
 {
     YCBackPropTrainer *trainer              = [YCBackPropTrainer trainer];
     trainer.settings[@"Hidden Layer Size"]  = @8;
-    trainer.settings[@"Lambda"]             = @0.0001;
+    trainer.settings[@"L2"]                 = @0.0001;
     trainer.settings[@"Iterations"]         = @1500;
     trainer.settings[@"Alpha"]              = @0.5;
     
@@ -219,7 +219,7 @@
 {
     YCRpropTrainer *trainer                 = [YCRpropTrainer trainer];
     trainer.settings[@"Hidden Layer Size"]  = @8;
-    trainer.settings[@"Lambda"]             = @0.0001;
+    trainer.settings[@"L2"]                 = @0.0001;
     trainer.settings[@"Iterations"]         = @200;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
@@ -228,8 +228,8 @@
 {
     YCBackPropTrainer *trainer                 = [YCBackPropTrainer trainer];
     trainer.settings[@"Hidden Layer Size"]  = @8;
-    trainer.settings[@"Lambda"]             = @0.0001;
-    trainer.settings[@"Iterations"]         = @5000;
+    trainer.settings[@"L2"]                 = @0.0001;
+    trainer.settings[@"Iterations"]         = @6000;
     trainer.settings[@"Alpha"]              = @0.5;
     trainer.settings[@"Samples"]            = @10;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.5];
@@ -280,7 +280,7 @@
     YCDataframe *input    = [self dataframeWithCSVName:dataset];
     YCDataframe *output   = [YCDataframe dataframeWithDictionary:@{label : [input allValuesForAttribute:label]}];
     [input removeAttributeWithIdentifier:label];
-    NSDictionary *results = [[YCCrossValidation validationWithSettings:nil] test:trainer
+    NSDictionary *results = [[YCkFoldValidation validationWithSettings:nil] test:trainer
                                                                            input:input
                                                                           output:output];
     double RMSE           = [results[@"RMSE"] doubleValue];

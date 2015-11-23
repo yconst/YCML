@@ -36,27 +36,27 @@
 
 - (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters
 {
-    double x1 = [parameters valueAtRow:0 Column:0] + 5.0;
-    double x2 = [parameters valueAtRow:1 Column:0] + 2.0;
-    [target setValue:x1*x1 + x2*x2 Row:0 Column:0];
+    double x1 = [parameters valueAtRow:0 column:0] + 5.0;
+    double x2 = [parameters valueAtRow:1 column:0] + 2.0;
+    [target setValue:x1*x1 + x2*x2 row:0 column:0];
 }
 
 - (void)derivatives:(Matrix *)target parameters:(Matrix *)parameters
 {
-    double x1 = [parameters valueAtRow:0 Column:0] + 5.0;
-    double x2 = [parameters valueAtRow:1 Column:0] + 2.0;
-    [target setValue:2*x1 Row:0 Column:0];
-    [target setValue:2*x2 Row:1 Column:0];
+    double x1 = [parameters valueAtRow:0 column:0] + 5.0;
+    double x2 = [parameters valueAtRow:1 column:0] + 2.0;
+    [target setValue:2*x1 row:0 column:0];
+    [target setValue:2*x2 row:1 column:0];
 }
 
 - (Matrix *)parameterBounds
 {
-    Matrix *bounds = [Matrix matrixOfRows:[self parameterCount] Columns:2];
+    Matrix *bounds = [Matrix matrixOfRows:[self parameterCount] columns:2];
     
     for (int i=0; i<self.parameterCount; i++)
     {
-        [bounds setValue:-1 Row:i Column:0];
-        [bounds setValue:1 Row:i Column:1];
+        [bounds setValue:-1 row:i column:0];
+        [bounds setValue:1 row:i column:1];
     }
     return bounds;
 }
@@ -83,7 +83,12 @@
 
 - (Matrix *)modes
 {
-    return [Matrix matrixOfRows:1 Columns:1 Value:0];
+    return [Matrix matrixOfRows:1 columns:1 value:0];
+}
+
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    return YCRequiresSequentialEvaluation;
 }
 
 @end
@@ -101,30 +106,30 @@
     
     NSUInteger n = [parameters count];
     
-    double f1 = [parameters valueAtRow:0 Column:0];
+    double f1 = [parameters valueAtRow:0 column:0];
     
     double accu = 0;
     
     for (int i=1; i<n; i++)
     {
-        accu += [parameters valueAtRow:i Column:0];
+        accu += [parameters valueAtRow:i column:0];
     }
     double g = 1.0 + (9 / (n - 1)) * accu;
     
     double f2 = g * (1.0 - sqrt(f1/g));
     
-    [target setValue:f1 Row:0 Column:0];
-    [target setValue:f2 Row:1 Column:0];
+    [target setValue:f1 row:0 column:0];
+    [target setValue:f2 row:1 column:0];
 }
 
 - (Matrix *)parameterBounds
 {
-    Matrix *bounds = [Matrix matrixOfRows:[self parameterCount] Columns:2];
+    Matrix *bounds = [Matrix matrixOfRows:[self parameterCount] columns:2];
     
     for (int i=0; i<self.parameterCount; i++)
     {
-        [bounds setValue:0 Row:i Column:0];
-        [bounds setValue:1 Row:i Column:1];
+        [bounds setValue:0 row:i column:0];
+        [bounds setValue:1 row:i column:1];
     }
     return bounds;
 }
@@ -151,7 +156,12 @@
 
 - (Matrix *)modes
 {
-    return [Matrix matrixOfRows:2 Columns:1 Value:0];
+    return [Matrix matrixOfRows:2 columns:1 value:0];
+}
+
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    return YCRequiresSequentialEvaluation;
 }
 
 @end
@@ -169,9 +179,9 @@
     YCOptimizer *gd = [[YCGradientDescent alloc] initWithProblem:gdProblem];
     gd.settings[@"Iterations"] = @2000;
     [gd run];
-    Matrix *result = [Matrix matrixOfRows:1 Columns:1];
+    Matrix *result = [Matrix matrixOfRows:1 columns:1];
     [gdProblem evaluate:result parameters:gd.state[@"values"]];
-    XCTAssertLessThan([result valueAtRow:0 Column:0], 0.02);
+    XCTAssertLessThan([result valueAtRow:0 column:0], 0.02);
 }
 
 - (void)testRPropDescent
@@ -180,9 +190,9 @@
     YCOptimizer *gd = [[YCRProp alloc] initWithProblem:gdProblem];
     gd.settings[@"Iterations"] = @100;
     [gd run];
-    Matrix *result = [Matrix matrixOfRows:1 Columns:1];
+    Matrix *result = [Matrix matrixOfRows:1 columns:1];
     [gdProblem evaluate:result parameters:gd.state[@"values"]];
-    XCTAssertLessThan([result valueAtRow:0 Column:0], 0.01);
+    XCTAssertLessThan([result valueAtRow:0 column:0], 0.01);
 }
 
 - (void)testZDT1
@@ -191,9 +201,9 @@
     YCOptimizer *ga = [[YCNSGAII alloc] initWithProblem:zdt1];
     ga.settings[@"Iterations"] = @50;
     [ga run];
-    //Matrix *result = [Matrix matrixOfRows:1 Columns:1];
+    //Matrix *result = [Matrix matrixOfRows:1 columns:1];
     //[gdProblem evaluate:result parameters:gd.state[@"values"]];
-    //XCTAssertLessThan([result valueAtRow:0 Column:0], 0.02);
+    //XCTAssertLessThan([result valueAtRow:0 column:0], 0.02);
 }
 
 @end
