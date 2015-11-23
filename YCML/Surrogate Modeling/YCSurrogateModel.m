@@ -26,7 +26,7 @@
 @implementation YCSurrogateModel
 {
     YCSupervisedModel *_model;
-    Matrix *_modes;
+    Matrix *_modesCache;
     Matrix *_parameterBoundsCache;
     BOOL _maximize;
 }
@@ -48,15 +48,15 @@
 
 - (Matrix *)modes
 {
-    if (!_modes)
+    if (!_modesCache)
     {
-        _modes = [Matrix matrixOfRows:self.objectiveCount Columns:1];
+        _modesCache = [Matrix matrixOfRows:self.objectiveCount columns:1];
         for (int i=0, j=self.objectiveCount; i<j; i++)
         {
-            [_modes i:i j:0 set:self.maximize ? 1 : 0];
+            [_modesCache i:i j:0 set:self.maximize ? 1 : 0];
         }
     }
-    return _modes;
+    return _modesCache;
 }
 
 - (Matrix *)parameterBounds
@@ -68,12 +68,12 @@
         NSDictionary *inputMaxValues = self.model.properties[@"InputMaxValues"];
         Matrix *inputMinMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMinValues
                                                         toArrayWithKeyOrder:order]
-                                                      Rows:self.model.inputSize
-                                                   Columns:1];
+                                                      rows:self.model.inputSize
+                                                   columns:1];
         Matrix *inputMaxMatrix = [Matrix matrixFromNSArray:[self dictionary:inputMaxValues
                                                         toArrayWithKeyOrder:order]
-                                                      Rows:self.model.inputSize
-                                                   Columns:1];
+                                                      rows:self.model.inputSize
+                                                   columns:1];
         _parameterBoundsCache = [Matrix matrixFromColumns:@[inputMinMatrix, inputMaxMatrix]];
     }
     return _parameterBoundsCache;
@@ -118,6 +118,14 @@
     return output;
 }
 
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    // Models should be able to predict multiple examples in one pass
+    return YCProvidesParallelImplementation;
+}
+
+#pragma mark Accessors
+
 - (YCSupervisedModel *)model
 {
     return _model;
@@ -137,7 +145,7 @@
 - (void)setMaximize:(BOOL)maximize
 {
     _maximize = maximize;
-    _modes = nil;
+    _modesCache = nil;
 }
 
 @end
