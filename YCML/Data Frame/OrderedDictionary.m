@@ -255,14 +255,14 @@
 - (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary
 {
     [otherDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop) {
-        [self setObject:obj forKey:key];
+        [self setObject:obj forKey:[key copy]];
     }];
 }
 
 - (void)insertObject:(id)object forKey:(id)key atIndex:(NSUInteger)index
 {
     [self removeObjectForKey:key];
-    [_mutableKeys insertObject:key atIndex:index];
+    [_mutableKeys insertObject:[key copy] atIndex:index];
     [_mutableValues insertObject:object atIndex:index];
 }
 
@@ -327,7 +327,7 @@
     }
     else
     {
-        [_mutableKeys addObject:key];
+        [_mutableKeys addObject:[key copy]];
         [_mutableValues addObject:object];
     }
 }
@@ -344,9 +344,9 @@
     }
 }
 
-- (void)setObject:(id)object forKeyedSubscript:(id <NSCopying>)key
+- (void)setObject:(id)object forKeyedSubscript:(id)key
 {
-    [self setObject:object forKey:key];
+    [self setObject:object forKey:[key copy]];
 }
 
 @end
