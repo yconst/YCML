@@ -143,8 +143,11 @@
         [description appendFormat:@"\nOutput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.outputTransform.rows,
          self.outputTransform.columns, self.outputTransform];
     }
+    
+    [description appendFormat:@"\nLayers\n"];
+    
     [self.layers enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
-        [description appendFormat:@"\nLayers\n"];
+        
         
         YCFullyConnectedLayer *layer = obj;
         if (self.hiddenLayerCount == 0)
