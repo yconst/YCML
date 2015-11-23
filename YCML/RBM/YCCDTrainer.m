@@ -121,9 +121,9 @@
 
 - (void)initialize:(YCBinaryRBM *)model withInputSize:(int)inputSize hiddenSize:(int)hiddenSize
 {
-    model.weights = [Matrix matrixOfRows:hiddenSize Columns:inputSize];
-    model.visibleBiases = [Matrix matrixOfRows:inputSize Columns:1];
-    model.hiddenBiases = [Matrix matrixOfRows:hiddenSize Columns:1];
+    model.weights = [Matrix matrixOfRows:hiddenSize columns:inputSize];
+    model.visibleBiases = [Matrix matrixOfRows:inputSize columns:1];
+    model.hiddenBiases = [Matrix matrixOfRows:hiddenSize columns:1];
 }
 
 - (void)respondToIterationNotification:(NSNotification *)notification

@@ -50,8 +50,8 @@
 - (Matrix *)initialValuesRangeHint
 {
     int parameterCount = [self parameterCount];
-    Matrix *minValues = [Matrix matrixOfRows:parameterCount Columns:1 Value:-0.1];
-    Matrix *maxValues = [Matrix matrixOfRows:parameterCount Columns:1 Value:0.1];
+    Matrix *minValues = [Matrix matrixOfRows:parameterCount columns:1 value:-0.1];
+    Matrix *maxValues = [Matrix matrixOfRows:parameterCount columns:1 value:0.1];
     return [minValues appendColumn:maxValues];
 }
 
@@ -90,7 +90,7 @@
     // Add and return
     double s = self->_inputMatrix.columns;
     double cost = [residual sum] / (self.trainedModel.outputSize * s) + r/s;
-    [target setValue:cost Row:0 Column:0];
+    [target setValue:cost row:0 column:0];
 }
 
 - (void)derivatives:(Matrix *)derivatives parameters:(Matrix *)parameters
@@ -223,9 +223,9 @@
     {
         int weightSize = (int)layer.weightMatrix.count;
         Matrix *weights = [Matrix matrixFromArray:weightsPointer+offset
-                                             Rows:layer.weightMatrix.rows
-                                          Columns:layer.weightMatrix.columns
-                                             Mode:YCMWeak];
+                                             rows:layer.weightMatrix.rows
+                                          columns:layer.weightMatrix.columns
+                                             mode:YCMWeak];
         offset += weightSize;
         [result addObject:weights];
     }
@@ -242,9 +242,9 @@
     {
         int biasSize = (int)layer.biasVector.count;
         Matrix *biases = [Matrix matrixFromArray:biasPointer+offset
-                                            Rows:biasSize
-                                         Columns:1
-                                            Mode:YCMWeak];
+                                            rows:biasSize
+                                         columns:1
+                                            mode:YCMWeak];
         offset += biasSize;
         [result addObject:biases];
 
@@ -309,7 +309,12 @@
 
 - (Matrix *)modes
 {
-    return [Matrix matrixOfRows:1 Columns:1 Value:0];
+    return [Matrix matrixOfRows:1 columns:1 value:0];
+}
+
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    return YCRequiresSequentialEvaluation;
 }
 
 @end

@@ -112,7 +112,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(respondToIterationNotification:)
                                                  name:@"iterationComplete"
-                                               object:nil];
+                                               object:optimizer];
     
     // Step IV. Optimizing
     [optimizer run];

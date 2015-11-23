@@ -50,8 +50,8 @@
 - (Matrix *)initialValuesRangeHint
 {
     int parameterCount = [self parameterCount];
-    Matrix *minValues = [Matrix matrixOfRows:parameterCount Columns:1 Value:-0.1];
-    Matrix *maxValues = [Matrix matrixOfRows:parameterCount Columns:1 Value:0.1];
+    Matrix *minValues = [Matrix matrixOfRows:parameterCount columns:1 value:-0.1];
+    Matrix *maxValues = [Matrix matrixOfRows:parameterCount columns:1 value:0.1];
     return [minValues appendColumn:maxValues];
 }
 
@@ -67,7 +67,12 @@
 
 - (Matrix *)modes
 {
-    return [Matrix matrixOfRows:1 Columns:1 Value:0];
+    return [Matrix matrixOfRows:1 columns:1 value:0];
+}
+
+- (YCEvaluationMode)supportedEvaluationMode
+{
+    return YCRequiresSequentialEvaluation;
 }
 
 - (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters
@@ -90,7 +95,7 @@
     
     Matrix *inputSample = self.sampleCount <= 0 ? _inputMatrix :
     [_inputMatrix matrixBySamplingColumns:self.sampleCount
-                                        Replacement:NO];
+                                        replacement:NO];
     
     Matrix *positiveHiddenProbs = [self.trainedModel propagateToHidden:inputSample];
     Matrix *positiveHiddenState = [self.trainedModel sampleHiddenGivenVisible:inputSample];
@@ -123,18 +128,18 @@
 - (Matrix *)weightsWithParameters:(Matrix *)parameters
 {
     Matrix *weights = [Matrix matrixFromArray:parameters->matrix
-                                         Rows:self.trainedModel.weights.rows
-                                      Columns:self.trainedModel.weights.columns
-                                         Mode:YCMWeak];
+                                         rows:self.trainedModel.weights.rows
+                                      columns:self.trainedModel.weights.columns
+                                         mode:YCMWeak];
     return weights;
 }
 
 - (Matrix *)visibleBiasWithParameters:(Matrix *)parameters
 {
     Matrix *visible = [Matrix matrixFromArray:parameters->matrix + self.trainedModel.weights.count
-                                         Rows:self.trainedModel.visibleBiases.rows
-                                      Columns:1
-                                         Mode:YCMWeak];
+                                         rows:self.trainedModel.visibleBiases.rows
+                                      columns:1
+                                         mode:YCMWeak];
     return visible;
 }
 
@@ -142,9 +147,9 @@
 {
     Matrix *hidden = [Matrix matrixFromArray:parameters->matrix + self.trainedModel.weights.count +
                                                 self.trainedModel.visibleBiases.count
-                                         Rows:self.trainedModel.hiddenBiases.rows
-                                      Columns:1
-                                         Mode:YCMWeak];
+                                         rows:self.trainedModel.hiddenBiases.rows
+                                      columns:1
+                                         mode:YCMWeak];
     return hidden;
 }
 

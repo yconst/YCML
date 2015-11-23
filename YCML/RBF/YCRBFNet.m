@@ -42,7 +42,7 @@
     Matrix *H = [self designMatrixWithInput:ScaledInput];
     
     // 3. Augment with bias term!
-    H = [H appendColumn:[Matrix matrixOfRows:H->rows Columns:1 Value:1.0]];
+    H = [H appendColumn:[Matrix matrixOfRows:H->rows columns:1 value:1.0]];
     
     // 4. Linearly combine RBF to get the output (SxD * DxO)' -> OxS
     Matrix *Output = [H matrixByMultiplyingWithRight:self.weights AndTransposing:YES];
@@ -62,7 +62,7 @@
     int D = self.centers->columns;
     
     // Generate design matrix of dimensions SxD
-    Matrix *designmatrix = [Matrix matrixOfRows:S Columns:D]; // -> SxD
+    Matrix *designmatrix = [Matrix matrixOfRows:S columns:D]; // -> SxD
     
     // Fill up the design matrix, traversing first row and then column
     dispatch_apply(S, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i)

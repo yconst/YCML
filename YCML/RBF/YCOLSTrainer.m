@@ -81,8 +81,8 @@
     double lambda             = [self.settings[@"Lambda"] doubleValue];
     // inp -> NxS
     model.widths              = [Matrix matrixOfRows:cols
-                                               Columns:1
-                                                 Value:basisFunctionWidth]; // -> Sx1
+                                               columns:1
+                                                 value:basisFunctionWidth]; // -> Sx1
     model.centers             = [Matrix matrixFromMatrix:inp];// -> NxS
     
     // Explode output rows as NSArrays
@@ -194,17 +194,17 @@
     
     // Here create a new matrix of selected regressors.
     Matrix *selectedRegressorMatrix = [Matrix matrixOfRows:inp->rows
-                                                   Columns:(int)[selectedRegressors count]];
+                                                   columns:(int)[selectedRegressors count]];
     int i = 0;
     for (Matrix *r in selectedRegressors)
     {
-        [selectedRegressorMatrix setColumn:i++ Value:r];
+        [selectedRegressorMatrix setColumn:i++ value:r];
     }
     
     model.centers = selectedRegressorMatrix;
     model.widths = [Matrix matrixOfRows:model.centers.columns
-                                Columns:1
-                                  Value:basisFunctionWidth];
+                                columns:1
+                                  value:basisFunctionWidth];
     
     // Assign network statistics dictionary
     model.statistics[@"Error"]      = @(totalError);
@@ -218,7 +218,7 @@
 {
     // O = H * W => W = H^-1 * O
     Matrix *H     = [model designMatrixWithInput:input];
-    H             = [H appendColumn:[Matrix matrixOfRows:H->rows Columns:1 Value:1]]; // Augment with bias
+    H             = [H appendColumn:[Matrix matrixOfRows:H->rows columns:1 value:1]]; // Augment with bias
     Matrix *Hinv  = [H pseudoInverse];
     Matrix *W     = [Hinv matrixByMultiplyingWithRight:[output matrixByTransposing]];
     model.weights = W;
@@ -231,7 +231,7 @@
     int S = input->columns;
     
     // Generate design matrix of dimensions SxS
-    Matrix *designmatrix = [Matrix matrixOfRows:S Columns:S];
+    Matrix *designmatrix = [Matrix matrixOfRows:S columns:S];
     
     // Fill up the design matrix, traversing first row and then column
     dispatch_apply(S, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i)

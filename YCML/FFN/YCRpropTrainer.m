@@ -37,7 +37,7 @@
     {
         self.settings[@"Hidden Layer Count"] = @1;
         self.settings[@"Hidden Layer Size"]  = @5;
-        self.settings[@"Lambda"]             = @0.0001;
+        self.settings[@"L2"]                 = @0.0001;
         self.settings[@"Iterations"]         = @500;
         self.settings[@"Target"]             = @-1;
         [self.settings removeObjectForKey:@"Alpha"];

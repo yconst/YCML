@@ -44,8 +44,8 @@
     int maxRegressors         = [self.settings[@"Max Regressors"] intValue];
     // inp -> NxS
     model.widths              = [Matrix matrixOfRows:cols
-                                             Columns:1
-                                               Value:basisFunctionWidth]; // -> Sx1
+                                             columns:1
+                                               value:basisFunctionWidth]; // -> Sx1
     model.centers             = [Matrix matrixFromMatrix:inp];// -> NxS
     
     // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
@@ -67,7 +67,7 @@
     // For PRESS: These will hold Ksi and B values for each step, for each regressor
     //YCMatrix *Ksi = [YCMatrix matrixFromMatrix:outp]; // OxS
     NSArray *KsiColumns       = [outp columnsAsNSArray];
-    Matrix *B                 = [Matrix matrixOfRows:1 Columns:cols Value:1]; // 1xS
+    Matrix *B                 = [Matrix matrixOfRows:1 columns:cols value:1]; // 1xS
     
     double prevJki            = [[outp matrixByMultiplyingWithRight:[outp matrixByTransposing]] trace];
     
@@ -86,7 +86,7 @@
             
             // Better to have an array of columns, so only pointers are exchanged
             NSMutableArray *selectedKsiColumns = [NSMutableArray arrayWithCapacity:cols]; // OxS
-            Matrix *selectedB = [Matrix matrixOfRows:1 Columns:cols]; // 1xS
+            Matrix *selectedB = [Matrix matrixOfRows:1 columns:cols]; // 1xS
             
             // Here select the next regressor
             for (int i=0; i<cols; i++)
@@ -115,7 +115,7 @@
                     // Calculate PRESS (= predicted-residual-sums-of-squares)
                     // OxS, 1xS
                     NSMutableArray *currentKsiColumns = [NSMutableArray arrayWithCapacity:cols];
-                    Matrix *currentB = [Matrix matrixOfRows:1 Columns:cols];
+                    Matrix *currentB = [Matrix matrixOfRows:1 columns:cols];
                     
                     double *BMatrix = B->matrix;
                     double *currentBMatrix = currentB->matrix;
@@ -193,17 +193,17 @@
     }
     // Here create a new matrix of selected regressors.
     Matrix *selectedRegressorMatrix = [Matrix matrixOfRows:inp->rows
-                                                   Columns:(int)[selectedRegressors count]];
+                                                   columns:(int)[selectedRegressors count]];
     int i = 0;
     for (Matrix *r in selectedRegressors)
     {
-        [selectedRegressorMatrix setColumn:i++ Value:r];
+        [selectedRegressorMatrix setColumn:i++ value:r];
     }
     
     model.centers = selectedRegressorMatrix;
     model.widths = [Matrix matrixOfRows:model.centers.columns
-                                Columns:1
-                                  Value:basisFunctionWidth];
+                                columns:1
+                                  value:basisFunctionWidth];
     
     // Assign network statistics dictionary
     model.statistics[@"Error"]      = @(totalError);
