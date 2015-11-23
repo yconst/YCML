@@ -82,6 +82,8 @@ typedef enum AttributeType : int16_t {
 
 - (void)insertSamplesWithData:(NSArray *)data atIndex:(NSUInteger)idx;
 
+- (void)replaceSampleAtIndex:(NSUInteger)idx withData:(NSDictionary *)data;
+
 - (NSMutableDictionary *)removeSampleAtIndex:(NSUInteger)idx;
 
 - (void)removeSamplesAtIndexes:(NSIndexSet *)idxs;

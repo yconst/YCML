@@ -99,8 +99,7 @@
 - (NSArray *)allValuesForAttribute:(NSString *)attribute
 {
     if (!_data[attribute]) return nil;
-    id valueData = [NSKeyedArchiver archivedDataWithRootObject:_data[attribute]];
-    return [NSKeyedUnarchiver unarchiveObjectWithData:valueData];
+    return [[NSArray alloc] initWithArray:self->_data[attribute] copyItems:YES];
 }
 
 - (id)valueOfAttribute:(NSString *)attribute index:(NSUInteger)idx
@@ -115,6 +114,7 @@
 
 - (NSDictionary *)sampleAtIndex:(NSUInteger)idx
 {
+    NSAssert(idx < self.dataCount, @"Index out of dataframe bounds");
     NSMutableDictionary *ret = [NSMutableDictionary dictionaryWithCapacity:[self attributeCount]];
     for (id key in _data)
     {
@@ -125,6 +125,9 @@
 
 - (NSArray *)samplesAtIndexes:(NSIndexSet *)idxs
 {
+    NSAssert([idxs indexGreaterThanIndex:self.dataCount-1] == NSNotFound,
+             @"Indexset contains indexes out of dataframe range");
+    
     NSUInteger attributeCount = [self attributeCount];
     NSMutableArray *ret = [NSMutableArray array];
     [idxs enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
@@ -147,7 +150,7 @@
 
 - (void)sortByAttribute:(NSString *)attribute ascending:(BOOL)ascending
 {
-    
+    NSAssert(_data[attribute], @"Identifier does not exist in dataframe");
     NSArray *sortedSamples = [[self allSamples] sortedArrayUsingComparator:
                               ^NSComparisonResult(id obj1, id obj2) {
         id value1 = (NSDictionary *)obj1[attribute];
@@ -194,7 +197,7 @@
         NSAssert(![self attributeCount] || [data count] == dataCount, @"Attribute count differs");
         if (copy || ![data isKindOfClass:[NSMutableArray class]])
         {
-            NSMutableArray *copiedArray = [NSMutableArray arrayWithCapacity:dataCount];
+            NSMutableArray *copiedArray = [NSMutableArray array];
             for (id sampleValue in data)
             {
                 [copiedArray addObject:[self correctValueFor:sampleValue
@@ -239,6 +242,7 @@
 // Optional override when subclassing
 - (void)renameAttribute:(NSString *)oldIdentifier to:(NSString *)newIdentifier
 {
+    NSAssert(_data[oldIdentifier], @"Identifier does not exist in dataframe");
     if ([oldIdentifier isEqualToString:newIdentifier]) return;
     self->_data[newIdentifier] = self->_data[oldIdentifier];
     [self->_data removeObjectForKey:oldIdentifier];
@@ -292,6 +296,7 @@
 // Optional override when subclassing
 - (void)insertSamplesWithData:(NSArray *)data atIndex:(NSUInteger)idx
 {
+    NSAssert(0 <= idx && idx <= self.dataCount, @"Index exceeds dataframe bounds");
     for (NSDictionary *record in [data reverseObjectEnumerator])
     {
         for (id key in record)
@@ -319,6 +324,15 @@
     }
     [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
+}
+
+- (void)replaceSampleAtIndex:(NSUInteger)idx withData:(NSDictionary *)data
+{
+    NSAssert(0 <= idx && idx < self.dataCount, @"Index exceeds dataframe bounds");
+    for (id key in data.allKeys)
+    {
+        _data[key][idx] = data[key];
+    }
 }
 
 - (NSMutableDictionary *)removeSampleAtIndex:(NSUInteger)idx
