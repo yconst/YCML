@@ -41,8 +41,21 @@
     self = [super init];
     if (self)
     {
-        self.weightMatrix = [Matrix matrixOfRows:inputSize Columns:outputSize];
-        self.biasVector = [Matrix matrixOfRows:outputSize Columns:1];
+        self.weightMatrix = [Matrix matrixOfRows:inputSize columns:outputSize];
+        self.biasVector = [Matrix matrixOfRows:outputSize columns:1];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        self.weightMatrix = [aDecoder decodeObjectForKey:@"weightMatrix"];
+        self.biasVector = [aDecoder decodeObjectForKey:@"biasVector"];
+        self.lastActivation = [aDecoder decodeObjectForKey:@"lastActivation"];
+        self.L2 = [aDecoder decodeDoubleForKey:@"L2"];
     }
     return self;
 }
@@ -87,12 +100,31 @@
 
 - (int)inputSize
 {
-    return self.weightMatrix.rows; // FIXME
+    return self.weightMatrix.rows;
 }
 
 - (int)outputSize
 {
-    return self.weightMatrix.columns; // FIXME
+    return self.weightMatrix.columns;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    YCFullyConnectedLayer *copy = [super copyWithZone:zone];
+    copy.weightMatrix = [self.weightMatrix copy];
+    copy.biasVector = [self.biasVector copy];
+    copy.L2 = self.L2;
+    copy.lastActivation = [self.lastActivation copy];
+    return copy;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.weightMatrix forKey:@"weightMatrix"];
+    [aCoder encodeObject:self.biasVector forKey:@"biasVector"];
+    [aCoder encodeObject:self.lastActivation forKey:@"lastActivation"];
+    [aCoder encodeDouble:self.L2 forKey:@"L2"];
 }
 
 @end

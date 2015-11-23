@@ -29,4 +29,26 @@
     return [[self alloc] init];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if (self)
+    {
+        self.properties = [aDecoder decodeObjectForKey:@"properties"];
+    }
+    return self;
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    YCModelLayer *layer = [[[self class] alloc] init];
+    layer.properties = [self.properties copy];
+    return layer;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.properties forKey:@"properties"];
+}
+
 @end
