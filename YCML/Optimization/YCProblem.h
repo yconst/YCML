@@ -23,6 +23,12 @@
 @import Foundation;
 @class Matrix;
 
+typedef NS_ENUM(int, YCEvaluationMode) {
+    YCRequiresSequentialEvaluation = 0,
+    YCSupportsConcurrentEvaluation = 1,
+    YCProvidesParallelImplementation = 2
+};
+
 @protocol YCProblem
 
 - (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters;
@@ -38,6 +44,8 @@
 @property (readonly) int constraintCount;
 
 @property (readonly) Matrix *modes;
+
+@property (readonly) YCEvaluationMode supportedEvaluationMode;
 
 @optional
 
