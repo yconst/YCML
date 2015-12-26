@@ -29,10 +29,22 @@
 
 @interface NSArray (Matrix)
 
+/**
+ Returns a matrix that contains the sum of all matrices 
+ contained in the receiver.
+ */
 @property (readonly) Matrix *matrixSum;
 
+/**
+ Returna a matrix that contains the element-wise product of
+ all matrices contained in the receiver.
+ */
 @property (readonly) Matrix *matrixProduct;
 
+/**
+ Returns a matrix that contains the element-wise mean values of
+ all matrices contained in the receiver.
+ */
 @property (readonly) Matrix *matrixMean;
 
 @end

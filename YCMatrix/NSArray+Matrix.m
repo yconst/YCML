@@ -33,6 +33,7 @@
     Matrix *result;
     for (Matrix *m in self)
     {
+        NSAssert([m isKindOfClass:[Matrix class]], @"Array element is not a matrix");
         if (!result)
         {
             result = [m copy];
@@ -57,6 +58,7 @@
     Matrix *result;
     for (Matrix *m in self)
     {
+        NSAssert([m isKindOfClass:[Matrix class]], @"Array element is not a matrix");
         if (!result)
         {
             result = [m copy];

@@ -27,6 +27,11 @@
 #import <Foundation/Foundation.h>
 #import "Matrix.h"
 
+/**
+ Manipulate is a category to the Matrix class that extends it
+ by exposing functionality related to manipulating rows and columns, 
+ splitting and joining, sampling, shuffling, and a few others.
+ */
 @interface Matrix (Manipulate)
 
 /**

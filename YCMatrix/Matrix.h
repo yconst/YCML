@@ -29,6 +29,10 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 #import <Foundation/Foundation.h>
 #import <Accelerate/Accelerate.h>
 
+/**
+ The Matrix class is the main class in the YCMatrix framework, 
+ which represents a single mxn matrix. 
+ */
 @interface Matrix : NSObject <NSCoding, NSCopying>
 {
 	@public double *matrix;
