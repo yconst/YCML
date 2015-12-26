@@ -24,6 +24,12 @@
 
 @interface YCPopulationBasedOptimizer : YCOptimizer
 
++ (Class)individualClass;
+
+- (void)initializePopulation;
+
+- (void)replacePopulationUsing:(Matrix *)data;
+
 - (void)evaluateIndividuals:(NSArray *)individuals;
 
 @property NSMutableArray *population;

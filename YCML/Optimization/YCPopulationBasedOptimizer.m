@@ -26,31 +26,77 @@
 
 @implementation YCPopulationBasedOptimizer
 
++ (Class)individualClass
+{
+    @throw [NSInternalInconsistencyException initWithFormat:
+            @"You must override %@ in subclass %@", NSStringFromSelector(_cmd), [self class]];
+}
+
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
 {
     self = [super initWithProblem:aProblem settings:settings];
     if (self)
     {
-        self.population = [NSMutableArray array];
         self.settings[@"Population Size"] = @100;
     }
     return self;
 }
 
+- (void)initializePopulation
+{
+    NSAssert(self.problem, @"Property 'problem' is nil");
+    int popSize = [self.settings[@"Population Size"] intValue];
+    
+    self.population = [NSMutableArray array];
+    Matrix *parameterBounds = [self.problem parameterBounds];
+    for (int i=0; i<popSize; i++)
+    {
+        [self.population addObject:[[[[self class] individualClass] alloc]
+                                    initWithRandomValuesInBounds:parameterBounds]];
+    }
+}
+
+- (void)replacePopulationUsing:(Matrix *)data
+{
+    NSAssert(self.problem, @"Property 'problem' is nil");
+    NSAssert(data.rows == self.problem.parameterCount, @"");
+    NSAssert(data.columns > 0, @"Supplied data matrix is empty");
+    
+    NSArray *dataArray = [data columnsAsNSArray];
+    
+    self.population = [NSMutableArray array];
+    for (int i=0, j=(int)dataArray.count; i<j; i++)
+    {
+        YCIndividual *newIndividual = [[[[self class] individualClass] alloc] init];
+        newIndividual.decisionVariableValues = dataArray[i];
+        [self.population addObject:newIndividual];
+    }
+    
+    self.settings[@"Population Size"] = @(dataArray.count);
+}
+
 - (void)evaluateIndividuals:(NSArray *)individuals
 {
     NSAssert(self.problem, @"Property 'problem' is nil");
+    NSAssert(individuals, @"Passed individuals parameter is nil");
+    
+    // Pick out only the individuals that have not been evaluated
+    NSArray *ne = [individuals objectsAtIndexes:[individuals indexesOfObjectsPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx,BOOL * _Nonnull stop) {
+        return !((YCIndividual *)obj).evaluated;
+    }]];
     
     int parameterCount = self.problem.parameterCount;
     int objectiveCount = self.problem.objectiveCount;
     int constraintCount = self.problem.constraintCount;
-    int populationCount = (int)self.population.count;
+    int populationCount = (int)ne.count;
+    
+    if (populationCount == 0) return; // Nothing to evaluate really..
     
     if (self.problem.supportedEvaluationMode == YCProvidesParallelImplementation)
     {
         Matrix *parameters = [Matrix matrixOfRows:parameterCount
                                           columns:populationCount];
-        [individuals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [ne enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             YCIndividual *individual = obj;
             [parameters setColumn:(int)idx value:individual.decisionVariableValues];
         }];
@@ -60,7 +106,7 @@
         
         [self.problem evaluate:results parameters:parameters];
         
-        [individuals enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [ne enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             YCIndividual *individual = obj;
             Matrix *result = [results column:(int)idx];
             
@@ -71,17 +117,14 @@
             individual.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
             
             individual.evaluated = YES;
-
         }];
     }
     else
     {
         Matrix *result = [Matrix matrixOfRows:(objectiveCount+constraintCount) columns:1];
         
-        for (YCIndividual *individual in individuals)
+        for (YCIndividual *individual in ne)
         {
-            if (individual.evaluated) continue;
-            
             [self.problem evaluate:result parameters:individual.decisionVariableValues];
             
             NSRange constraintRange = NSMakeRange(0, constraintCount);
@@ -98,16 +141,18 @@
 - (void)reset
 {
     [super reset];
-    self.population = [NSMutableArray array];
+    self.population = nil;
 }
 
 - (NSArray *)bestParameters
 {
+    if (!self.population) [self initializePopulation];
     return [self.population valueForKey:@"decisionVariableValues"];
 }
 
 - (NSArray *)bestObjectives
 {
+    if (!self.population) [self initializePopulation];
     return [self.population valueForKey:@"objectiveFunctionValues"];
 }
 
