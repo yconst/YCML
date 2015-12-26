@@ -51,36 +51,39 @@
                                                object:trainer];
     for (int i=0; i<folds; i++)
     {
-        _currentFold = i;
-        
-        NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*foldLength, foldLength)];
-        
-        YCDataframe *trimmedInput = [YCDataframe dataframe];
-        [trimmedInput addSamplesWithData:[input samplesNotInIndexes:testIndexes]];
-        YCDataframe *trimmedOutput = [YCDataframe dataframe];
-        [trimmedOutput addSamplesWithData:[output samplesNotInIndexes:testIndexes]];
-        YCDataframe *trimmedTestInput = [YCDataframe dataframe];
-        [trimmedTestInput addSamplesWithData:[input samplesAtIndexes:testIndexes]];
-        YCDataframe *trimmedTestOutput = [YCDataframe dataframe];
-        [trimmedTestOutput addSamplesWithData:[output samplesAtIndexes:testIndexes]];
-        
-        YCSupervisedModel *model = [trainer train:nil input:trimmedInput output:trimmedOutput];
-        YCDataframe *predictedOutput = [model activateWithDataframe:trimmedTestInput];
-        
-        NSDictionary *output = self.evaluator(trimmedTestInput, trimmedTestOutput, predictedOutput);
-        
-        for (NSString *key in output.allKeys)
+        @autoreleasepool
         {
-            if (!cumulativeStats[key])
+            _currentFold = i;
+            
+            NSIndexSet *testIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(i*foldLength, foldLength)];
+            
+            YCDataframe *trimmedInput = [YCDataframe dataframe];
+            [trimmedInput addSamplesWithData:[input samplesNotInIndexes:testIndexes]];
+            YCDataframe *trimmedOutput = [YCDataframe dataframe];
+            [trimmedOutput addSamplesWithData:[output samplesNotInIndexes:testIndexes]];
+            YCDataframe *trimmedTestInput = [YCDataframe dataframe];
+            [trimmedTestInput addSamplesWithData:[input samplesAtIndexes:testIndexes]];
+            YCDataframe *trimmedTestOutput = [YCDataframe dataframe];
+            [trimmedTestOutput addSamplesWithData:[output samplesAtIndexes:testIndexes]];
+            
+            YCSupervisedModel *model = [trainer train:nil input:trimmedInput output:trimmedOutput];
+            YCDataframe *predictedOutput = [model activateWithDataframe:trimmedTestInput];
+            
+            NSDictionary *output = self.evaluator(trimmedTestInput, trimmedTestOutput, predictedOutput);
+            
+            for (NSString *key in output.allKeys)
             {
-                cumulativeStats[key] = [NSMutableArray array];
+                if (!cumulativeStats[key])
+                {
+                    cumulativeStats[key] = [NSMutableArray array];
+                }
+                [cumulativeStats[key] addObject:output[key]];
             }
-            [cumulativeStats[key] addObject:output[key]];
+            
+            [models addObject:model];
+            
+            if (trainer.shouldStop) break;
         }
-        
-        [models addObject:model];
-        
-        if (trainer.shouldStop) break;
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
