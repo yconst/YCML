@@ -32,6 +32,11 @@
 
 @implementation YCNSGAII
 
++ (Class)individualClass
+{
+    return [YCNSGAIndividual class];
+}
+
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem settings:(NSDictionary *)settings
 {
     self = [super initWithProblem:aProblem settings:settings];
@@ -48,41 +53,30 @@
 
 - (BOOL)iterate:(int)iteration
 {
+    if (!self.population) [self initializePopulation];
     int popSize = [self.settings[@"Population Size"] intValue];
     
-    // Initialization
-    if (iteration == 0)
-    {
-        if (!self.population) self.population = [NSMutableArray array];
-        Matrix *parameterBounds = [self.problem parameterBounds];
-        for (int i=0; i<popSize; i++)
-        {
-            [self.population addObject:[[YCNSGAIndividual alloc]
-                                        initWithRandomValuesInBounds:parameterBounds]];
-        }
-        
-        [self evaluateIndividuals:self.population];
-        
-        [self nonDominatedSortingWithPopulation:self.population];
-        [self crowdingDistanceCalculationWithPopulation:self.population];
-    }
-    else
-    {
-        NSArray *matingPool = [self tournamentSelectionWithPopulation:self.population];
-        NSArray *nextGen = [self simulatedBinaryCrossoverWithPopulation:matingPool];
-        nextGen = [self polynomialMutationWithPopulation:nextGen];
-        
-        [self evaluateIndividuals:nextGen];
-        
-        NSMutableArray *combined = [nextGen mutableCopy];
-        [combined addObjectsFromArray:self.population];
-        
-        [self nonDominatedSortingWithPopulation:combined];
-        [self crowdingDistanceCalculationWithPopulation:combined];
-        
-        self.population = [self reduce:combined ToSize:popSize];
-    }
-
+    NSAssert(popSize == self.population.count, @"Population size property and population array count are not equal");
+    
+    [self evaluateIndividuals:self.population]; // Implicit conditional evaluation
+    
+    [self nonDominatedSortingWithPopulation:self.population];
+    [self crowdingDistanceCalculationWithPopulation:self.population];
+    
+    NSArray *matingPool = [self tournamentSelectionWithPopulation:self.population];
+    NSArray *nextGen = [self simulatedBinaryCrossoverWithPopulation:matingPool];
+    nextGen = [self polynomialMutationWithPopulation:nextGen];
+    
+    [self evaluateIndividuals:nextGen]; // Implicit conditional evaluation
+    
+    NSMutableArray *combined = [nextGen mutableCopy];
+    [combined addObjectsFromArray:self.population];
+    
+    [self nonDominatedSortingWithPopulation:combined];
+    [self crowdingDistanceCalculationWithPopulation:combined];
+    
+    self.population = [self reduce:combined ToSize:popSize];
+    
     return YES;
 }
 
@@ -220,11 +214,11 @@
                 {
                     return NSOrderedAscending;
                 }
-                else if (v1 == v2)
+                else if (v1 > v2)
                 {
-                    return NSOrderedSame;
+                    return NSOrderedDescending;
                 }
-                return NSOrderedDescending;
+                return NSOrderedSame;
             }];
             
             [[sortedFront firstObject] setCrowdingDistance:DBL_MAX];
@@ -484,7 +478,11 @@
                 {
                     return NSOrderedAscending;
                 }
-                return NSOrderedDescending;
+                else if (i1.crowdingDistance < i2.crowdingDistance)
+                {
+                    return NSOrderedDescending;
+                }
+                return NSOrderedSame;
             }];
             trimmedPop = [trimmedPop subarrayWithRange:NSMakeRange(0, size - [sortedPop count])];
             [sortedPop addObjectsFromArray:trimmedPop];
