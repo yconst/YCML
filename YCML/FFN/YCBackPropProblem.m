@@ -43,6 +43,7 @@
         self->_inputMatrix = input;
         self->_outputMatrix = output;
         self->_trainedModel = model;
+        self.batchSize = 1; // Default, single sample, will be probably overriden by trainer
     }
     return self;
 }
@@ -111,7 +112,7 @@
     int hiddenCount   = tm.hiddenLayerCount;
     
     // Prepare Matrices and Arrays
-    int sampleCount;
+    int exampleCount;
     Matrix *inputMatrix;
     Matrix *outputMatrix;
     NSArray *inputMatrixArray;
@@ -120,26 +121,26 @@
     if (self.sampleCount <= 0 || self.sampleCount > self->_inputMatrix->columns)
     {
         // Reference & Split matrices
-        sampleCount  = self->_inputMatrix->columns;
+        exampleCount  = self->_inputMatrix->columns;
         inputMatrix  = self->_inputMatrix;
         outputMatrix = self->_outputMatrix;
-        if (!self->_inputMatrixArray) _inputMatrixArray   = [inputMatrix columnsAsNSArray];
-        if (!self->_outputMatrixArray) _outputMatrixArray = [outputMatrix columnsAsNSArray];
+        if (!self->_inputMatrixArray) _inputMatrixArray   = [inputMatrix columnWisePartition:self.batchSize];
+        if (!self->_outputMatrixArray) _outputMatrixArray = [outputMatrix columnWisePartition:self.batchSize];
         inputMatrixArray = _inputMatrixArray;
         outputMatrixArray = _outputMatrixArray;
     }
     else
     {
         // Sample & Split matrices
-        sampleCount  = self.sampleCount;
+        exampleCount  = self.sampleCount;
         NSRange range = NSMakeRange(0, self->_inputMatrix->columns);
-        NSIndexSet *sampleIndexes = [NSIndexSet indexesForSampling:sampleCount
-                                                           inRange:range
-                                                       replacement:NO];
-        inputMatrix  = [self->_inputMatrix columns:sampleIndexes];
-        outputMatrix = [self->_outputMatrix columns:sampleIndexes];
-        inputMatrixArray  = [inputMatrix columnsAsNSArray];
-        outputMatrixArray = [outputMatrix columnsAsNSArray];
+        NSIndexSet *exampleIndexes = [NSIndexSet indexesForSampling:exampleCount
+                                                            inRange:range
+                                                        replacement:NO];
+        inputMatrix  = [self->_inputMatrix columns:exampleIndexes];
+        outputMatrix = [self->_outputMatrix columns:exampleIndexes];
+        inputMatrixArray  = [inputMatrix columnWisePartition:self.batchSize];
+        outputMatrixArray = [outputMatrix columnWisePartition:self.batchSize];
     }
     
     // Activate model and extract layer output arrays
@@ -148,7 +149,7 @@
     NSMutableArray *activationArrays = [NSMutableArray array];
     for (Matrix *m in [tm.layers valueForKey:@"lastActivation"])
     {
-        [activationArrays addObject:[m columnsAsNSArray]];
+        [activationArrays addObject:[m columnWisePartition:self.batchSize]];
     }
     
     // Prepare weight and bias matrices
@@ -160,13 +161,13 @@
         [biasGradients addObject:[Matrix matrixLike:biases[l]]];
     }
     
-    // For every sample:
-    for (int s=0; s<sampleCount; s++)
+    // For every example batch:
+    for (int b=0, count = (int)inputMatrixArray.count; b<count; b++)
     {
         // Calculate Deltas for Output
         NSMutableArray *deltas = [NSMutableArray array];
-        Matrix *expectedOutput = outputMatrixArray[s];
-        Matrix *modelOutput    = [activationArrays lastObject][s];
+        Matrix *expectedOutput = outputMatrixArray[b];
+        Matrix *modelOutput    = [activationArrays lastObject][b];
         
         Matrix *modelOutputGradient = [modelOutput copy];
         [[tm.layers lastObject] activationFunctionGradient:modelOutputGradient];
@@ -179,8 +180,8 @@
         // Calculate Deltas for Hidden Layers
         for (int l=hiddenCount; l>=1; l--)
         {
-            delta                     = [[tm.layers[l] weightMatrix] matrixByMultiplyingWithRight:delta];
-            Matrix *layerDerivative = [activationArrays[l-1][s] copy];
+            delta                   = [[tm.layers[l] weightMatrix] matrixByMultiplyingWithRight:delta];
+            Matrix *layerDerivative = [activationArrays[l-1][b] copy];
             [tm.layers[l-1] activationFunctionGradient:layerDerivative];
             [delta elementWiseMultiply:layerDerivative];
             [deltas insertObject:delta atIndex:0];
@@ -190,18 +191,18 @@
         for (int l=0; l<=hiddenCount; l++)
         {
             Matrix *weights = [self.trainedModel.layers[l] weightMatrix];
-            Matrix *incoming = l==0 ? inputMatrixArray[s] : activationArrays[l-1][s];
+            Matrix *incoming = l==0 ? inputMatrixArray[b] : activationArrays[l-1][b];
             delta              = deltas[l];
             Matrix *loss = [delta matrixByTransposingAndMultiplyingWithLeft:incoming];
             [loss add:[weights matrixByMultiplyingWithScalar:[self.trainedModel.layers[l] L2]]];
             [weightGradients[l] add:loss];
             
-            [biasGradients[l] add:delta];
+            [biasGradients[l] add:[delta sumsOfRows]];
         }
     }
     
     // Divide gradients with sample count
-    double mult = 1.0/sampleCount;
+    double mult = 1.0/exampleCount;
     for (Matrix *m in weightGradients)
     {
         [m multiplyWithScalar:mult];

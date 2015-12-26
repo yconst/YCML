@@ -47,4 +47,6 @@
 
 @property int sampleCount;
 
+@property int batchSize;
+
 @end

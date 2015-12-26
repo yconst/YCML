@@ -62,6 +62,7 @@
         self.settings[@"Alpha"]              = @0.1;
         self.settings[@"Target"]             = @-1;
         self.settings[@"Samples"]            = @-1;
+        self.settings[@"Batch Size"]         = @500;
     }
     return self;
 }
@@ -101,8 +102,9 @@
     YCBackPropProblem *p      = [[[[self class] problemClass] alloc] initWithInputMatrix:scaledInput
                                                                             outputMatrix:scaledOutput
                                                                                    model:model];
-    p.sampleCount                     = [self.settings[@"Samples"] intValue];
-    YCOptimizer *optimizer      = [[[[self class] optimizerClass] alloc] initWithProblem:p];
+    p.sampleCount             = [self.settings[@"Samples"] intValue];
+    p.batchSize               = [self.settings[@"Batch Size"] intValue];
+    YCOptimizer *optimizer    = [[[[self class] optimizerClass] alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)
     {
