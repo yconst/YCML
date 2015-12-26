@@ -1,7 +1,7 @@
 
 #YCML [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 
-YCML is a Machine Learning framework written in Objective-C, and also available for use in Swift.  
+YCML is a Machine Learning framework written in Objective-C, and also available for use in Swift. YCML runs on OS X and iOS, and mainly focuses on regression problems. 
 The following algorithms are currently available:
 
 - Gradient Descent Backpropagation [1]
@@ -25,8 +25,13 @@ YCML also contains some optimization algorithms as support for deriving predicti
 
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
-- Powerful and modular Backprop class, that can be configured for stochastic GD.
+- Modular Backprop class that enables complex graphs, based on Layer objects.
+- (new in 0.3.2) Fast Backprop (and RProp) computation using batches to speed up computations through BLAS.
 - Powerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
+
+###Validation & Testing
+
+- Facilities for k-fold cross validation and Monte Carlo cross-validation.
 
 ###Optimization
 
@@ -38,6 +43,7 @@ YCML also contains some optimization algorithms as support for deriving predicti
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
 - Text-based exporting of models.
 - NSArray category for basic statistics (mean, median, quartiles, min and max, variance, sd etc.).
+- Tools for pseudorandom and quasi-random low discrepancy sequence generation (see note below).
 
 ##Getting started
 
@@ -148,6 +154,10 @@ Cross-validation example, from data input to presentation of results:
     var RMSE = sqrt(1.0 / Double(predictedOutput.columns) * predictedOutput.sum)
     NSLog("%@", RMSE)
     XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
+
+### A note on Pseudorandom and Quasi-random Number Generation
+
+
 
 ##Framework Architecture
 
