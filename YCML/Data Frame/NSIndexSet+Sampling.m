@@ -8,6 +8,8 @@
 
 #import "NSIndexSet+Sampling.h"
 
+#define ARC4RANDOM_MAX      0x100000000
+
 @implementation NSIndexSet (Sampling)
 
 + (instancetype)indexesForSampling:(int)samples inRange:(NSRange)range replacement:(BOOL)replacement
@@ -18,7 +20,7 @@
         NSUInteger N = range.length;
         for (int i=0; i<samples; i++)
         {
-            [selectedIndexes addIndex:range.location + (int)(N * (double)arc4random() / 0x1000000000)];
+            [selectedIndexes addIndex:range.location + (int)(N * (double)arc4random() / ARC4RANDOM_MAX)];
         }
     }
     else
@@ -28,7 +30,7 @@
         NSUInteger N = range.length;
         while (n > 0)
         {
-            if (N * (double)arc4random() / 0x1000000000 <= n)
+            if (N * (double)arc4random() / ARC4RANDOM_MAX <= n)
             {
                 [selectedIndexes addIndex:range.location + i];
                 n--;
