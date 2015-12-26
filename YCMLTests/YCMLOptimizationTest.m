@@ -201,9 +201,26 @@
     YCOptimizer *ga = [[YCNSGAII alloc] initWithProblem:zdt1];
     ga.settings[@"Iterations"] = @50;
     [ga run];
-    //Matrix *result = [Matrix matrixOfRows:1 columns:1];
-    //[gdProblem evaluate:result parameters:gd.state[@"values"]];
-    //XCTAssertLessThan([result valueAtRow:0 column:0], 0.02);
+}
+
+- (void)testReplacingPopulation
+{
+    YCProblemZDT1 *zdt1 = [[YCProblemZDT1 alloc] init];
+    YCPopulationBasedOptimizer *ga1 = [[YCNSGAII alloc] initWithProblem:zdt1
+                                                               settings:@{@"Population Size": @150}];
+    
+    NSArray *solutions = [ga1 bestParameters];
+    Matrix *solutionsMatrix = [Matrix matrixFromColumns:solutions];
+    
+    YCPopulationBasedOptimizer *ga2 = [[YCNSGAII alloc] initWithProblem:zdt1
+                                                               settings:@{@"Population Size": @50}];
+    [ga2 replacePopulationUsing:solutionsMatrix];
+    
+    XCTAssertEqual(ga2.population.count, ga1.population.count);
+    XCTAssertEqual([ga2.settings[@"Population Size"] unsignedIntValue], ga2.population.count);
+    
+    ga2.settings[@"Iterations"] = @50;
+    [ga2 run];
 }
 
 @end
