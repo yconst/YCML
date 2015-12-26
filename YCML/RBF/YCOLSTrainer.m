@@ -49,9 +49,10 @@
 {
     // Input: NxS, output: OxS
     // Step I. Scaling inputs & outputs; determining inverse output scaling matrix
-    model.inputTransform = [input rowWiseMapToDomain:YCMakeDomain(-1, 2) basis:StDev];
-    Matrix *outputScaling = [output rowWiseMapToDomain:YCMakeDomain(-1, 2) basis:StDev];
-    model.outputTransform = [output rowWiseInverseMapFromDomain:YCMakeDomain(-1, 2) basis:StDev];
+    YCDomain domain = YCMakeDomain(-1, 2);
+    model.inputTransform = [input rowWiseMapToDomain:domain basis:StDev];
+    Matrix *outputScaling = [output rowWiseMapToDomain:domain basis:StDev];
+    model.outputTransform = [output rowWiseInverseMapFromDomain:domain basis:StDev];
     
     Matrix *scaledInput = [input matrixByRowWiseMapUsing:model.inputTransform];
     Matrix *scaledOutput = [output matrixByRowWiseMapUsing:outputScaling];
@@ -66,7 +67,8 @@
     // Step III. Determining Output (Linear) Weights -> DxO
     [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
                                                         object:self
-                                                      userInfo:@{@"Status" : @"Calculating Linear Weights"}];
+                                                      userInfo:@{@"Status" : @"Calculating Linear Weights",
+                                                                 @"Regressor Count" : @(model.weights.columns)}];
     
     [self weightsFor:model input:scaledInput output:scaledOutput];
 }
