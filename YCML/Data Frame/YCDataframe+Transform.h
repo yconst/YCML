@@ -27,6 +27,8 @@
 
 - (instancetype)randomSamplesWithCount:(int)count;
 
+- (instancetype)sobolSequenceWithCount:(int)count;
+
 - (instancetype)randomWalkSteps:(int)steps restarts:(int)restarts relativeStepSize:(double)stepSize;
 
 - (void)corruptWithProbability:(double)probability relativeMagnitude:(double)relativeMagnitude;

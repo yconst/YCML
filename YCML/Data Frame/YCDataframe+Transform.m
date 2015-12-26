@@ -23,6 +23,10 @@
 #import "YCDataframe+Transform.h"
 #import "NSArray+Statistics.h"
 #import "OrderedDictionary.h"
+#import "YCDataframe+Matrix.h"
+@import YCMatrix;
+
+#define ARC4RANDOM_MAX 0x100000000
 
 @implementation YCDataframe (Transform)
 
@@ -37,12 +41,24 @@
         double max = [[attributeData max] doubleValue];
         for (int i=0; i<count; i++)
         {
-            double r = (double)arc4random() / 0x100000000;
+            double r = (double)arc4random() / ARC4RANDOM_MAX;
             [newData addObject:@(r * (max - min) + min)];
         }
         [newDataframe addAttributeWithIdentifier:key data:newData];
     }
     return newDataframe;
+}
+
+- (instancetype)sobolSequenceWithCount:(int)count
+{
+    // TODO: This converts the dataset to a matrix first. If the dataset is large, it is wasteful.
+    // try doing it another way.
+    NSArray *ca = [self conversionArray];
+    Matrix *m = [self getMatrixUsingConversionArray:ca];
+    Matrix *mins = [m minimumsOfRows];
+    Matrix *maxs = [m maximumsOfRows];
+    Matrix *sequence = [Matrix sobolSequenceWithLowerBound:mins upperBound:maxs count:count];
+    return [YCDataframe dataframeWithMatrix:sequence conversionArray:ca];
 }
 
 - (instancetype)randomWalkSteps:(int)steps restarts:(int)restarts relativeStepSize:(double)stepSize
@@ -59,7 +75,7 @@
         {
             double min = [mins[key] doubleValue];
             double max = [maxs[key] doubleValue];
-            double val = ((double)arc4random() / 0x100000000) * (max - min) + min;
+            double val = ((double)arc4random() / ARC4RANDOM_MAX) * (max - min) + min;
             position[key] = @(val);
         }
         [newDataframe addSampleWithData:position];
@@ -71,7 +87,7 @@
                 double max = [maxs[key] doubleValue];
                 double val = [position[key] doubleValue];
                 double range = (max - min) * stepSize;
-                double newVal = val + (2 * ((double)arc4random() / 0x100000000) - 1) * range;
+                double newVal = val + (2 * ((double)arc4random() / ARC4RANDOM_MAX) - 1) * range;
                 if (newVal > max)
                 {
                     newVal -= (max - min);
@@ -96,14 +112,14 @@
     NSUInteger count = [self dataCount];
     for (int i=0; i<count; i++)
     {
-        if ((double)arc4random() / 0x100000000 > probability) continue;
+        if ((double)arc4random() / ARC4RANDOM_MAX > probability) continue;
         int index = arc4random_uniform((int)[attributeKeys count]);
         NSString *key = attributeKeys[index];
         double val = [self->_data[key][i] doubleValue];
         double min = [mins[key] doubleValue];
         double max = [maxs[key] doubleValue];
         double range = (max - min) * relativeMagnitude;
-        double newVal = val + (2 * ((double)arc4random() / 0x100000000) - 1) * range;
+        double newVal = val + (2 * ((double)arc4random() / ARC4RANDOM_MAX) - 1) * range;
         newVal = MIN(max, MAX(min, newVal));
         self->_data[key][i] = @(newVal);
     }
