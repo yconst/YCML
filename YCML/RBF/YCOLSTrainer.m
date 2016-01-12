@@ -93,12 +93,8 @@
     // Find the trace of the output matrix
     double dTrace             = [[outp matrixByMultiplyingWithRight:[outp matrixByTransposing]] trace];
     
-    // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
-    Matrix *P                 = [self initialDesignMatrixWithInput:inp widths:model.widths]; // -> SxS
-    NSArray *PA               = [P columnsAsNSArray];
-    
     // This will hold all the *orthogonalized* vectors up till the current (k) step
-    NSMutableArray *W         = [NSMutableArray arrayWithCapacity:cols];
+    NSMutableArray *W         = [NSMutableArray array];
     
     // This will hold the subset of inputs selected as regressors.
     NSMutableArray *selectedRegressors = [[NSMutableArray alloc] init];
@@ -106,8 +102,13 @@
     // This will hold boolean values to denote whether an input has been selected as regressor.
     bool *isSelected          = calloc(cols, sizeof(bool));
     
+    // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
     // Cache of all orthogonalized regressors of the last step
-    NSMutableArray *lastOrtho = [NSMutableArray arrayWithArray:PA];
+    NSMutableArray *lastOrtho;
+    @autoreleasepool {
+        lastOrtho = [[[self initialDesignMatrixWithInput:inp widths:model.widths]
+                      columnsAsNSArray] mutableCopy];
+    }
     
     for (int k=0; k<cols; k++)
     {
@@ -254,6 +255,9 @@
                                    sqsum += val*val;
                                }
                                double bfvalue = exp( - sqsum / pow(widths->matrix[j], 2));
+                               
+                               bfvalue =
+                               
                                designmatrix->matrix[i*S + j] = bfvalue;
                                designmatrix->matrix[j*S + i] = bfvalue;
                            }
