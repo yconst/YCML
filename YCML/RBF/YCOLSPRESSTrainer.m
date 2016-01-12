@@ -48,10 +48,6 @@
                                                value:basisFunctionWidth]; // -> Sx1
     model.centers             = [Matrix matrixFromMatrix:inp];// -> NxS
     
-    // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
-    Matrix *P                 = [model designMatrixWithInput:inp]; // -> SxS
-    NSArray *PA               = [P columnsAsNSArray];
-    
     // This will hold all the *orthogonalized* vectors up till the current (k) step
     NSMutableArray *W         = [NSMutableArray arrayWithCapacity:cols];
     
@@ -61,8 +57,13 @@
     // This will hold boolean values to denote whether an input has been selected as regressor.
     bool *isSelected          = calloc(cols, sizeof(bool));
     
+    // Find design matrix (aka regressor matrix) for full-sample width hidden layer (D == S => H:SxS)
     // Cache of all orthogonalized regressors of the last step
-    NSMutableArray *lastOrtho = [NSMutableArray arrayWithArray:PA];
+    NSMutableArray *lastOrtho;
+    @autoreleasepool {
+        lastOrtho = [[[self initialDesignMatrixWithInput:inp widths:model.widths]
+                      columnsAsNSArray] mutableCopy];
+    }
     
     // For PRESS: These will hold Ksi and B values for each step, for each regressor
     //YCMatrix *Ksi = [YCMatrix matrixFromMatrix:outp]; // OxS
