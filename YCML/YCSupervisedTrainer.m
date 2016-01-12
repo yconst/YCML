@@ -39,6 +39,8 @@
     }
     theModel.properties[@"InputMinValues"]        = [input stat:@"min"];
     theModel.properties[@"InputMaxValues"]        = [input stat:@"max"];
+    theModel.properties[@"OutputMinValues"]       = [output stat:@"min"];
+    theModel.properties[@"OutputMaxValues"]       = [output stat:@"max"];
     theModel.properties[@"InputConversionArray"]  = [input conversionArray];
     theModel.properties[@"OutputConversionArray"] = [output conversionArray];
     [theModel.trainingSettings addEntriesFromDictionary:self.settings];
