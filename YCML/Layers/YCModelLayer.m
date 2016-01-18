@@ -29,6 +29,16 @@
     return [[self alloc] init];
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.properties = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];
