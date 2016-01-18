@@ -34,6 +34,11 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCSupervisedModel.h"
 #import "YCSupervisedTrainer.h"
 
+#import "YCSVR.h"
+#import "YCSMORegressionTrainer.h"
+#import "YCModelKernel.h"
+#import "YCLinearKernel.h"
+
 #import "YCFFN.h"
 #import "YCELMTrainer.h"
 
@@ -42,6 +47,8 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCBackPropTrainer.h"
 #import "YCRProp.h"
 #import "YCRpropTrainer.h"
+#import "YCSVR.h"
+#import "YCSMORegressionTrainer.h"
 #import "YCRBFNet.h"
 #import "YCOLSTrainer.h"
 #import "YCOLSPRESSTrainer.h"
@@ -62,6 +69,8 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCPopulationBasedOptimizer.h"
 #import "YCIndividual.h"
 #import "YCNSGAII.h"
+#import "YCHypE.h"
+#import "YCHypervolumeMetric.h"
 #import "YCSurrogateModel.h"
 #import "YCCompoundProblem.h"
 
