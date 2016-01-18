@@ -151,6 +151,15 @@
     [self numericalGradientsWithLayers:@[hl, ol]];
 }
 
+- (void)testFFNExoticNetNumericalGradients
+{
+    YCFullyConnectedLayer *hl1 = [YCReLULayer layerWithInputSize:3 outputSize:3];
+    YCFullyConnectedLayer *hl2 = [YCLinearLayer layerWithInputSize:3 outputSize:3];
+    YCFullyConnectedLayer *hl3 = [YCSigmoidLayer layerWithInputSize:3 outputSize:2];
+    YCFullyConnectedLayer *ol = [YCLinearLayer layerWithInputSize:2 outputSize:1];
+    [self numericalGradientsWithLayers:@[hl1, hl2, hl3, ol]];
+}
+
 - (void)numericalGradientsWithLayers:(NSArray *)layers
 {
     double ia[12] = {0.4084028, 0.14962953, 0.912, 0.877,
@@ -167,8 +176,13 @@
     YCBackPropProblem *prob = [[YCBackPropProblem alloc] initWithInputMatrix:im
                                                                 outputMatrix:om
                                                                        model:model];
-    Matrix *lo     = [Matrix matrixOfRows:11 columns:1 value:-1.0]; // 3x2 + 2 + 1x2 + 1 = 11
-    Matrix *hi     = [Matrix matrixOfRows:11 columns:1 value:1.0];
+    int parameterCount = 0;
+    for (YCFullyConnectedLayer *l in layers)
+    {
+        parameterCount += l.weightMatrix.count + l.biasVector.count;
+    }
+    Matrix *lo     = [Matrix matrixOfRows:parameterCount columns:1 value:-1.0];
+    Matrix *hi     = [Matrix matrixOfRows:parameterCount columns:1 value:1.0];
     Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
     
     Matrix *theoreticalGradients = [Matrix matrixLike:params];
@@ -228,11 +242,17 @@
 {
     YCBackPropTrainer *trainer                 = [YCBackPropTrainer trainer];
     trainer.settings[@"Hidden Layer Size"]  = @8;
-    trainer.settings[@"L2"]                 = @0.0001;
+    trainer.settings[@"L2"]                 = @1E-5;
     trainer.settings[@"Iterations"]         = @6000;
     trainer.settings[@"Alpha"]              = @0.5;
     trainer.settings[@"Samples"]            = @10;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.5];
+}
+
+- (void)testSVRSMOHousing
+{
+    YCSMORegressionTrainer *trainer             = [YCSMORegressionTrainer trainer];
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
 - (void)testRBFHousing
