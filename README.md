@@ -1,23 +1,26 @@
 
 #YCML [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 
-YCML is a Machine Learning framework written in Objective-C, and also available for use in Swift. YCML runs on OS X and iOS, and mainly focuses on regression problems. 
+YCML is a Machine Learning and Optimization framework written in Objective-C, and usable in both Objective-C and Swift. YCML runs on OS X and iOS, and mainly focuses on regression problems (although classification problems can be tackled as well), and multi-objective optimization. 
+
 The following algorithms are currently available:
 
 - Gradient Descent Backpropagation [1]
 - Resilient Backpropagation (RProp) [2]
-- Extreme Learning Machines (ELM) [3]
-- Forward Selection using Orthogonal Least Squares (for RBF Net) [4, 5]
-- Forward Selection using Orthogonal Least Squares with the PRESS statistic [6]
-- Binary Restricted Boltzmann Machines (CD & PCD, Untested!) [7] 
+- Support Vector Machine Regression using SMO (Currently only linear kernel is available) [3, 4]
+- Extreme Learning Machines (ELM) [5]
+- Forward Selection using Orthogonal Least Squares (for RBF Net) [6, 7]
+- Forward Selection using Orthogonal Least Squares with the PRESS statistic [8]
+- Binary Restricted Boltzmann Machines (CD) [9] 
 
 Where applicable, regularized versions of the algrithms have been implemented.
 
-YCML also contains some optimization algorithms as support for deriving predictive models, although they can be used for any kind of problem:
+YCML also contains the following optimization algorithms:
 
 - Gradient Descent (Single-Objective, Unconstrained)
 - RProp Gradient Descent (Single-Objective, Unconstrained)
-- NSGA-II (Multi-Objective, Constrained) [8]
+- NSGA-II (Multi-Objective, Constrained) [10]
+- HypE (Multi-Objective, Constrained, Sampled Hypervolume indicator) [11]
 
 ##Features
 
@@ -26,7 +29,7 @@ YCML also contains some optimization algorithms as support for deriving predicti
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
 - Modular Backprop class that enables complex graphs, based on Layer objects.
-- (new in 0.3.2) Fast Backprop (and RProp) computation using batches to speed up computations through BLAS.
+- (new in 0.3.2) Fast Backprop (and RProp) computation using mini-batches to speed up computations through BLAS.
 - Powerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
 
 ###Validation & Testing
@@ -37,6 +40,11 @@ YCML also contains some optimization algorithms as support for deriving predicti
 
 - Separate optimization routines for single- and multi-objective problems.
 - Surrogate class that exposes a predictive model as an objective function, useful for optimization.
+
+###Sampling
+
+- Several different methods for multi-dimensional random number generation, including low-discrepancy sequence generation.
+- Several methods for sampling from, splitting and shuffling Dataframes.
 
 ###Other
 
@@ -175,17 +183,23 @@ Currently implemented FFN layers differ in their activation function. Linear, Si
 
 [2] M. Riedmiller, H. Braun. A direct adaptive method for faster backpropagation learning: the RPROP algorithm. IEEE Int. Conf. Neural Networks; pp. 586-591, 1993.
 
-[3] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang. Extreme Learning Machine for Regression and Multiclass Classification, IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
+[3] JC. Platt. Fast Training of Support Vector Machines Using Sequential Minimal Optimization. Adv Kernel Methods pp. 185-208, 1998
 
-[4] S. Chen, CN Cowan, PM Grant. Orthogonal least squares learning algorithm for radial basis function networks. IEEE Trans Neural Netw, vol. 2, no. 2, pp. 302–9, 1991.
+[4] GW. Flake, S. Lawrence. Efficient SVM regression training with SMO. Mach Learn 46; pp.271–90, 2002.
 
-[5] S. Chen, E. Chng, K. Alkadhimi. Regularized orthogonal least squares algorithm for constructing radial basis function networks. Int J Control 1996.
+[5] G.-B. Huang, H. Zhou, X. Ding, and R. Zhang. Extreme Learning Machine for Regression and Multiclass Classification, IEEE Transactions on Systems, Man, and Cybernetics - Part B:Cybernetics, vol. 42, no. 2, pp. 513-529, 2012.
 
-[6] X. Hong, P. Sharkey, K. Warwick. Automatic nonlinear predictive model-construction algorithm using forward regression and the PRESS statistic. IEEE Proc - Control Theory Appl. vol. 150, no. 3, pp. 245–54, 2003
+[6] S. Chen, CN Cowan, PM Grant. Orthogonal least squares learning algorithm for radial basis function networks. IEEE Trans Neural Netw, vol. 2, no. 2, pp. 302–9, 1991.
 
-[7] G. Hinton. Training Products of Experts by Minimizing Contrastive Divergence. Neural Comput. vol. 14, no. 8, pp.1771–800, 2002.
+[7] S. Chen, E. Chng, K. Alkadhimi. Regularized orthogonal least squares algorithm for constructing radial basis function networks. Int J Control 1996.
 
-[8] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
+[8] X. Hong, P. Sharkey, K. Warwick. Automatic nonlinear predictive model-construction algorithm using forward regression and the PRESS statistic. IEEE Proc - Control Theory Appl. vol. 150, no. 3, pp. 245–54, 2003
+
+[9] G. Hinton. Training Products of Experts by Minimizing Contrastive Divergence. Neural Comput. vol. 14, no. 8, pp.1771–800, 2002.
+
+[10] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
+
+[11] J. Bader, E. Zitzler. HypE: An algorithm for fast hypervolume-based many-objective optimization. Evol Comput 19, pp. 45–76, 2011.
 
 ##License 
 
