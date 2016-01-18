@@ -203,7 +203,7 @@ Currently implemented FFN layers differ in their activation function. Linear, Si
 
 ##License 
 
-Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 
 YCML is licensed under the GPLv3. For other licensing options, please contact the author.
 
