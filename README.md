@@ -1,5 +1,8 @@
 
-#YCML [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
+#YCML 
+
+[![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
+[![DOI](https://zenodo.org/badge/20003/yconst/YCML.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCML)
 
 YCML is a Machine Learning and Optimization framework written in Objective-C, and usable in both Objective-C and Swift. YCML runs on OS X and iOS, and mainly focuses on regression problems (although classification problems can be tackled as well), and multi-objective optimization. 
 
