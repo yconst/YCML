@@ -33,6 +33,23 @@
     double _currentIteration;
 }
 
+- (instancetype)initWithSettings:(NSDictionary *)settings evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *, YCDataframe *))evaluator
+{
+    self = [super initWithSettings:settings evaluator:evaluator];
+    if (self)
+    {
+        if (!self.settings[@"Iterations"])
+        {
+            self.settings[@"Iterations"] = @5;
+        }
+        if (!self.settings[@"TestFactor"])
+        {
+            self.settings[@"TestFactor"] = @0.1;
+        }
+    }
+    return self;
+}
+
 - (NSDictionary *)performTest:(YCSupervisedTrainer *)trainer
                         input:(YCDataframe *)input
                        output:(YCDataframe *)output

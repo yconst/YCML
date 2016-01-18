@@ -32,6 +32,19 @@
     int _currentFold;
 }
 
+- (instancetype)initWithSettings:(NSDictionary *)settings evaluator:(NSDictionary *(^)(YCDataframe *, YCDataframe *, YCDataframe *))evaluator
+{
+    self = [super initWithSettings:settings evaluator:evaluator];
+    if (self)
+    {
+        if (!self.settings[@"Folds"])
+        {
+            self.settings[@"Folds"] = @5;
+        }
+    }
+    return self;
+}
+
 - (NSDictionary *)performTest:(YCSupervisedTrainer *)trainer
                         input:(YCDataframe *)input
                        output:(YCDataframe *)output

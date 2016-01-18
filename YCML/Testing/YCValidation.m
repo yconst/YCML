@@ -34,7 +34,6 @@
     if (self)
     {
         self.settings = [NSMutableDictionary dictionary];
-        self.settings[@"Folds"] = @5;
         if (settings) [self.settings addEntriesFromDictionary:settings];
         if (evaluator)
         {
