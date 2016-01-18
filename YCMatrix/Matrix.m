@@ -189,6 +189,12 @@
 	matrix[i*columns + j] = vl;
 }
 
+- (void)i:(int)i j:(int)j increment:(double)vl
+{
+    [self checkBoundsForRow:i column:j];
+    matrix[i*columns + j] += vl;
+}
+
 - (void)checkBoundsForRow:(int)row column:(int)column
 {
 	if(column >= columns)

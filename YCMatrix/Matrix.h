@@ -211,6 +211,14 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  */
 - (void)i:(int)i j:(int)j set:(double)vl;
 
+/**
+ Increments value at |i|, |j| of the receiver, by |vl|.
+ 
+ @param i    The row.
+ @param j    The column.
+ @param vl   The value to set.
+ */
+- (void)i:(int)i j:(int)j increment:(double)vl;
 
 /// @name Matrix Operations
 

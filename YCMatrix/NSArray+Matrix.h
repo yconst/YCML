@@ -47,4 +47,16 @@
  */
 @property (readonly) Matrix *matrixMean;
 
+/**
+ Returns a matrix that contains the element-wise maximum values of
+ all matrices contained in the receiver.
+ */
+@property (readonly) Matrix *matrixMax;
+
+/**
+ Returns a matrix that contains the element-wise minimum values of
+ all matrices contained in the receiver.
+ */
+@property (readonly) Matrix *matrixMin;
+
 @end
