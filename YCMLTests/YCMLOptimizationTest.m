@@ -3,7 +3,7 @@
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
-//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -195,12 +195,50 @@
     XCTAssertLessThan([result valueAtRow:0 column:0], 0.01);
 }
 
-- (void)testZDT1
+- (void)testNSGAIIZDT1
 {
     YCProblemZDT1 *zdt1 = [[YCProblemZDT1 alloc] init];
+    
+    Matrix *lower = [Matrix matrixOfRows:2 columns:1 value:0];
+    Matrix *upper = [Matrix matrixOfRows:2 columns:1 value:1];
+    
     YCOptimizer *ga = [[YCNSGAII alloc] initWithProblem:zdt1];
-    ga.settings[@"Iterations"] = @50;
+    ga.settings[@"Iterations"] = @200;
+    
     [ga run];
+    
+    double I = [[[YCHypervolumeMetric alloc] init]
+                estimateHypervolumeForObjectiveFunctionVectors:ga.bestObjectives
+                targets:zdt1.modes
+                sampleSize:5000
+                lowerReference:lower
+                upperReference:upper];
+    
+    NSLog(@"Hypervolume indicator for NSGA-II, ZDT1, 200 generations: %f", I);
+    NSAssert(I>0.6, @"NSGA-II Hypervolume indicator below threshold");
+}
+
+- (void)testHypEZDT1
+{
+    YCProblemZDT1 *zdt1 = [[YCProblemZDT1 alloc] init];
+    
+    Matrix *lower = [Matrix matrixOfRows:2 columns:1 value:0];
+    Matrix *upper = [Matrix matrixOfRows:2 columns:1 value:1];
+    
+    YCOptimizer *ga = [[YCHypE alloc] initWithProblem:zdt1];
+    ga.settings[@"Iterations"] = @200;
+    
+    [ga run];
+    
+    double I = [[[YCHypervolumeMetric alloc] init]
+                estimateHypervolumeForObjectiveFunctionVectors:ga.bestObjectives
+                targets:zdt1.modes
+                sampleSize:5000
+                lowerReference:lower
+                upperReference:upper];
+    
+    NSLog(@"Hypervolume indicator for HypE, ZDT1, 200 generations: %f", I);
+    NSAssert(I>0.6, @"HypE Hypervolume indicator below threshold");
 }
 
 - (void)testReplacingPopulation

@@ -3,7 +3,7 @@
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 19/3/15.
-//  Copyright (c) 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -27,6 +27,11 @@ typedef NS_ENUM(int, YCEvaluationMode) {
     YCRequiresSequentialEvaluation = 0,
     YCSupportsConcurrentEvaluation = 1,
     YCProvidesParallelImplementation = 2
+};
+
+typedef NS_ENUM(int, YCObjectiveTarget) {
+    YCObjectiveMinimize = 0,
+    YCObjectiveMaximize = 1
 };
 
 @protocol YCProblem

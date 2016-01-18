@@ -1,9 +1,9 @@
 //
-//  YCNSGAII.h
+//  YCHypervolumeMetric.h
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
-//  Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 18/1/16.
+//  Copyright (c) 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -20,24 +20,15 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCOptimizer.h"
-#import "YCPopulationBasedOptimizer.h"
-#import "YCIndividual.h"
+@import Foundation;
+@class Matrix;
 
-@interface YCNSGAII : YCPopulationBasedOptimizer
+@interface YCHypervolumeMetric : NSObject
 
-- (void)nonDominatedSortingWithPopulation:(NSArray<YCIndividual *> *)population;
-
-@end
-
-@interface YCNSGAIndividual : YCIndividual
-
-@property int rank;
-
-@property double crowdingDistance;
-
-@property int n;
-
-@property NSMutableSet *s;
+- (double)estimateHypervolumeForObjectiveFunctionVectors:(NSArray<Matrix *> *)vectors
+                                                 targets:(Matrix *)targets
+                                              sampleSize:(int)sampleSize
+                                                   lowerReference:(Matrix *)lowerReference
+                                                   upperReference:(Matrix *)upperReference;
 
 @end

@@ -1,9 +1,9 @@
 //
-//  YCNSGAII.h
+//  YCHYPE.h
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 2/3/15.
-//  Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 13/1/16.
+//  Copyright (c) 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -24,17 +24,17 @@
 #import "YCPopulationBasedOptimizer.h"
 #import "YCIndividual.h"
 
-@interface YCNSGAII : YCPopulationBasedOptimizer
+@interface YCHypE : YCPopulationBasedOptimizer
 
-- (void)nonDominatedSortingWithPopulation:(NSArray<YCIndividual *> *)population;
++ (BOOL)vector:(Matrix *)vector weaklyDominates:(Matrix *)sample targets:(Matrix *)targets;
 
 @end
 
-@interface YCNSGAIndividual : YCIndividual
+@interface YCHypEIndividual : YCIndividual
+
+@property double v;
 
 @property int rank;
-
-@property double crowdingDistance;
 
 @property int n;
 
