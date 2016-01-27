@@ -186,7 +186,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 /**
  Returns the value at position |i|, |j| of the receiver.
  
- @param i    The row.
+ @param i The row.
  @param j The column.
  
  @return A double corresponding to the value at position |i|, |j|.
@@ -194,31 +194,38 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (double)i:(int)i j:(int)j;
 
 /**
- Sets value |vl| at |row|, |column| of the receiver.
+ Sets value |value| at |row|, |column| of the receiver.
  
- @param vl     The value to set.
+ @param value  The value to set.
  @param row    The row.
  @param column The column.
  */
-- (void)setValue:(double)vl row:(int)row column:(int)column;
+- (void)setValue:(double)value row:(int)row column:(int)column;
 
 /**
- Sets value |vl| at |i|, |j| of the receiver.
+ Sets value |value| at |i|, |j| of the receiver.
  
- @param i    The row.
- @param j    The column.
- @param vl   The value to set.
+ @param i     The row.
+ @param j     The column.
+ @param value The value to set.
  */
-- (void)i:(int)i j:(int)j set:(double)vl;
+- (void)i:(int)i j:(int)j set:(double)value;
 
 /**
- Increments value at |i|, |j| of the receiver, by |vl|.
+ Increments value at |i|, |j| of the receiver, by |value|.
  
- @param i    The row.
- @param j    The column.
- @param vl   The value to set.
+ @param i     The row.
+ @param j     The column.
+ @param value The value to set.
  */
-- (void)i:(int)i j:(int)j increment:(double)vl;
+- (void)i:(int)i j:(int)j increment:(double)value;
+
+/**
+ Increments all values in the matrix by |value|.
+ 
+ @param value The value to increment by.
+ */
+- (void)incrementAll:(double)value;
 
 /// @name Matrix Operations
 

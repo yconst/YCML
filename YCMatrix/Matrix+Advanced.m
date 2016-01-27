@@ -429,7 +429,7 @@ static void sobol_destroy(soboldata *sd);
     Matrix *maxs = [Matrix matrixOfRows:self.rows columns:1];
     for (int i=0; i<rows; i++)
     {
-        double rowMax = DBL_MIN;
+        double rowMax = -DBL_MAX;
         double temp;
         for (int j=0; j<columns; j++)
         {
@@ -463,7 +463,7 @@ static void sobol_destroy(soboldata *sd);
     Matrix *maxs = [Matrix matrixOfRows:1 columns:self.columns];
     for (int i=0; i<columns; i++)
     {
-        double columnMax = DBL_MIN;
+        double columnMax = -DBL_MAX;
         double temp;
         for (int j=0; j<rows; j++)
         {

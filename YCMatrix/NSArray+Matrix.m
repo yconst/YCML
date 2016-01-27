@@ -85,7 +85,7 @@
         {
             for (int i=0, n=(int)result.count; i<n; i++)
             {
-                double maxValue = DBL_MIN;
+                double maxValue = -DBL_MAX;
                 for (Matrix *m in self)
                 {
                     maxValue = MAX(maxValue, [m i:i j:0]);

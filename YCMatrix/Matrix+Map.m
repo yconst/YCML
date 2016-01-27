@@ -78,7 +78,7 @@
         else
         {
             double min = DBL_MAX;
-            double max = DBL_MIN;
+            double max = -DBL_MAX;
             for (int j=0; j<numColumns; j++)
             {
                 min = MIN(min, m->matrix[j]);
@@ -125,7 +125,7 @@
         else
         {
             double min = DBL_MAX;
-            double max = DBL_MIN;
+            double max = -DBL_MAX;
             for (int j=0; j<numColumns; j++)
             {
                 min = MIN(min, m->matrix[j]);
