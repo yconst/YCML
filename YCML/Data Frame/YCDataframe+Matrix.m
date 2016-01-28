@@ -160,7 +160,7 @@
 - (int)indexOfLargestValueIn:(Matrix *)values
 {
     NSUInteger index = -1;
-    double value = DBL_MIN;
+    double value = -DBL_MAX;
     for (NSUInteger i=0, j=[values count]; i<j; i++)
     {
         if (values->matrix[i] > value)
