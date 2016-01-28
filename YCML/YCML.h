@@ -38,6 +38,7 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCSMORegressionTrainer.h"
 #import "YCModelKernel.h"
 #import "YCLinearKernel.h"
+#import "YCRBFKernel.h"
 
 #import "YCFFN.h"
 #import "YCELMTrainer.h"
