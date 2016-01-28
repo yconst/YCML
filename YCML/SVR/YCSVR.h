@@ -36,10 +36,9 @@
 @property Matrix *sv;
 
 /**
- Returns a vector corresponding to the weights of the 
- support vectors of the receiver.
+ Returns a vector corresponding to the lambdas of the receiver.
  */
-@property Matrix *w;
+@property Matrix *lambda;
 
 /**
  Returns the bias of the receiver

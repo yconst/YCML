@@ -47,11 +47,9 @@
     Matrix *k = [self.kernel kernelValueForA:self.sv b:scaledInput]; //(NxV)T * NxS = VxS
     
     // 3. Calculate output (algorithm is single output!)
-    [k multiplyColumn:self.w];
+    Matrix *output = [self.lambda matrixByMultiplyingWithRight:k];
     
-    Matrix *output = [k sumsOfColumns]; // 1xS, sum all Support Vector outputs
-    
-    [output addColumn:[Matrix matrixOfRows:1 columns:1 value:self.b]];
+    [output incrementAll:self.b];
     
     // 4. Reverse-scale output and return
     if (self.outputTransform)
