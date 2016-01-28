@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <YCML/YCML.h>
+@import Foundation;
 #import "YCOptimizer.h"
 
 @interface YCRProp : YCOptimizer

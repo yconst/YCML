@@ -10,6 +10,8 @@
 		CB02F7C51AAF653C00EF1E02 /* YCML_Tests__Swift_.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */; };
 		CB02F7C61AAF653C00EF1E02 /* YCML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB96955D1AAEEB64003BAE48 /* YCML.framework */; };
 		CB02F7CD1AAF720500EF1E02 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
+		CB0B6D361C5923F4002A76E2 /* YCRBFKernel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB0B6D371C5923F4002A76E2 /* YCRBFKernel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */; settings = {ASSET_TAGS = (); }; };
 		CB17B67B1C289F6100F36E0F /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB17B6771C289F6100F36E0F /* halton_sampler.h */; settings = {ASSET_TAGS = (); }; };
 		CB17B67C1C289F6100F36E0F /* HaltonInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = CB17B6781C289F6100F36E0F /* HaltonInterface.h */; settings = {ASSET_TAGS = (); }; };
 		CB17B67D1C289F6100F36E0F /* HaltonInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB17B6791C289F6100F36E0F /* HaltonInterface.mm */; settings = {ASSET_TAGS = (); }; };
@@ -154,6 +156,8 @@
 		CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "YCML Tests (Swift).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB02F7C31AAF653C00EF1E02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YCML_Tests__Swift_.swift; sourceTree = "<group>"; };
+		CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRBFKernel.h; path = Kernels/YCRBFKernel.h; sourceTree = "<group>"; };
+		CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRBFKernel.m; path = Kernels/YCRBFKernel.m; sourceTree = "<group>"; };
 		CB17B6771C289F6100F36E0F /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = halton_sampler.h; sourceTree = "<group>"; };
 		CB17B6781C289F6100F36E0F /* HaltonInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaltonInterface.h; sourceTree = "<group>"; };
 		CB17B6791C289F6100F36E0F /* HaltonInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HaltonInterface.mm; sourceTree = "<group>"; };
@@ -459,6 +463,8 @@
 				CB92068B1C43F00600F93E3A /* YCModelKernel.m */,
 				CB92068E1C43F02F00F93E3A /* YCLinearKernel.h */,
 				CB92068F1C43F02F00F93E3A /* YCLinearKernel.m */,
+				CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */,
+				CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */,
 			);
 			name = Kernels;
 			sourceTree = "<group>";
@@ -700,6 +706,7 @@
 				CB52161A1B43FEEF00A4AF01 /* NSIndexSet+Sampling.h in Headers */,
 				CB9206901C43F02F00F93E3A /* YCLinearKernel.h in Headers */,
 				CBC7A4F21ABA35D200464DD2 /* YCOptimizer.h in Headers */,
+				CB0B6D361C5923F4002A76E2 /* YCRBFKernel.h in Headers */,
 				CB7E6D111AE7D01A00B37EA4 /* YCOLSTrainer.h in Headers */,
 				CBF75B341AC7750200495246 /* NSArray+Statistics.h in Headers */,
 				CB72CD4D1BCADDAF00A4A772 /* YCFullyConnectedLayer.h in Headers */,
@@ -931,6 +938,7 @@
 				CB72CD4E1BCADDAF00A4A772 /* YCFullyConnectedLayer.m in Sources */,
 				CB72CD4A1BCAB64800A4A772 /* YCModelLayer.m in Sources */,
 				CB504D3A1BD54DF000272855 /* YCValidation.m in Sources */,
+				CB0B6D371C5923F4002A76E2 /* YCRBFKernel.m in Sources */,
 				CB2790371B495D4F00F3F77E /* YCSurrogateModel.m in Sources */,
 				CB92068D1C43F00600F93E3A /* YCModelKernel.m in Sources */,
 				CB7E6D121AE7D01A00B37EA4 /* YCOLSTrainer.m in Sources */,
