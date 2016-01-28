@@ -35,7 +35,7 @@
 
 @implementation YCMLTests
 
-#pragma mark FeedForward Net Tests
+#pragma mark - FeedForward Net Tests
 
 - (void)testFFNActivation
 {
@@ -207,7 +207,116 @@
     XCTAssert([numericalGradients isEqualToMatrix:theoreticalGradients tolerance:1E-8], @"Matrices are not equal");
 }
 
-#pragma mark Cross-Validation Tests
+#pragma mark - SMO Tests
+
+- (void)testRBFKernel
+{
+    YCRBFKernel *kernel = [[YCRBFKernel alloc] init];
+    kernel.properties[@"Beta"] = @10;
+    
+    Matrix *a = [Matrix matrixFromNSArray:@[@1, @2,
+                                            @5, @-1,
+                                            @9, @-5] rows:3 columns:2];
+    Matrix *b = [Matrix matrixFromNSArray:@[@5, @-4, @-3, @2, @1,
+                                            @6, @-5, @-4, @-8, @1,
+                                            @-4, @3, @8, @-2, @9] rows:3 columns:5];
+    Matrix *r = [kernel kernelValueForA:a b:b];
+    NSLog(@"%@",r);
+    
+    a = [Matrix matrixFromNSArray:@[@1,
+                                    @5,
+                                    @9] rows:3 columns:1];
+    b = [Matrix matrixFromNSArray:@[@5,
+                                    @6,
+                                    @-4] rows:3 columns:1];
+    Matrix *r00 = [kernel kernelValueForA:a b:b];
+    NSLog(@"%@", r00);
+    XCTAssertEqual([r i:0 j:0], [r00 i:0 j:0]);
+    
+    a = [Matrix matrixFromNSArray:@[@2,
+                                    @-1,
+                                    @-5] rows:3 columns:1];
+    Matrix *r10 = [kernel kernelValueForA:a b:b];
+    NSLog(@"%@", r10);
+    XCTAssertEqual([r i:1 j:0], [r10 i:0 j:0]);
+    
+    b = [Matrix matrixFromNSArray:@[@-3,
+                                    @-4,
+                                    @8] rows:3 columns:1];
+    Matrix *r12 = [kernel kernelValueForA:a b:b];
+    NSLog(@"%@", r12);
+    XCTAssertEqual([r i:1 j:2], [r12 i:0 j:0]);
+    
+    b = [Matrix matrixFromNSArray:@[@1,
+                                      @1,
+                                      @9] rows:3 columns:1];
+    Matrix *r14 = [kernel kernelValueForA:a b:b];
+    NSLog(@"%@", r14);
+    XCTAssertEqual([r i:1 j:4], [r14 i:0 j:0]);
+}
+
+- (void)testSVMAndSMOOutput
+{
+    YCSVR *model = [YCSVR model];
+    model.kernel = [[YCLinearKernel alloc] init];
+    Matrix *input = [Matrix matrixFromNSArray:@[@1, @0, @1,
+                                                @1, @0, @1,
+                                                @1, @1, @0] rows:3 columns:3];
+    Matrix *l = [Matrix matrixFromNSArray:@[@0.1, @-0.3, @1.0] rows:1 columns:3];
+    
+    YCSMORegressionTrainer *trainer = [YCSMORegressionTrainer trainer];
+    double y = [trainer outputForModel:model input:input lambdas:l exampleIndex:1 bias:0.5];
+    XCTAssertEqualWithAccuracy(0.3, y, 1E-8);
+    
+    model.sv = input;
+    model.lambda = l;
+    model.b = 0.5;
+    
+    y = [[model activateWithMatrix:input] i:0 j:1];
+    XCTAssertEqualWithAccuracy(0.3, y, 1E-8);
+}
+
+- (void)testSMOStep
+{
+    YCSVR *model    = [YCSVR model];
+    model.kernel    = [[YCLinearKernel alloc] init];
+    Matrix *input   = [Matrix matrixFromNSArray:@[@1, @0, @1, @0,
+                                                  @1, @1, @0, @0] rows:2 columns:4];
+    
+    Matrix *output  = [Matrix matrixFromNSArray:@[@1, @0, @0, @-1] rows:1 columns:4];
+    
+    Matrix *lambdas = [Matrix matrixFromNSArray:@[@0, @0, @0, @0] rows:1 columns:4];
+    
+    YCSMORegressionTrainer *trainer = [YCSMORegressionTrainer trainer];
+    
+    double bias = 0.0;
+    
+    for (int i=0; i<50; i++)
+    {
+        int i1 = arc4random_uniform(4);
+        int i2 = arc4random_uniform(4);
+        
+        [trainer step:model input:input output:output lambdas:lambdas 
+                   i1:i1 i2:i2 bias:&bias epsilon:0.1 C:1.0];
+    }
+    
+    NSLog(@"Lambdas:%@, bias:%f", lambdas, bias);
+    
+    model.lambda = lambdas;
+    model.sv = input;
+    model.b = bias;
+    
+    Matrix *check = [Matrix matrixFromNSArray:@[@1, @0,
+                                                @1, @1] rows:2 columns:2];
+    
+    Matrix *prediction = [model activateWithMatrix:check];
+    
+    XCTAssertGreaterThan([prediction i:0 j:0], 0.59, @"Prediction outside margin");
+    XCTAssertLessThan([prediction i:0 j:1], 0.31, @"Prediction outside margin");
+    NSLog(@"%@", prediction);
+}
+
+#pragma mark - Cross-Validation Tests
 
 - (void)testELMHousing
 {
@@ -249,28 +358,37 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.5];
 }
 
-- (void)testSVRSMOHousing
+- (void)testLinearSVRSMOHousing
 {
-    YCSMORegressionTrainer *trainer             = [YCSMORegressionTrainer trainer];
+    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-- (void)testRBFHousing
+- (void)testRBFSVRSMOHousing
 {
-    YCOLSTrainer *trainer                = [YCOLSTrainer trainer];
-    trainer.settings[@"Kernel Width"]    = @2.8;
-    trainer.settings[@"Error Tolerance"] = @0.10;
+    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
+    trainer.settings[@"Kernel"]             = @"RBF";
+    trainer.settings[@"C"]                  = @0.5;
+    trainer.settings[@"Beta"]               = @1.4;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-- (void)testRBFPRESSHousing
+- (void)testRBFNetOLSHousing
+{
+    YCOLSTrainer *trainer                   = [YCOLSTrainer trainer];
+    trainer.settings[@"Kernel Width"]       = @2.8;
+    trainer.settings[@"Error Tolerance"]    = @0.10;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
+
+- (void)testRBFNetOLSPRESSHousing
 {
     YCOLSTrainer *trainer             = [YCOLSPRESSTrainer trainer];
     trainer.settings[@"Kernel Width"] = @2.8;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-#pragma mark Dataframe Tests
+#pragma mark - Dataframe Tests
 
 - (void)testCorruptDataframe
 {
@@ -290,7 +408,7 @@
     
 }
 
-#pragma mark Utility Functions
+#pragma mark - Utility Functions
 
 - (void)testWithTrainer:(YCSupervisedTrainer *)trainer
                                 dataset:(NSString *)dataset
