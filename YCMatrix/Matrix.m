@@ -3,7 +3,7 @@
 //
 // YCMatrix
 //
-// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -68,10 +68,9 @@
     Matrix *mt = [self matrixFromArray:new_m rows:m columns:n mode:YCMWeak];
     mt->freeData = YES;
     int len = m*n;
-    for (int i=0; i<len; i++)
-    {
-        mt->matrix[i] = val;
-    }
+    
+    vDSP_vfillD(&val, mt->matrix, 1, len);
+    
     int mind = MIN(m, n);
     for (int i=0; i<mind; i++)
     {
@@ -225,12 +224,16 @@
 
 - (Matrix *)matrixByAdding:(Matrix *)addend
 {
-	return [self matrixByMultiplyingWithScalar:1 AndAdding:addend];
+    Matrix *result = [Matrix dirtyMatrixOfRows:self.rows columns:self.columns];
+    vDSP_vaddD(self->matrix, 1, addend->matrix, 1, result->matrix, 1, self.count);
+    return result;
 }
 
 - (Matrix *)matrixBySubtracting:(Matrix *)subtrahend
 {
-	return [subtrahend matrixByMultiplyingWithScalar:-1 AndAdding:self];
+    Matrix *result = [Matrix dirtyMatrixOfRows:self.rows columns:self.columns];
+    vDSP_vsubD(subtrahend->matrix, 1, self->matrix, 1, result->matrix, 1, self.count);
+    return result;
 }
 
 - (Matrix *)matrixByMultiplyingWithRight:(Matrix *)mt
@@ -352,12 +355,14 @@
 
 - (Matrix *)matrixByNegating
 {
-	return [self matrixByMultiplyingWithScalar:-1];
+    Matrix *result = [Matrix dirtyMatrixOfRows:self->rows columns:self->columns];
+    vDSP_vnegD(self->matrix, 1, result->matrix, 1, self.count);
+    return result;
 }
 
 - (Matrix *)matrixBySquaring
 {
-    Matrix *result = [Matrix matrixLike:self];
+    Matrix *result = [Matrix dirtyMatrixOfRows:self->rows columns:self->columns];
     vDSP_vsqD(self->matrix, 1, result->matrix, 1, self.count);
     return result;
 }
@@ -385,30 +390,25 @@
 
 - (void)add:(Matrix *)addend
 {
-	if(columns != addend->columns || rows != addend->rows)
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size mismatch."
-		        userInfo:nil];
-	cblas_daxpy(rows*columns, 1, addend->matrix, 1, self->matrix, 1);
+	NSAssert(columns == addend->columns && rows == addend->rows, @"Matrix size error");
+    vDSP_vaddD(self->matrix, 1, addend->matrix, 1, self->matrix, 1, self.count);
 }
 
 - (void)subtract:(Matrix *)subtrahend
 {
-	if(columns != subtrahend->columns || rows != subtrahend->rows)
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size mismatch."
-		        userInfo:nil];
-	cblas_daxpy(rows*columns, -1, subtrahend->matrix, 1, self->matrix, 1);
+    NSAssert(columns == subtrahend->columns && rows == subtrahend->rows, @"Matrix size error");
+	vDSP_vsubD(subtrahend->matrix, 1, self->matrix, 1, self->matrix, 1, self.count);
 }
 
 - (void)multiplyWithScalar:(double)ms
 {
-	cblas_dscal(rows*columns, ms, matrix, 1);
+	//cblas_dscal(rows*columns, ms, matrix, 1);
+    vDSP_vsmulD(self->matrix, 1, &ms, self->matrix, 1, self.count);
 }
 
 - (void)negate
 {
-	[self multiplyWithScalar:-1];
+    vDSP_vnegD(self->matrix, 1, self->matrix, 1, self.count);
 }
 
 - (void)square
@@ -418,10 +418,7 @@
 
 - (void)elementWiseMultiply:(Matrix *)mt
 {
-	if(columns != mt->columns || rows != mt->rows)
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size mismatch."
-		        userInfo:nil];
+	NSAssert(columns == mt->columns && rows == mt->rows, @"Matrix size error");
 	for (int i=0, j=self->rows * self->columns; i<j; i++)
 	{
 		self->matrix[i] *= mt->matrix[i];
@@ -430,10 +427,7 @@
 
 - (void)elementWiseDivide:(Matrix *)mt
 {
-    if(columns != mt->columns || rows != mt->rows)
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size mismatch."
-                                     userInfo:nil];
+    NSAssert(columns == mt->columns && rows == mt->rows, @"Matrix size error");
     for (int i=0, j=self->rows * self->columns; i<j; i++)
     {
         self->matrix[i] /= mt->matrix[i];
@@ -454,10 +448,7 @@
 - (double)dotWith:(Matrix *)other
 {
 	// A few more checks need to be made here.
-	if(columns != 1 && rows != 1)
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Dot can only be performed on vectors."
-		        userInfo:nil];
+    NSAssert(columns == 1 || rows == 1, @"Matrix is not a vector");
 	return cblas_ddot(self->rows * self->columns, self->matrix, 1, other->matrix, 1);
 }
 

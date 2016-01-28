@@ -3,7 +3,7 @@
 //
 // YCMatrix
 //
-// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
