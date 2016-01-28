@@ -4,7 +4,43 @@
 [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 [![DOI](https://zenodo.org/badge/20003/yconst/YCML.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCML)
 
-YCML is a Machine Learning and Optimization framework written in Objective-C, and usable in both Objective-C and Swift. YCML runs on OS X and iOS, and mainly focuses on regression problems (although classification problems can be tackled as well), and multi-objective optimization. 
+YCML is an Artificial Intelligence, Machine Learning and Optimization framework written in Objective-C. YCML can be used both in Objective-C as well as in Swift. YCML runs on Mac OS X and iOS. 
+
+Above all, YCML attempts to bring high-quality published algorithms to Swift/Objective-C, using optimized implementations. Referenced papers for the implementation of each algorithm are available at the end of this document.
+
+YCML contains currently more than 30 high-level unit tests, that cover every one of the implemented algorithms, not only in terms of functioning but also in terms of *performance*, i.e. each algorithm is tested to meet certain performance standards.
+
+###Introduction
+
+YCML can be used to solve problems encountered in the field of Machine Learning, and the field of Computational Optimization.
+
+####Machine Learning
+
+The scientific field of Machine Learning is studying ways in which we may enable computers to, broadly speaking, learn by experience, instead of the more conventional explicit programming approach. Machine Learning algorithms enable machines to learn a task by being exposed to examples, and subsequently generalize the behavior suggested by the seen examples to unseen ones.
+
+YCML mainly focuses on regression problems, which is a class of problems where the goal is to come up with a model that can accurately predict a real number (also called the dependent or target variable), based on information present in one or more input variables. This is a commonly occusing problem in many fields among which:
+
+- Stock market forecasting
+- Property price prediction
+- Robotics and control
+- Mechanical and material property prediction
+- Approximating results of lengthy and complicated experiments, as well as simulations (surrogate modeling / meta-modeling)
+- Online advertising prediction
+- Medical diagnosis automation
+
+Despite the focus on regression, however, classification problems can be tackled equally well using YCML, by making a few changes to the input and output data.
+
+####Multi-Objective Optimization
+
+YCML offers a few algorithms that allow tackling Optimization problems. Specifically, it focuses on Multi-Objective problems. 
+
+Multi-Objective problems are a class of problems where more than one goals exist, and which are conflicting to each other. That means that by improving design performance of one goal, performance on at least one other goal is sacrificed. This characteristic of Multi-Objective problems gives birth to the fact that there are no all-round optimzal solutions to be found in this type of problems. Rather, what we are usually looking for are best-tradeoffs. A best-tradeoff design is one for which there does not exist any other that performs better in all aspects. In the context of Multi-Objective optimization, these are also called Non-Dominated design solutions.
+
+YCML implements a couple Multi-Objective Evolutionary Algorithms (MOEAs). MOEAs are a class of stochastic optimization algorithms that work using a population of solutions, which they gradually evolve towards optimality. They are using a carefully calculated combination of randomization on the one hand, and "distilling" of the best design features on the other hand. Through such strategies, they are able to efficiently search the space of possible design solutions for "optimal" ones.
+
+##Features
+
+###Learning
 
 The following algorithms are currently available:
 
@@ -16,30 +52,28 @@ The following algorithms are currently available:
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [8]
 - Binary Restricted Boltzmann Machines (CD) [9] 
 
-Where applicable, regularized versions of the algrithms have been implemented.
-
-YCML also contains the following optimization algorithms:
-
-- Gradient Descent (Single-Objective, Unconstrained)
-- RProp Gradient Descent (Single-Objective, Unconstrained)
-- NSGA-II (Multi-Objective, Constrained) [10]
-- HypE (Multi-Objective, Constrained, Sampled Hypervolume indicator) [11]
-
-##Features
-
-###Learning
+####Learning features:
 
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
 - Modular Backprop class that enables complex graphs, based on Layer objects.
 - (new in 0.3.2) Fast Backprop (and RProp) computation using mini-batches to speed up computations through BLAS.
 - Powerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
-
-###Validation & Testing
-
-- Facilities for k-fold cross validation and Monte Carlo cross-validation.
+- Where applicable, regularized versions of the algrithms have been implemented.
 
 ###Optimization
+
+The following MO optimization algorithms are implemented:
+
+- NSGA-II (Multi-Objective, Constrained) [10]
+- HypE (Multi-Objective, Constrained, Sampled Hypervolume indicator) [11]
+
+In addition, a couple of basic optimization algorithms are impemented:
+
+- Gradient Descent (Single-Objective, Unconstrained)
+- RProp Gradient Descent (Single-Objective, Unconstrained)
+
+####Optimization features:
 
 - Separate optimization routines for single- and multi-objective problems.
 - Surrogate class that exposes a predictive model as an objective function, useful for optimization.
@@ -48,6 +82,10 @@ YCML also contains the following optimization algorithms:
 
 - Several different methods for multi-dimensional random number generation, including low-discrepancy sequence generation.
 - Several methods for sampling from, splitting and shuffling Dataframes.
+
+###Validation & Testing
+
+- Facilities for k-fold cross validation and Monte Carlo cross-validation.
 
 ###Other
 
