@@ -99,4 +99,19 @@
     return description;
 }
 
+//- (void)PMMLEncodeWithRootElement:(NSXMLElement *)root
+//{
+//
+//}
+
+//- (NSString *)PMMLString
+//{
+//    NSXMLElement *root = (NSXMLElement *)[NSXMLNode elementWithName:@"addresses"];
+//    [self PMMLEncodeWithRootElement:root];
+//    NSXMLDocument *xmlDoc = [[NSXMLDocument alloc] initWithRootElement:root];
+//    [xmlDoc setVersion:@"1.0"];
+//    [xmlDoc setCharacterEncoding:@"UTF-8"];
+//    return [xmlDoc stringValue];
+//}
+
 @end

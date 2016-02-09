@@ -28,6 +28,8 @@
  */
 @interface YCGenericModel : NSObject <NSCopying, NSCoding>
 
+//- (void)PMMLEncodeWithRootElement:(NSXMLElement *)root;
+
 /**
  Allocates and initializes a new instance of the receiver class.
  
@@ -55,5 +57,8 @@
  including all of it's properties.
  */
 @property (readonly) NSString *textDescription;
+
+
+@property (readonly) NSString *PMMLString;
 
 @end

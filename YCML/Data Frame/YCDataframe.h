@@ -106,6 +106,8 @@ typedef enum AttributeType : int16_t {
 
 - (NSDictionary *)outlierIndexesWithFenceMultiplier:(double)multiplier;
 
+- (YCDataframe *)uniques;
+
 /**
  Returns an NSArray of NSDictionaries, each corresponding to a sample.
  */

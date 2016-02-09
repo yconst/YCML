@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+@import YCML;
 
 @interface YCMLDataframeTests : XCTestCase
 
@@ -14,26 +15,18 @@
 
 @implementation YCMLDataframeTests
 
-- (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+- (void)testReplaceRow
+{
+//    YCDataframe *df = [self randomDataframeColumns:5 rows:10];
+//    NSDictionary *newRow = @{@1.0, @1.0, @1.0, @1.0, @1.0};
+//    [df replaceSampleAtIndex:2 withData:newRow];
+//    NSDictionary *retrievedRow = [df sampleAtIndex:2];
+//    NSAssertEqual(newRow, retrievedRow, @"Result not equal");
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
+//- (YCDataframe *)randomDataframeColumns:(int)columns rows:(int)rows
+//{
+//    
+//}
 
 @end

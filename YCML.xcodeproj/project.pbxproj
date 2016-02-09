@@ -12,6 +12,8 @@
 		CB02F7CD1AAF720500EF1E02 /* housing.csv in Resources */ = {isa = PBXBuildFile; fileRef = CB9695911AAEECA8003BAE48 /* housing.csv */; };
 		CB0B6D361C5923F4002A76E2 /* YCRBFKernel.h in Headers */ = {isa = PBXBuildFile; fileRef = CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB0B6D371C5923F4002A76E2 /* YCRBFKernel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */; settings = {ASSET_TAGS = (); }; };
+		CB0B6D3C1C5B6377002A76E2 /* YCSMOCache.h in Headers */ = {isa = PBXBuildFile; fileRef = CB0B6D3A1C5B6377002A76E2 /* YCSMOCache.h */; settings = {ASSET_TAGS = (); }; };
+		CB0B6D3D1C5B6377002A76E2 /* YCSMOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D3B1C5B6377002A76E2 /* YCSMOCache.m */; settings = {ASSET_TAGS = (); }; };
 		CB17B67B1C289F6100F36E0F /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB17B6771C289F6100F36E0F /* halton_sampler.h */; settings = {ASSET_TAGS = (); }; };
 		CB17B67C1C289F6100F36E0F /* HaltonInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = CB17B6781C289F6100F36E0F /* HaltonInterface.h */; settings = {ASSET_TAGS = (); }; };
 		CB17B67D1C289F6100F36E0F /* HaltonInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB17B6791C289F6100F36E0F /* HaltonInterface.mm */; settings = {ASSET_TAGS = (); }; };
@@ -158,6 +160,8 @@
 		CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YCML_Tests__Swift_.swift; sourceTree = "<group>"; };
 		CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRBFKernel.h; path = Kernels/YCRBFKernel.h; sourceTree = "<group>"; };
 		CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRBFKernel.m; path = Kernels/YCRBFKernel.m; sourceTree = "<group>"; };
+		CB0B6D3A1C5B6377002A76E2 /* YCSMOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCSMOCache.h; path = SVR/YCSMOCache.h; sourceTree = "<group>"; };
+		CB0B6D3B1C5B6377002A76E2 /* YCSMOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCSMOCache.m; path = SVR/YCSMOCache.m; sourceTree = "<group>"; };
 		CB17B6771C289F6100F36E0F /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = halton_sampler.h; sourceTree = "<group>"; };
 		CB17B6781C289F6100F36E0F /* HaltonInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaltonInterface.h; sourceTree = "<group>"; };
 		CB17B6791C289F6100F36E0F /* HaltonInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HaltonInterface.mm; sourceTree = "<group>"; };
@@ -602,6 +606,8 @@
 				CBACE2411C1ACB61008B0FB1 /* YCSVR.m */,
 				CBACE2441C1DA05F008B0FB1 /* YCSMORegressionTrainer.h */,
 				CBACE2451C1DA05F008B0FB1 /* YCSMORegressionTrainer.m */,
+				CB0B6D3A1C5B6377002A76E2 /* YCSMOCache.h */,
+				CB0B6D3B1C5B6377002A76E2 /* YCSMOCache.m */,
 			);
 			name = SVR;
 			sourceTree = "<group>";
@@ -734,6 +740,7 @@
 				CB504D391BD54DF000272855 /* YCValidation.h in Headers */,
 				CBC7A4F71ABA36AD00464DD2 /* YCGradientDescent.h in Headers */,
 				CB6494B51B972EF000BA3FE2 /* OrderedDictionary.h in Headers */,
+				CB0B6D3C1C5B6377002A76E2 /* YCSMOCache.h in Headers */,
 				CB72CD551BCAE40F00A4A772 /* YCTanhLayer.h in Headers */,
 				CB92068C1C43F00600F93E3A /* YCModelKernel.h in Headers */,
 				CB52160E1B415B4900A4AF01 /* YCPopulationBasedOptimizer.h in Headers */,
@@ -934,6 +941,7 @@
 				CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */,
 				CB52161B1B43FEEF00A4AF01 /* NSIndexSet+Sampling.m in Sources */,
 				CB52160F1B415B4900A4AF01 /* YCPopulationBasedOptimizer.m in Sources */,
+				CB0B6D3D1C5B6377002A76E2 /* YCSMOCache.m in Sources */,
 				CBD606831B0FC48300DCA6AD /* YCOLSPRESSTrainer.m in Sources */,
 				CB72CD4E1BCADDAF00A4A772 /* YCFullyConnectedLayer.m in Sources */,
 				CB72CD4A1BCAB64800A4A772 /* YCModelLayer.m in Sources */,

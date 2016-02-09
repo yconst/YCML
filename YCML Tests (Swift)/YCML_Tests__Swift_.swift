@@ -7,8 +7,6 @@
 //
 
 import XCTest
-import YCML
-import YCMatrix
 
 class YCML_Tests__Swift_: XCTestCase {
     

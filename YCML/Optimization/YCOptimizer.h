@@ -61,4 +61,6 @@
 
 @property (readonly) NSArray *bestObjectives;
 
+@property (readonly) NSArray *bestConstraints;
+
 @end

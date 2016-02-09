@@ -430,6 +430,11 @@
     return indexSets;
 }
 
+//- (YCDataframe *)uniques
+//{
+//    
+//}
+
 #pragma  mark Property Accessors
 
 - (NSArray *)allSamples

@@ -135,4 +135,9 @@
     return @[self.state[@"best"]];
 }
 
+- (NSArray *)bestConstraints
+{
+    return @[@0];
+}
+
 @end

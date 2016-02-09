@@ -110,11 +110,11 @@
             YCIndividual *individual = obj;
             Matrix *result = [results column:(int)idx];
             
-            NSRange constraintRange = NSMakeRange(0, constraintCount);
-            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
-            
-            NSRange objectiveRange = NSMakeRange(constraintCount, objectiveCount);
+            NSRange objectiveRange = NSMakeRange(0, objectiveCount);
             individual.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
+            
+            NSRange constraintRange = NSMakeRange(objectiveCount, constraintCount);
+            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
             
             individual.evaluated = YES;
         }];
@@ -127,11 +127,11 @@
         {
             [self.problem evaluate:result parameters:individual.decisionVariableValues];
             
-            NSRange constraintRange = NSMakeRange(0, constraintCount);
-            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
-            
-            NSRange objectiveRange = NSMakeRange(constraintCount, objectiveCount);
+            NSRange objectiveRange = NSMakeRange(0, objectiveCount);
             individual.objectiveFunctionValues = [result matrixWithRowsInRange:objectiveRange];
+            
+            NSRange constraintRange = NSMakeRange(objectiveCount, constraintCount);
+            individual.constraintValues = [result matrixWithRowsInRange:constraintRange];
             
             individual.evaluated = YES;
         }
@@ -154,6 +154,12 @@
 {
     if (!self.population) [self initializePopulation];
     return [self.population valueForKey:@"objectiveFunctionValues"];
+}
+
+- (NSArray *)bestConstraints
+{
+    if (!self.population) [self initializePopulation];
+    return [self.population valueForKey:@"constraintValues"];
 }
 
 #pragma mark NSCopying implementation
