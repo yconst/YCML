@@ -16,7 +16,6 @@ YCML contains currently more than 30 high-level unit tests, that cover every one
 
 - Seven Machine Learning Algorithm Implementations for Supervised Learning
 - Two Multi-Objective Genetic Algorithm Variants
-- BSD Licensed
 
 ###Introduction
 
