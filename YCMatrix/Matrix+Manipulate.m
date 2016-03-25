@@ -126,6 +126,26 @@
     return rowsArray;
 }
 
+- (NSArray *)rowWiseSplitAtIndexes:(NSIndexSet *)indexes
+{
+    NSAssert([indexes lastIndex] < self.rows, @"Largest index out of range");
+    
+    NSMutableArray *segments = [NSMutableArray array];
+    __block NSUInteger lastIndex = 0;
+    [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+        NSRange range = NSMakeRange(lastIndex, idx - lastIndex);
+        Matrix *segment = [self rows:[NSIndexSet indexSetWithIndexesInRange:range]];
+        [segments addObject:segment];
+        lastIndex = idx;
+    }];
+    
+    NSRange range = NSMakeRange(lastIndex, self.rows - lastIndex);
+    Matrix *segment = [self rows:[NSIndexSet indexSetWithIndexesInRange:range]];
+    [segments addObject:segment];
+    
+    return segments;
+}
+
 - (NSArray *)rowWisePartition:(int)size
 {
     int remainder = self.rows % size;
@@ -204,6 +224,26 @@
         [columnsArray addObject: [self column:i]];
     }
     return columnsArray;
+}
+
+- (NSArray *)columnWiseSplitAtIndexes:(NSIndexSet *)indexes
+{
+    NSAssert([indexes lastIndex] < self.columns, @"Largest index out of range");
+    
+    NSMutableArray *segments = [NSMutableArray array];
+    __block NSUInteger lastIndex = 0;
+    [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+        NSRange range = NSMakeRange(lastIndex, idx - lastIndex);
+        Matrix *segment = [self columns:[NSIndexSet indexSetWithIndexesInRange:range]];
+        [segments addObject:segment];
+        lastIndex = idx;
+    }];
+    
+    NSRange range = NSMakeRange(lastIndex, self.columns - lastIndex);
+    Matrix *segment = [self columns:[NSIndexSet indexSetWithIndexesInRange:range]];
+    [segments addObject:segment];
+    
+    return segments;
 }
 
 - (NSArray *)columnWisePartition:(int)size

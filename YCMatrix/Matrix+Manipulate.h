@@ -93,11 +93,20 @@
 - (NSArray *)rowsAsNSArray;
 
 /**
+ Row-wise splits the receiver at the specified indexes.
+ 
+ @param indexes The splitting indexes.
+ 
+ @return An NSArray containing the split segments.
+ */
+- (NSArray *)rowWiseSplitAtIndexes:(NSIndexSet *)indexes;
+
+/**
  Partitions the receiver into row chunks of size s.
  
  @param s The size of each row chunk.
  
- @return The array of matrices resulting from the partitioning.
+ @return The NSArray of matrices resulting from the partitioning.
  */
 - (NSArray *)rowWisePartition:(int)size;
 
@@ -135,11 +144,20 @@
 - (NSArray *)columnsAsNSArray;
 
 /**
+ Column-wise splits the receiver at the specified indexes.
+ 
+ @param indexes The splitting indexes.
+ 
+ @return An NSArray containing the split segments.
+ */
+- (NSArray *)columnWiseSplitAtIndexes:(NSIndexSet *)indexes;
+
+/**
  Partitions the receiver into column chunks of size s.
  
  @param s The size of each column chunk.
  
- @return The array of matrices resulting from the partitioning.
+ @return The NSArray of matrices resulting from the partitioning.
  */
 - (NSArray *)columnWisePartition:(int)size;
 
