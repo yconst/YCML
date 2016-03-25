@@ -53,7 +53,8 @@
 {
     if (self = [super init])
     {
-        self.settings = [decoder decodeObjectForKey:@"settings"];
+        NSDictionary *decodedSettings = [decoder decodeObjectForKey:@"settings"];
+        [self.settings addEntriesFromDictionary:decodedSettings];
     }
     return self;
 }
