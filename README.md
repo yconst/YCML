@@ -1,4 +1,6 @@
 
+
+
 #YCML 
 
 [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
@@ -9,6 +11,12 @@ YCML is an Artificial Intelligence, Machine Learning and Optimization framework 
 Above all, YCML attempts to bring high-quality published algorithms to Swift/Objective-C, using optimized implementations. Referenced papers for the implementation of each algorithm are available at the end of this document.
 
 YCML contains currently more than 30 high-level unit tests, that cover every one of the implemented algorithms, not only in terms of functioning but also in terms of *performance*, i.e. each algorithm is tested to meet certain performance standards.
+
+###At a glance
+
+- Seven Machine Learning Algorithm Implementations for Supervised Learning
+- Two Multi-Objective Genetic Algorithm Variants
+- BSD Licensed
 
 ###Introduction
 
@@ -204,10 +212,6 @@ Cross-validation example, from data input to presentation of results:
     NSLog("%@", RMSE)
     XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
 
-### A note on Pseudorandom and Quasi-random Number Generation
-
-
-
 ##Framework Architecture
 
 The basic predictive model building block is the `YCGenericModel` class. It's training algorithm counterpart inherits from the `YCGenericTrainer` class. Most of the models included in the library are supervised learning models, and they inherit from a subclass of `YCGenericModel`, `YCSupervisedModel`. Their corresponding training algorithms inherit from the `YCSupervisedTrainer` class. These classes offer basic infrastructure to support training and activation, such as optional scaling and normalization of inputs, conversion between datasets and matrices etc. As such, the models and trainers themselves only contain algorithm implementations (for the most part).
@@ -246,19 +250,20 @@ Currently implemented FFN layers differ in their activation function. Linear, Si
 
 Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 
-YCML is licensed under the GPLv3. For other licensing options, please contact the author.
+YCML is licensed under the GPLv3. For other licensing options, please contact the author at the following address:
+contact (at) yconst [dot] com
 
 __YCML__
 
- YCML is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+YCML is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
- YCML is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+YCML is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with YCML.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with YCML.  If not, see <http://www.gnu.org/licenses/>.
