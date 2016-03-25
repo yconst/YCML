@@ -50,7 +50,7 @@
     BOOL maximize       = [self.problem.modes i:0 j:0] > 0;
     int direction       = maximize ? 1 : -1;
     
-    if (iteration == 0)
+    if (!self.state[@"values"])
     {
         Matrix *newValues = [Matrix matrixOfRows:k columns:1];
         
