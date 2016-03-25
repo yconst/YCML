@@ -115,7 +115,8 @@
 - (NSDictionary *)sampleAtIndex:(NSUInteger)idx
 {
     NSAssert(idx < self.dataCount, @"Index out of dataframe bounds");
-    NSMutableDictionary *ret = [NSMutableDictionary dictionaryWithCapacity:[self attributeCount]];
+    NSUInteger capacity = [self attributeCount];
+    MutableOrderedDictionary *ret = [MutableOrderedDictionary dictionaryWithCapacity:capacity];
     for (id key in _data)
     {
         [ret setValue:_data[key][idx] forKey:key];
@@ -128,10 +129,9 @@
     NSAssert([idxs indexGreaterThanIndex:self.dataCount-1] == NSNotFound,
              @"Indexset contains indexes out of dataframe range");
     
-    NSUInteger attributeCount = [self attributeCount];
     NSMutableArray *ret = [NSMutableArray array];
     [idxs enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSMutableDictionary *record = [NSMutableDictionary dictionaryWithCapacity:attributeCount];
+        MutableOrderedDictionary *record = [MutableOrderedDictionary dictionary];
         for (NSString *feature in _data)
         {
             [record setObject:_data[feature][idx] forKey:feature];
