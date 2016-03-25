@@ -73,11 +73,13 @@
     int N = (int)self.population.count;
     
     [self evaluateIndividuals:self.population]; // Implicit conditional evaluation
+    if (self.shouldStop) return NO;
     
     NSMutableArray *popP = [self matingSelection:self.population count:N samples:M];
     NSMutableArray *popPP = [self variation:popP count:N];
     
     [self evaluateIndividuals:popPP]; // Implicit conditional evaluation
+    if (self.shouldStop) return NO;
     
     [popPP addObjectsFromArray:self.population];
     

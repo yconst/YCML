@@ -106,6 +106,14 @@
         
         [self.problem evaluate:results parameters:parameters];
         
+        // If a stop signal has been received, stop early and do not
+        // update objective and constraint values. This is sub-optimal,
+        // i.e. it does not store the function evaluations already
+        // performed to their respective individuals, however it is
+        // necessary to ensure consistency of individuals performance
+        // values.
+        if (self.shouldStop) return;
+        
         [ne enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             YCIndividual *individual = obj;
             Matrix *result = [results column:(int)idx];
@@ -125,6 +133,8 @@
         
         for (YCIndividual *individual in ne)
         {
+            if (self.shouldStop) return;
+            
             [self.problem evaluate:result parameters:individual.decisionVariableValues];
             
             NSRange objectiveRange = NSMakeRange(0, objectiveCount);

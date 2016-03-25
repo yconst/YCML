@@ -41,7 +41,7 @@
     BOOL maximize = [self.problem.modes i:0 j:0] > 0;
     int k = self.problem.parameterCount;
     
-    if (iteration == 0)
+    if (!self.state[@"values"])
     {
         Matrix *newValues = [Matrix matrixOfRows:k columns:1];
         

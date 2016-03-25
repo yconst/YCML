@@ -65,6 +65,7 @@
     NSAssert(popSize == self.population.count, @"Population size property and population array count are not equal");
     
     [self evaluateIndividuals:self.population]; // Implicit conditional evaluation
+    if (self.shouldStop) return NO;
     
     [self nonDominatedSortingWithPopulation:self.population];
     [self crowdingDistanceCalculationWithPopulation:self.population];
@@ -74,6 +75,7 @@
     nextGen = [self polynomialMutationWithPopulation:nextGen];
     
     [self evaluateIndividuals:nextGen]; // Implicit conditional evaluation
+    if (self.shouldStop) return NO;
     
     NSMutableArray *combined = [nextGen mutableCopy];
     [combined addObjectsFromArray:self.population];

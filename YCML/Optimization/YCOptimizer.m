@@ -52,7 +52,7 @@
 - (void)run
 {
     int notificationInterval = [self.settings[@"Notification Interval"] intValue];
-    int currentIteration     = [self.state[@"currentIteration"] intValue];
+    int currentIteration     = [self.state[@"currentIteration"] intValue] + 1;
     int endIteration         = [self.settings[@"Iterations"] intValue] + currentIteration;
     
     for (; currentIteration<endIteration; currentIteration++)
@@ -83,6 +83,11 @@
 {
     self.state      = [NSMutableDictionary dictionary];
     self.statistics = [NSMutableDictionary dictionary];
+}
+
+- (void)stop
+{
+    self.shouldStop = true;
 }
 
 - (void)postIterationNotification
@@ -143,11 +148,6 @@
     [aCoder encodeObject:self.settings forKey:@"settings"];
     [aCoder encodeObject:self.state forKey:@"state"];
     [aCoder encodeObject:self.statistics forKey:@"statistics"];
-}
-
-- (void)stop
-{
-    self.shouldStop = true;
 }
 
 @end
