@@ -19,7 +19,7 @@ YCML contains currently more than 30 high-level unit tests, that cover every one
 
 ###Introduction
 
-YCML can be used to solve problems encountered in the field of Machine Learning, and the field of Computational Optimization.
+YCML can be used to tackle problems in the field of Machine Learning, the field of Computational Optimization, as well as the intersection of the two fields.
 
 ####Machine Learning
 
@@ -37,7 +37,7 @@ YCML mainly focuses on regression problems, which is a class of problems where t
 
 Despite the focus on regression, however, classification problems can be tackled equally well using YCML, by making a few changes to the input and output data.
 
-####Multi-Objective Optimization
+####Computational (Multi-Objective) Optimization
 
 YCML offers a few algorithms that allow tackling Optimization problems. Specifically, it focuses on Multi-Objective problems. 
 
@@ -96,10 +96,10 @@ In addition, a couple of basic optimization algorithms are impemented:
 
 ###Other
 
+- Exporting of generated models as [PMML](https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language) and Text Report (JSON to follow soon).
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
-- Text-based exporting of models.
-- NSArray category for basic statistics (mean, median, quartiles, min and max, variance, sd etc.).
-- Tools for pseudorandom and quasi-random low discrepancy sequence generation (see note below).
+- NSMutableArray Subclass offering fast (cached) statistics (mean, median, quartiles, min and max, variance, sd etc.).
+- Tools for pseudorandom and quasi-random low discrepancy sequence generation.
 
 ##Getting started
 
@@ -220,6 +220,12 @@ A significant supervised learning model is the Feed Forward Network, which is im
 In forward propagation, the input signal is being propagated through each single layer, and appears as the output. Propagation in a densely connected layer involves application of weights and biases to the input, and transformation by the activation function. The scaling/normalization of the model input and output happen separately from the layers.
 
 Currently implemented FFN layers differ in their activation function. Linear, Sigmoid, ReLU and Tanh -based layers have been implemented.
+
+### Input and Output 
+
+YCML models can be exported in various formats. Currently supported are PMML and Text formats (report). Plans for a JSON format are underway. The IO subsystem has been designed as a series of Objective-C Categories that follow the class hierarchy of the models in YCML. Categories of parent classes are responsible for the serialization of base properties, while subclasses add more specfic information. Implementation in Categories means that the whole subsystem can be implemented in separate source files, leaving the main model files containing only the actual model logic.
+
+This strategy has been currently implemented for most predictive models (subclasses of YCSupervisedModel). Plans are underway for the implementation throughout the framework.
 
 ##References
 
