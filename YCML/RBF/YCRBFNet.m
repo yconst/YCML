@@ -85,7 +85,7 @@
     return designmatrix;
 }
 
-#pragma mark Properties
+#pragma mark - Properties
 
 - (int)inputSize
 {
@@ -95,84 +95,6 @@
 - (int)outputSize
 {
     return self.weights.columns;
-}
-
-#pragma mark NSCopying Implementation
-
-- (instancetype)copyWithZone:(NSZone *)zone
-{
-    YCRBFNet *copy = [super copyWithZone:zone];
-    if (copy)
-    {
-        copy.centers = [self.centers copy];
-        copy.widths = [self.widths copy];
-        copy.weights = [self.weights copy];
-        copy.inputTransform = [self.inputTransform copy];
-        copy.outputTransform = [self.outputTransform copy];
-    }
-    return copy;
-}
-
-#pragma mark NSCoding Implementation
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        self.centers = [aDecoder decodeObjectForKey:@"centers"];
-        self.widths = [aDecoder decodeObjectForKey:@"widths"];
-        self.weights = [aDecoder decodeObjectForKey:@"weights"];
-        self.inputTransform = [aDecoder decodeObjectForKey:@"inputTransform"];
-        self.outputTransform = [aDecoder decodeObjectForKey:@"outputTransform"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.centers forKey:@"centers"];
-    [aCoder encodeObject:self.widths forKey:@"widths"];
-    [aCoder encodeObject:self.weights forKey:@"weights"];
-    [aCoder encodeObject:self.inputTransform forKey:@"inputTransform"];
-    [aCoder encodeObject:self.outputTransform forKey:@"outputTransform"];
-}
-
-#pragma mark Text Description
-
-- (NSString *)textDescription
-{
-    NSMutableString *description = (NSMutableString *)[super textDescription];
-    
-    // Print RBF function type
-    [description appendFormat:@"\nRBF Function is Gaussian\n"];
-    
-    // Print input and output transform matrices
-    if (self.inputTransform)
-    {
-        [description appendFormat:@"\nInput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.inputTransform.rows,
-         self.inputTransform.columns, self.inputTransform];
-    }
-    if (self.outputTransform)
-    {
-        [description appendFormat:@"\nOutput Transform (%d x %d)\nMapping Function: y = c1*x + c2\n%@",self.outputTransform.rows,
-         self.outputTransform.columns, self.outputTransform];
-    }
-    
-    // Print centers
-    [description appendFormat:@"\nCenters (%d x %d)\n%@",self.centers.rows,
-        self.centers.columns, self.centers];
-    
-    // Print bandwidths
-    [description appendFormat:@"\nBandwidths (%d x %d)\n%@",self.widths.rows,
-     self.widths.columns, self.widths];
-    
-    // Print output weights
-    [description appendFormat:@"\nOutput Weights (%d x %d)\n%@",self.weights.rows,
-     self.weights.columns, self.weights];
-    
-    return description;
 }
 
 @end

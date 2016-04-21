@@ -44,31 +44,6 @@
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)encoder
-{
-    [encoder encodeObject:self.settings forKey:@"settings"];
-}
-
-- (id)initWithCoder:(NSCoder *)decoder
-{
-    if (self = [super init])
-    {
-        NSDictionary *decodedSettings = [decoder decodeObjectForKey:@"settings"];
-        [self.settings addEntriesFromDictionary:decodedSettings];
-    }
-    return self;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    id copied = [[self class] trainer];
-    if (copied)
-    {
-        [copied setSettings:[self.settings mutableCopy]];
-    }
-    return copied;
-}
-
 - (void)stop
 {
     self.shouldStop = true;

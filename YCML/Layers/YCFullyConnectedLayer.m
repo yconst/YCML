@@ -47,19 +47,6 @@
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        self.weightMatrix = [aDecoder decodeObjectForKey:@"weightMatrix"];
-        self.biasVector = [aDecoder decodeObjectForKey:@"biasVector"];
-        self.lastActivation = [aDecoder decodeObjectForKey:@"lastActivation"];
-        self.L2 = [aDecoder decodeDoubleForKey:@"L2"];
-    }
-    return self;
-}
-
 - (Matrix *)forward:(Matrix *)input
 {
     Matrix *output = [self.weightMatrix matrixByTransposingAndMultiplyingWithRight:input]; // (IxO)T * IxS = OxS
@@ -106,25 +93,6 @@
 - (int)outputSize
 {
     return self.weightMatrix.columns;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    YCFullyConnectedLayer *copy = [super copyWithZone:zone];
-    copy.weightMatrix = [self.weightMatrix copy];
-    copy.biasVector = [self.biasVector copy];
-    copy.L2 = self.L2;
-    copy.lastActivation = [self.lastActivation copy];
-    return copy;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.weightMatrix forKey:@"weightMatrix"];
-    [aCoder encodeObject:self.biasVector forKey:@"biasVector"];
-    [aCoder encodeObject:self.lastActivation forKey:@"lastActivation"];
-    [aCoder encodeDouble:self.L2 forKey:@"L2"];
 }
 
 @end

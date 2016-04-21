@@ -34,6 +34,9 @@
 // O: Size of output
 
 @implementation YCBackPropTrainer
+{
+    YCOptimizer *_currentOptimizer;
+}
 
 + (Class)problemClass
 {
@@ -104,33 +107,35 @@
                                                                                    model:model];
     p.sampleCount             = [self.settings[@"Samples"] intValue];
     p.batchSize               = [self.settings[@"Batch Size"] intValue];
-    YCOptimizer *optimizer    = [[[[self class] optimizerClass] alloc] initWithProblem:p];
-    [optimizer.settings addEntriesFromDictionary:self.settings];
+    _currentOptimizer         = [[[[self class] optimizerClass] alloc] initWithProblem:p];
+    [_currentOptimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)
     {
-        [optimizer.settings removeObjectForKey:@"Target"];
+        [_currentOptimizer.settings removeObjectForKey:@"Target"];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(respondToIterationNotification:)
                                                  name:@"iterationComplete"
-                                               object:optimizer];
+                                               object:_currentOptimizer];
     
     // Step IV. Optimizing
-    [optimizer run];
+    [_currentOptimizer run];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // Step V. Copying statistics, weight and bias matrices.
-    model.statistics[@"Iterations"] = optimizer.state[@"currentIteration"];
+    model.statistics[@"Iterations"] = _currentOptimizer.state[@"currentIteration"];
     
-    NSArray *weights          = [p modelWeightsWithParameters:optimizer.state[@"values"]];
-    NSArray *biases           = [p modelBiasesWithParameters:optimizer.state[@"values"]];
+    NSArray *weights          = [p modelWeightsWithParameters:_currentOptimizer.state[@"values"]];
+    NSArray *biases           = [p modelBiasesWithParameters:_currentOptimizer.state[@"values"]];
     [model.layers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         YCFullyConnectedLayer *layer = obj;
         layer.weightMatrix = [weights[idx] copy];
         layer.biasVector = [biases[idx] copy];
     }];
+    
+    _currentOptimizer = nil;
     
     // Step VI. Copy transform matrices to model
     // TRANSFORM MATRICES SHOULD BE COPIED AFTER TRAINING OTHERWISE
@@ -188,5 +193,13 @@
                                                       userInfo:uInfo];
 }
 
+- (void)stop
+{
+    [super stop];
+    if (_currentOptimizer)
+    {
+        [_currentOptimizer stop];
+    }
+}
 
 @end

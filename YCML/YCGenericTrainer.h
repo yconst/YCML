@@ -22,7 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YCGenericTrainer : NSObject <NSCopying, NSCoding>
+@interface YCGenericTrainer : NSObject
 
 /**
  Allocates and initializes a new instance of the receiving class.

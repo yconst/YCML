@@ -26,7 +26,7 @@
  An abstract class implementing the infrastructure for building a predictive 
  model connectivity layer.
  */
-@interface YCModelLayer : NSObject <NSCopying, NSCoding>
+@interface YCModelLayer : NSObject
 
 + (instancetype)layer;
 

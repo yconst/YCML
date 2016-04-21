@@ -29,7 +29,7 @@
 
 @synthesize properties, statistics;
 
-#pragma mark Learner Implementation
+#pragma mark - Learner Implementation
 
 - (YCDataframe *)activateWithDataframe:(YCDataframe *)input
 {
@@ -53,41 +53,6 @@
 - (int)outputSize
 {
     return 0;
-}
-
-#pragma mark Text Description
-
-- (NSString *)textDescription
-{
-    NSMutableString *description = (NSMutableString *)[super textDescription];
-    
-    // Print input conversion array
-    if (self.properties[@"InputConversionArray"])
-    {
-        [description appendFormat:@"\nInput Conversion Array\n\n"];
-        [self.properties[@"InputConversionArray"] enumerateObjectsUsingBlock:^(id  __nonnull obj,
-                                                                               NSUInteger idx,
-                                                                               BOOL * __nonnull stop) {
-            NSString *string = obj;
-            [description appendFormat:@"\t%@", string];
-        }];
-    }
-    
-    // Print output conversion array
-    [description appendFormat:@"\n"];
-    if (self.properties[@"OutputConversionArray"])
-    {
-        [description appendFormat:@"\nOutput Conversion Array\n\n"];
-        [self.properties[@"OutputConversionArray"] enumerateObjectsUsingBlock:^(id  __nonnull obj,
-                                                                               NSUInteger idx,
-                                                                               BOOL * __nonnull stop) {
-            NSString *string = obj;
-            [description appendFormat:@"\t%@", string];
-        }];
-    }
-    [description appendFormat:@"\n"];
-    
-    return description;
 }
 
 @end

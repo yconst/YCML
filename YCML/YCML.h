@@ -81,8 +81,15 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "OrderedDictionary.h"
 #import "YCMissingValue.h"
 
-#import "NSArray+Statistics.h"
+#import "YCMutableArray.h"
 #import "YCRegressionMetrics.h"
 #import "YCValidation.h"
 #import "YCkFoldValidation.h"
 #import "YCMonteCarloValidation.h"
+
+#import "YCModelIO.h"
+#import "YCGenericModel+IO.h"
+#import "YCSupervisedModel+IO.h"
+#import "YCModelLayer+IO.h"
+#import "YCFullyConnectedLayer+IO.h"
+#import "YCGenericTrainer+IO.h"

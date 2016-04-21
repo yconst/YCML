@@ -26,9 +26,7 @@
  A generic predictive model class. Includes basic facilities for 
  storing settings and statistics.
  */
-@interface YCGenericModel : NSObject <NSCopying, NSCoding>
-
-//- (void)PMMLEncodeWithRootElement:(NSXMLElement *)root;
+@interface YCGenericModel : NSObject
 
 /**
  Allocates and initializes a new instance of the receiver class.
@@ -51,14 +49,5 @@
  Holds training settings used to train this model.
  */
 @property NSMutableDictionary *trainingSettings;
-
-/**
- A human-readable text description of the model, 
- including all of it's properties.
- */
-@property (readonly) NSString *textDescription;
-
-
-@property (readonly) NSString *PMMLString;
 
 @end

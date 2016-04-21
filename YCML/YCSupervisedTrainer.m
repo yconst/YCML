@@ -47,19 +47,19 @@
     Matrix *inputM = [input getMatrixUsingConversionArray:theModel.properties[@"InputConversionArray"]];
     Matrix *outputM = [output getMatrixUsingConversionArray:theModel.properties[@"OutputConversionArray"]];
     [self train:theModel inputMatrix:inputM outputMatrix:outputM];
-    return theModel;
+    return self.shouldStop ? nil : theModel;
 }
 
 - (YCSupervisedModel *)train:(YCSupervisedModel *)model inputMatrix:(Matrix *)input outputMatrix:(Matrix *)output
 {
-    self.shouldStop = false;
+    self.shouldStop = NO;
     YCSupervisedModel *theModel = model;
     if (!theModel)
     {
         theModel = [[[[self class] modelClass] alloc] init];
     }
     [self performTrainingModel:theModel inputMatrix:input outputMatrix:output];
-    return theModel;
+    return self.shouldStop ? nil : theModel;
 }
 
 - (void)performTrainingModel:(YCSupervisedModel *)model
