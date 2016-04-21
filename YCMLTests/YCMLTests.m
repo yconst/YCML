@@ -24,7 +24,7 @@
 @import XCTest;
 @import YCML;
 @import YCMatrix;
-#import "CHCSVParser.h"
+#import "XCTestCase+Dataframe.h"
 
 // Convenience logging function (without date/object)
 #define CleanLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -388,64 +388,6 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-#pragma mark - Dataframe Tests
 
-- (void)testCorruptDataframe
-{
-    YCDataframe *template = [YCDataframe dataframe];
-    [template addSampleWithData:@{@"First" : @0.0, @"Second" : @-1.0, @"Third" : @-5.0}];
-    [template addSampleWithData:@{@"First" : @6.7, @"Second" :  @0.1, @"Third" : @40.0}];
-    YCDataframe *random = [template randomSamplesWithCount:5000];
-    [random addSamplesWithData:[template allSamples]];
-    NSDictionary *randomMins = [template stat:@"min"];
-    NSDictionary *randomMaxs = [template stat:@"max"];
-    YCDataframe *corrupt = [random copy];
-    [corrupt corruptWithProbability:1.0 relativeMagnitude:0.5];
-    NSDictionary *corruptMins = [corrupt stat:@"min"];
-    NSDictionary *corruptMaxs = [corrupt stat:@"max"];
-    XCTAssert([randomMins isEqualToDictionary:corruptMins], @"Minimums are not maintained");
-    XCTAssert([randomMaxs isEqualToDictionary:corruptMaxs], @"Maximums are not maintained");
-    
-}
-
-#pragma mark - Utility Functions
-
-- (void)testWithTrainer:(YCSupervisedTrainer *)trainer
-                                dataset:(NSString *)dataset
-                 dependentVariableLabel:(NSString *)label
-                                   rmse:(double)rmse
-{
-    YCDataframe *input    = [self dataframeWithCSVName:dataset];
-    YCDataframe *output   = [YCDataframe dataframeWithDictionary:@{label : [input allValuesForAttribute:label]}];
-    [input removeAttributeWithIdentifier:label];
-    NSDictionary *results = [[YCkFoldValidation validationWithSettings:nil] test:trainer
-                                                                           input:input
-                                                                          output:output];
-    double RMSE           = [results[@"RMSE"] doubleValue];
-    
-    CleanLog(@"RMSE (CV): %f", RMSE);
-    XCTAssertLessThan(RMSE, rmse, @"RMSE above threshold");
-}
-
-- (YCDataframe *)dataframeWithCSVName:(NSString *)path
-{
-    YCDataframe *output    = [YCDataframe dataframe];
-    NSBundle *bundle       = [NSBundle bundleForClass:[self class]];
-    NSString *filePath     = [bundle pathForResource:path ofType:@"csv"];
-    NSString* fileContents = [NSString stringWithContentsOfFile:filePath
-                                                       encoding:NSUTF8StringEncoding
-                                                          error:nil];
-    NSMutableArray *rows = [[fileContents CSVComponents] mutableCopy];
-    
-    NSArray *labels        = rows[0];
-    [rows removeObjectAtIndex:0];
-    
-    for (NSArray *sampleData in rows)
-    {
-        [output addSampleWithData:[NSDictionary dictionaryWithObjects:sampleData forKeys:labels]];
-    }
-
-    return output;
-}
 
 @end
