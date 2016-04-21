@@ -26,7 +26,7 @@
 
 + (YCGenericModel *)modelWithPMMLString:(NSString *)string
 {
-    // TODO: Shtuff
+    @throw [NSInternalInconsistencyException initWithFormat:@"Not yet implemented"];
 }
 
 #pragma mark - NSCopying Implementation
