@@ -25,6 +25,7 @@
 
 #import "YCDataframe+Matrix.h"
 #import "OrderedDictionary.h"
+#import "YCMutableArray.h"
 @import YCMatrix;
 
 @implementation YCDataframe (Matrix)
@@ -55,7 +56,7 @@
             NSString *label = element;
             Matrix *rowMatrix = [Matrix matrixOfRows:1 columns:(int)sampleCount];
             int iter = 0;
-            for (id val in [self allValuesForAttribute:label])
+            for (id val in [self arrayReferenceForAttribute:label])
             {
                 [rowMatrix setValue:[val doubleValue] row:0 column:iter++];
             }

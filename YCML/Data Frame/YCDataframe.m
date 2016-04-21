@@ -25,8 +25,8 @@
 
 #import "YCDataframe.h"
 #import "YCMissingValue.h"
-#import "NSArray+Statistics.h"
 #import "OrderedDictionary.h"
+#import "YCMutableArray.h"
 
 @implementation YCDataframe
 {
@@ -96,6 +96,11 @@
     return [_data count];
 }
 
+- (YCMutableArray *)arrayReferenceForAttribute:(NSString *)attribute
+{
+    return _data[attribute];
+}
+
 - (NSArray *)allValuesForAttribute:(NSString *)attribute
 {
     if (!_data[attribute]) return nil;
@@ -112,7 +117,7 @@
     [[_data objectForKey:attribute] setObject:val atIndex:idx];
 }
 
-- (NSDictionary *)sampleAtIndex:(NSUInteger)idx
+- (OrderedDictionary *)sampleAtIndex:(NSUInteger)idx
 {
     NSAssert(idx < self.dataCount, @"Index out of dataframe bounds");
     NSUInteger capacity = [self attributeCount];
@@ -191,13 +196,15 @@
 {
     if ([[_data objectForKey:ident] isKindOfClass:[NSArray class]]) return;
     
+    [self willChangeValueForKey:@"attributeCount"];
+    
     NSUInteger dataCount = self.dataCount;
     if (data)
     {
         NSAssert(![self attributeCount] || [data count] == dataCount, @"Attribute count differs");
-        if (copy || ![data isKindOfClass:[NSMutableArray class]])
+        if (copy || ![data isKindOfClass:[YCMutableArray class]])
         {
-            NSMutableArray *copiedArray = [NSMutableArray array];
+            YCMutableArray *copiedArray = [YCMutableArray array];
             for (id sampleValue in data)
             {
                 [copiedArray addObject:[self correctValueFor:sampleValue
@@ -213,7 +220,7 @@
     }
     else
     {
-        NSMutableArray *newDataArray = [NSMutableArray arrayWithCapacity:dataCount];
+        YCMutableArray *newDataArray = [YCMutableArray array];
         for (int i=0; i<dataCount; i++)
         {
             [newDataArray addObject:[YCMissingValue missingValue]];
@@ -226,16 +233,15 @@
         [_attributeTypes setObject:@0 forKey:ident];
     }
     
-    [self willChangeValueForKey:@"attributeCount"];
     [self didChangeValueForKey:@"attributeCount"];
 }
 
 // Optional override when subclassing
 - (void)removeAttributeWithIdentifier:(NSString *)ident
 {
+    [self willChangeValueForKey:@"attributeCount"];
     [_attributeTypes removeObjectForKey:ident];
     [_data removeObjectForKey:ident];
-    [self willChangeValueForKey:@"attributeCount"];
     [self didChangeValueForKey:@"attributeCount"];
 }
 
@@ -297,6 +303,8 @@
 - (void)insertSamplesWithData:(NSArray *)data atIndex:(NSUInteger)idx
 {
     NSAssert(0 <= idx && idx <= self.dataCount, @"Index exceeds dataframe bounds");
+    
+    [self willChangeValueForKey:@"dataCount"];
     for (NSDictionary *record in [data reverseObjectEnumerator])
     {
         for (id key in record)
@@ -322,7 +330,6 @@
             }
         }
     }
-    [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
 }
 
@@ -337,6 +344,7 @@
 
 - (NSMutableDictionary *)removeSampleAtIndex:(NSUInteger)idx
 {
+    [self willChangeValueForKey:@"dataCount"];
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];
     for (id key in _data)
     {
@@ -344,34 +352,34 @@
         [ret setValue:val forKey:key];
         [[_data objectForKey:key] removeObjectAtIndex:idx];
     }
-    [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
     return ret;
 }
 
 - (void)removeSamplesAtIndexes:(NSIndexSet *)idxs
 {
-    for (NSMutableArray *feature in [_data allValues])
+    [self willChangeValueForKey:@"dataCount"];
+    for (YCMutableArray *feature in [_data allValues])
     {
         [feature removeObjectsAtIndexes:idxs];
     }
-    [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
 }
 
 - (void)removeAllSamples
 {
-    for (NSMutableArray *a in [_data allValues])
+    [self willChangeValueForKey:@"dataCount"];
+    for (YCMutableArray *a in [_data allValues])
     {
         [a removeAllObjects];
     }
-    [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
 }
 
 // Optional override when subclassing
 - (void)appendDataframe:(YCDataframe *)dataframe
 {
+    [self willChangeValueForKey:@"dataCount"];
     for (NSString *identifier in [dataframe attributeKeys])
     {
         [self addAttributeWithIdentifier:identifier data:nil deepCopy:NO];
@@ -380,7 +388,6 @@
     {
         [self->_data[identifier] addObjectsFromArray:[dataframe allValuesForAttribute:identifier]];
     }
-    [self willChangeValueForKey:@"dataCount"];
     [self didChangeValueForKey:@"dataCount"];
 }
 
@@ -414,7 +421,7 @@
 - (NSNumber *)stat:(NSString *)stat forAttribute:(NSString *)attribute
 {
     NSAssert([_attributeTypes[attribute] intValue] == Ordinal, @"Attribute should be ordinal");
-    return [_data[attribute] calculateStat:stat];
+    return [_data[attribute] valueForKey:stat];
 }
 
 - (NSDictionary *)outlierIndexesWithFenceMultiplier:(double)multiplier
@@ -423,8 +430,7 @@
     for (NSString *attributeIdentifier in self.attributeKeys)
     {
         if (self.attributeTypes[attributeIdentifier] != Ordinal) continue;
-        NSArray *attributeData = [self allValuesForAttribute:attributeIdentifier];
-        [indexSets setObject:[attributeData indexesOfOutliersWithFenceMultiplier:multiplier]
+        [indexSets setObject:[_data[attributeIdentifier] indexesOfOutliersWithFenceMultiplier:multiplier]
                       forKey:attributeIdentifier];
     }
     return indexSets;
@@ -525,14 +531,24 @@
     if (self = [super init])
     {
         id data = [decoder decodeObjectForKey:@"data"];
-        if ([data isKindOfClass:[MutableOrderedDictionary class]])
+        
+        MutableOrderedDictionary *newData = [MutableOrderedDictionary dictionary];
+        
+        for (NSString *key in data)
         {
-            _data = data;
+            NSArray *array = data[key];
+            if ([array isKindOfClass:[YCMutableArray class]])
+            {
+                [newData setObject:array forKey:key];
+            }
+            else
+            {
+                [newData setObject:[YCMutableArray arrayWithArray:array] forKey:key];
+            }
         }
-        else
-        {
-            _data = [MutableOrderedDictionary dictionaryWithDictionary:data];
-        }
+        
+        _data = newData;
+        
         _attributeTypes = [decoder decodeObjectForKey:@"attributeTypes"];
     }
     return self;
@@ -547,9 +563,9 @@
     cp->_data = [MutableOrderedDictionary dictionaryWithCapacity:[self->_data count]];
     for (NSString *ident in [_data allKeys])
     {
-        cp->_data[ident] = [_data[ident] mutableCopyWithZone:zone];
+        cp->_data[ident] = [_data[ident] mutableCopy];
     }
-    cp->_attributeTypes = [_attributeTypes mutableCopyWithZone:zone];
+    cp->_attributeTypes = [_attributeTypes mutableCopy];
     return cp;
 }
 

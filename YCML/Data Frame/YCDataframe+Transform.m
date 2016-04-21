@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "YCDataframe+Transform.h"
-#import "NSArray+Statistics.h"
+#import "YCMutableArray.h"
 #import "OrderedDictionary.h"
 #import "YCDataframe+Matrix.h"
 @import YCMatrix;
@@ -35,7 +35,7 @@
     YCDataframe *newDataframe = [YCDataframe dataframe];
     for (NSString *key in [self attributeKeys])
     {
-        NSArray *attributeData = [self allValuesForAttribute:key];
+        YCMutableArray *attributeData = [self arrayReferenceForAttribute:key];
         NSMutableArray *newData = [NSMutableArray array];
         double min = [[attributeData min] doubleValue];
         double max = [[attributeData max] doubleValue];

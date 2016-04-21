@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
-@class MutableOrderedDictionary;
+@class YCMutableArray, OrderedDictionary, MutableOrderedDictionary;
 
 typedef enum AttributeType : int16_t {
     Ordinal = 0, // Numerical
@@ -44,13 +44,15 @@ typedef enum AttributeType : int16_t {
 
 - (NSUInteger)attributeCount;
 
+- (YCMutableArray *)arrayReferenceForAttribute:(NSString *)attribute;
+
 - (NSArray *)allValuesForAttribute:(NSString *)attribute;
 
 - (id)valueOfAttribute:(NSString *)attribute index:(NSUInteger)idx;
 
 - (void)setValue:(id)val attribute:(NSString *)attribute index:(NSUInteger)idx;
 
-- (NSDictionary *)sampleAtIndex:(NSUInteger)idx;
+- (OrderedDictionary *)sampleAtIndex:(NSUInteger)idx;
 
 - (NSArray *)samplesAtIndexes:(NSIndexSet *)idxs;
 
