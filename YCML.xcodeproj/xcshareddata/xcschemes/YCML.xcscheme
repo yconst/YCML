@@ -46,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB9695671AAEEB64003BAE48"
-               BuildableName = "YCMLTests.xctest"
-               BlueprintName = "YCMLTests"
+               BlueprintIdentifier = "CB02F7BF1AAF653C00EF1E02"
+               BuildableName = "YCML Tests (Swift).xctest"
+               BlueprintName = "YCML Tests (Swift)"
                ReferencedContainer = "container:YCML.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +56,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CB02F7BF1AAF653C00EF1E02"
-               BuildableName = "YCML Tests (Swift).xctest"
-               BlueprintName = "YCML Tests (Swift)"
+               BlueprintIdentifier = "CB9695671AAEEB64003BAE48"
+               BuildableName = "YCMLTests.xctest"
+               BlueprintName = "YCMLTests"
                ReferencedContainer = "container:YCML.xcodeproj">
             </BuildableReference>
          </TestableReference>
