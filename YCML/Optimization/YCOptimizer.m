@@ -51,6 +51,8 @@
 
 - (void)run
 {
+    self.shouldStop = NO;
+    
     int notificationInterval = [self.settings[@"Notification Interval"] intValue];
     int currentIteration     = [self.state[@"currentIteration"] intValue] + 1;
     int endIteration         = [self.settings[@"Iterations"] intValue] + currentIteration;
@@ -68,7 +70,6 @@
             if (!shouldContinue || self.shouldStop) break;
         }
     }
-    self.shouldStop = NO;
 }
 
 // Implement in Subclass
@@ -87,7 +88,7 @@
 
 - (void)stop
 {
-    self.shouldStop = true;
+    self.shouldStop = YES;
 }
 
 - (void)postIterationNotification
