@@ -25,7 +25,7 @@
 #import "YCSupervisedTrainer.h"
 #import "YCDataframe.h"
 #import "YCRegressionMetrics.h"
-#import "NSArray+Statistics.h"
+#import "YCMutableArray.h"
 
 @implementation YCkFoldValidation
 {
@@ -51,7 +51,7 @@
 {
     NSAssert([input dataCount] == [output dataCount], @"Sample counts differ");
     
-    NSMutableDictionary *cumulativeStats = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *,YCMutableArray *> *allStats = [NSMutableDictionary dictionary];
     NSMutableArray *models = [NSMutableArray array];
     
     int folds = [self.settings[@"Folds"] intValue];
@@ -80,37 +80,39 @@
             [trimmedTestOutput addSamplesWithData:[output samplesAtIndexes:testIndexes]];
             
             YCSupervisedModel *model = [trainer train:nil input:trimmedInput output:trimmedOutput];
+            
+            if (!model) break;
+            
             YCDataframe *predictedOutput = [model activateWithDataframe:trimmedTestInput];
             
             NSDictionary *output = self.evaluator(trimmedTestInput, trimmedTestOutput, predictedOutput);
             
             for (NSString *key in output.allKeys)
             {
-                if (!cumulativeStats[key])
+                if (!allStats[key])
                 {
-                    cumulativeStats[key] = [NSMutableArray array];
+                    allStats[key] = [YCMutableArray array];
                 }
-                [cumulativeStats[key] addObject:output[key]];
+                [allStats[key] addObject:output[key]];
             }
             
             [models addObject:model];
-            
-            if (trainer.shouldStop) break;
         }
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    self.results = [cumulativeStats copy];
+    self.results = [allStats copy];
     self.models = models;
     
-    for (NSString *key in cumulativeStats.allKeys)
+    NSMutableDictionary<NSString *,NSNumber *> *cumulativeStats = [NSMutableDictionary dictionary];
+    
+    for (NSString *key in allStats)
     {
-        cumulativeStats[key] = [cumulativeStats[key] mean];
+        cumulativeStats[key] = [allStats[key] mean];
     }
     
     return trainer.shouldStop ? nil : cumulativeStats;
-
 }
 
 #pragma mark Notifications
