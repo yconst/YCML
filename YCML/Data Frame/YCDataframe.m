@@ -114,7 +114,8 @@
 
 - (void)setValue:(id)val attribute:(NSString *)attribute index:(NSUInteger)idx
 {
-    [[_data objectForKey:attribute] setObject:val atIndex:idx];
+    id correctVal = [self correctValueFor:val adjustTypeOfAttribute:attribute];
+    [[_data objectForKey:attribute] setObject:correctVal atIndex:idx];
 }
 
 - (OrderedDictionary *)sampleAtIndex:(NSUInteger)idx
@@ -391,9 +392,9 @@
     [self didChangeValueForKey:@"dataCount"];
 }
 
-- (NSDictionary *)stats
+- (OrderedDictionary *)stats
 {
-    NSMutableDictionary *stats = [NSMutableDictionary dictionary];
+    MutableOrderedDictionary *stats = [MutableOrderedDictionary dictionary];
     for (NSString *attribute in [_data allKeys])
     {
         if ([self.attributeTypes[attribute] intValue] != Ordinal) continue;
@@ -402,9 +403,9 @@
     return stats;
 }
 
-- (NSDictionary *)stat:(NSString *)stat
+- (OrderedDictionary *)stat:(NSString *)stat
 {
-    NSMutableDictionary *stats = [NSMutableDictionary dictionary];
+    MutableOrderedDictionary *stats = [MutableOrderedDictionary dictionary];
     for (NSString *attribute in [_data allKeys])
     {
         if ([self.attributeTypes[attribute] intValue] != Ordinal) continue;

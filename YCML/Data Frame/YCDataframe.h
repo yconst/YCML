@@ -98,9 +98,9 @@ typedef enum AttributeType : int16_t {
 
 - (instancetype)shallowCopyWithAttributesOfType:(AttributeType)type;
 
-- (NSDictionary *)stats;
+- (OrderedDictionary *)stats;
 
-- (NSDictionary *)stat:(NSString *)stat;
+- (OrderedDictionary *)stat:(NSString *)stat;
 
 - (NSDictionary *)statsForAttribute:(NSString *)attribute;
 
