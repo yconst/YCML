@@ -240,7 +240,7 @@
     
     for (int s=0; s<samples; s++)
     {
-        Matrix *sample = [Matrix randomValuesMatrixWithLowerBound:_lower upperBound:_upper];
+        Matrix *sample = [Matrix uniformRandomLowerBound:_lower upperBound:_upper];
         __block int dCount = 0;
         
         for (int i=0; i<popSize; i++)

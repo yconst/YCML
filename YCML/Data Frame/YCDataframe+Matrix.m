@@ -116,7 +116,7 @@
     int iter = 0;
     for (id element in conversionArray)
     {
-        NSMutableArray *attributeSamples = [NSMutableArray array];
+        YCMutableArray *attributeSamples = [YCMutableArray array];
         if ([element isKindOfClass:[NSString class]])
         {
             NSString *label = element;

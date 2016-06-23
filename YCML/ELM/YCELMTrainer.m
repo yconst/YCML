@@ -92,13 +92,13 @@
     // Step II. Randomized input weights and biases and calculation of hidden layer output
     YCTanhLayer *hiddenLayer = [[YCTanhLayer alloc] initWithInputSize:inputSize
                                                            outputSize:hiddenSize];
-    hiddenLayer.weightMatrix = [Matrix randomValuesMatrixOfRows:inputSize
-                                                        columns:hiddenSize
-                                                         domain:hiddenDomain];
+    hiddenLayer.weightMatrix = [Matrix uniformRandomRows:inputSize
+                                                 columns:hiddenSize
+                                                  domain:hiddenDomain];
     
-    hiddenLayer.biasVector = [Matrix randomValuesMatrixOfRows:hiddenSize
-                                                      columns:1
-                                                       domain:hiddenDomain];
+    hiddenLayer.biasVector = [Matrix uniformRandomRows:hiddenSize
+                                               columns:1
+                                                domain:hiddenDomain];
     
     Matrix *H = [hiddenLayer forward:scaledInput];
     

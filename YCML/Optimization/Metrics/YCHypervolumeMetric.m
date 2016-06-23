@@ -39,7 +39,7 @@
     
     for (int i=0; i<sampleSize; i++)
     {
-        Matrix *sample = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+        Matrix *sample = [Matrix uniformRandomLowerBound:lower upperBound:upper];
         
         for (Matrix *m in vectors)
         {
