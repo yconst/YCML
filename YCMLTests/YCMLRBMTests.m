@@ -125,7 +125,7 @@
     
     Matrix *lo = [Matrix matrixOfRows:parameterCount columns:1 value:0.0];
     Matrix *hi = [Matrix matrixOfRows:parameterCount columns:1 value:5.0];
-    Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
+    Matrix *params = [Matrix uniformRandomLowerBound:lo upperBound:hi];
     
     Matrix *weights = [prob weightsWithParameters:params];
     Matrix *vBiases = [prob visibleBiasWithParameters:params];

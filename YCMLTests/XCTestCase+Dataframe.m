@@ -64,7 +64,14 @@
     
     for (NSArray *sampleData in rows)
     {
-        [output addSampleWithData:[NSDictionary dictionaryWithObjects:sampleData forKeys:labels]];
+        // The provided dataframes should be made up of NSNumbers.
+        // Thus we need t convert anything coming from the CSV file to NSNumber.
+        NSMutableArray *dataAsNumbers = [NSMutableArray array];
+        for (id record in sampleData)
+        {
+            [dataAsNumbers addObject:@([record doubleValue])];
+        }
+        [output addSampleWithData:[NSDictionary dictionaryWithObjects:dataAsNumbers forKeys:labels]];
     }
     
     return output;

@@ -70,7 +70,7 @@
     YCDataframe *template = [YCDataframe dataframe];
     [template addSampleWithData:@{@"First" : @0.0, @"Second" : @-1.0, @"Third" : @-5.0}];
     [template addSampleWithData:@{@"First" : @6.7, @"Second" :  @0.1, @"Third" : @40.0}];
-    YCDataframe *random = [template randomSamplesWithCount:5000];
+    YCDataframe *random = [template uniformSampling:5000];
     [random addSamplesWithData:[template allSamples]];
     NSDictionary *randomMins = [template stat:@"min"];
     NSDictionary *randomMaxs = [template stat:@"max"];

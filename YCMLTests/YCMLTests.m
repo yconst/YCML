@@ -114,7 +114,7 @@
                                                                        model:model];
     Matrix *lo = [Matrix matrixOfRows:26 columns:1 value:0.0]; // 3x5 + 5 + 1x5 + 1
     Matrix *hi = [Matrix matrixOfRows:26 columns:1 value:5.0];
-    Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
+    Matrix *params = [Matrix uniformRandomLowerBound:lo upperBound:hi];
     NSArray *weights = [prob modelWeightsWithParameters:params];
     NSArray *biases = [prob modelBiasesWithParameters:params];
     Matrix *trialParams = [Matrix matrixLike:params];
@@ -183,7 +183,7 @@
     }
     Matrix *lo     = [Matrix matrixOfRows:parameterCount columns:1 value:-1.0];
     Matrix *hi     = [Matrix matrixOfRows:parameterCount columns:1 value:1.0];
-    Matrix *params = [Matrix randomValuesMatrixWithLowerBound:lo upperBound:hi];
+    Matrix *params = [Matrix uniformRandomLowerBound:lo upperBound:hi];
     
     Matrix *theoreticalGradients = [Matrix matrixLike:params];
     [prob derivatives:theoreticalGradients parameters:params];

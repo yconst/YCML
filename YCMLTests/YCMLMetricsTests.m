@@ -50,7 +50,7 @@
     XCTAssert(r2 == 0, "Mean Predictor R2 != 0");
     CleanLog(@"Mean Predictor: %f", r2);
     
-    prediction = [Matrix randomValuesMatrixOfRows:1 columns:10 domain:YCMakeDomain(0, 20)];
+    prediction = [Matrix uniformRandomRows:1 columns:10 domain:YCMakeDomain(0, 20)];
     r2 = RSquared(groundTruth, prediction);
     CleanLog(@"Uniform Random Predictor: %f", r2);
     
@@ -58,8 +58,8 @@
     r2 = RSquared(groundTruth, prediction);
     CleanLog(@"Bad Predictor: %f", r2);
     
-    Matrix *rand1 = [Matrix randomValuesMatrixOfRows:1 columns:10 domain:YCMakeDomain(0, 1)];
-    Matrix *rand2 = [Matrix randomValuesMatrixOfRows:1 columns:10 domain:YCMakeDomain(0, 1)];
+    Matrix *rand1 = [Matrix uniformRandomRows:1 columns:10 domain:YCMakeDomain(0, 1)];
+    Matrix *rand2 = [Matrix uniformRandomRows:1 columns:10 domain:YCMakeDomain(0, 1)];
     
     double r2_2 = RSquared(rand1, rand2);
     CleanLog(@"Uni Random Ground Truth / Uni Random Predictor: %f", r2_2);
