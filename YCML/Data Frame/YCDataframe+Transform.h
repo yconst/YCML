@@ -25,9 +25,11 @@
 
 @interface YCDataframe (Transform)
 
-- (instancetype)randomSamplesWithCount:(int)count;
+- (instancetype)uniformSampling:(NSUInteger)count;
 
-- (instancetype)sobolSequenceWithCount:(int)count;
+- (instancetype)normalSampling:(NSUInteger)count;
+
+- (instancetype)sobolSequenceWithCount:(NSUInteger)count;
 
 - (instancetype)randomWalkSteps:(int)steps restarts:(int)restarts relativeStepSize:(double)stepSize;
 

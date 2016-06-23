@@ -30,26 +30,43 @@
 
 @implementation YCDataframe (Transform)
 
-- (instancetype)randomSamplesWithCount:(int)count
+- (instancetype)uniformSampling:(NSUInteger)count
 {
-    YCDataframe *newDataframe = [YCDataframe dataframe];
-    for (NSString *key in [self attributeKeys])
-    {
-        YCMutableArray *attributeData = [self arrayReferenceForAttribute:key];
-        NSMutableArray *newData = [NSMutableArray array];
-        double min = [[attributeData min] doubleValue];
-        double max = [[attributeData max] doubleValue];
-        for (int i=0; i<count; i++)
-        {
-            double r = (double)arc4random() / ARC4RANDOM_MAX;
-            [newData addObject:@(r * (max - min) + min)];
-        }
-        [newDataframe addAttributeWithIdentifier:key data:newData];
-    }
-    return newDataframe;
+    NSDictionary *stats = [self stats];
+    NSArray *attributes = [stats allKeys];
+    NSArray *statValues = [stats allValues];
+    Matrix *mins = [Matrix matrixFromNSArray:[statValues valueForKey:@"min"]
+                                         rows:(int)statValues.count
+                                      columns:1] ;
+    Matrix *maxs = [Matrix matrixFromNSArray:[statValues valueForKey:@"max"]
+                                             rows:(int)statValues.count
+                                          columns:1] ;
+    
+    // This will have the effect of creating a matrix using only the ordinal attributes
+    // of the dataset.
+    Matrix *sample = [Matrix uniformRandomLowerBound:mins upperBound:maxs count:(int)count];
+    return [YCDataframe dataframeWithMatrix:sample conversionArray:attributes];
 }
 
-- (instancetype)sobolSequenceWithCount:(int)count
+- (instancetype)normalSampling:(NSUInteger)count
+{
+    NSDictionary *stats = [self stats];
+    NSArray *attributes = [stats allKeys];
+    NSArray *statValues = [stats allValues];
+    Matrix *means = [Matrix matrixFromNSArray:[statValues valueForKey:@"mean"]
+                                         rows:(int)statValues.count
+                                      columns:1] ;
+    Matrix *variances = [Matrix matrixFromNSArray:[statValues valueForKey:@"variance"]
+                                             rows:(int)statValues.count
+                                          columns:1] ;
+    
+    // This will have the effect of creating a matrix using only the ordinal attributes
+    // of the dataset.
+    Matrix *sample = [Matrix normalRandomMean:means variance:variances count:(int)count];
+    return [YCDataframe dataframeWithMatrix:sample conversionArray:attributes];
+}
+
+- (instancetype)sobolSequenceWithCount:(NSUInteger)count
 {
     // TODO: This converts the dataset to a matrix first. If the dataset is large, it is wasteful.
     // try doing it another way.
@@ -57,7 +74,7 @@
     Matrix *m = [self getMatrixUsingConversionArray:ca];
     Matrix *mins = [m minimumsOfRows];
     Matrix *maxs = [m maximumsOfRows];
-    Matrix *sequence = [Matrix sobolSequenceWithLowerBound:mins upperBound:maxs count:count];
+    Matrix *sequence = [Matrix sobolSequenceLowerBound:mins upperBound:maxs count:(int)count];
     return [YCDataframe dataframeWithMatrix:sequence conversionArray:ca];
 }
 
