@@ -249,14 +249,14 @@
 - (void)addRow:(Matrix *)row;
 
 /**
- Subtracts row matrix |row| to every row of the receiver.
+ Subtracts row matrix |row| from every row of the receiver.
  
  @param row The row matrix to subtract
  */
 - (void)subtractRow:(Matrix *)row;
 
 /**
- Multiplies row matrix |row| to every row of the receiver.
+ Multiplies row matrix |row| with every row of the receiver.
  
  @param row The row matrix to multiply
  */
@@ -270,14 +270,14 @@
 - (void)addColumn:(Matrix *)column;
 
 /**
- Subtracts column matrix |column| to every column of the receiver.
+ Subtracts column matrix |column| from every column of the receiver.
  
  @param column The column matrix to subtract
  */
 - (void)subtractColumn:(Matrix *)column;
 
 /**
- Multiplies column matrix |column| to every column of the receiver.
+ Multiplies column matrix |column| with every column of the receiver.
  
  @param column The column matrix to multiply
  */

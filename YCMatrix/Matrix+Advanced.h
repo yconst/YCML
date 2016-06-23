@@ -37,7 +37,7 @@
 @interface Matrix (Advanced)
 
 /**
- Returns a matrix containing random values between |lower| and |upper|.
+ Returns a matrix containing random values uniformly distributed between |lower| and |upper|.
  The parameter matrices should have the same dimensions, and the resulting
  matrix will also be of the same dimensions as the parameters.
  
@@ -46,10 +46,10 @@
  
  @return A matrix of random values between lower and upper, and of the same size.
  */
-+ (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper;
++ (instancetype)uniformRandomLowerBound:(Matrix *)lower upperBound:(Matrix *)upper;
 
 /**
- Returns a matrix of pseudorandom values within the specified domain.
+ Returns a matrix of random values uniformly distributed within the specified domain.
  
  @param rows    The number of rows of the matrix.
  @param columns The number of columns of the matrix.
@@ -57,11 +57,80 @@
  
  @return A matrix of random values.
  */
-+ (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
++ (instancetype)uniformRandomRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
 
+/**
+ Returns a matrix containing random values uniformly distributed between |lower| and |upper|.
+ The lower and upper matrices should be either row or column matrices. The method will
+ generate |count| random row or column matrices, and return them in a single matrix.
+ As an example, if the sizes of |lower| and |upper| are mx1 and the value of the count parameter
+ is n, the return matrix will be mxn. Conversely, if |lower| and |upper| are 1xm and count is
+ n, the return matrix will be nxm.
+ 
+ @param lower The matrix containing the lower bounds for the uniform random numbers.
+ @param upper The matrix containing the upper bounds for the uniform random numbers.
+ @param count The number of examples to generate.
+ 
+ @return The matrix containing the uniform random numbers.
+ 
+ @warning The lower and upper matrices should be either row or column matrices.
+ */
++ (instancetype)uniformRandomLowerBound:(Matrix *)lower
+                             upperBound:(Matrix *)upper
+                                  count:(int)count;
+
+/**
+ Returns a matrix containing random values normally distributed
+ with specified mean and variance. The parameter matrices should have 
+ the same dimensions, and the resulting matrix will also be of the same 
+ dimensions as the parameters.
+ 
+ @param mean Matrix containing values for the means.
+ @param variance Matrix containing values for the variances.
+ 
+ @return A matrix of random values between lower and upper, and of the same size.
+ */
++ (instancetype)normalRandomMean:(Matrix *)mean variance:(Matrix *)variance;
+
+/**
+ Returns a matrix of random values uniformly distributed with specified mean and variance.
+ 
+ @param rows     The number of rows of the matrix.
+ @param columns  The number of columns of the matrix.
+ @param mean     The mean of the normal distribution.
+ @param variance The variance of the normal distribution.
+
+ @return A matrix of random values.
+ */
++ (instancetype)normalRandomRows:(int)rows
+                         columns:(int)columns
+                            mean:(double)mean
+                        variance:(double)variance;
+
+/**
+ Returns a matrix containing random values normally distributed with specified mean and variance.
+ The mean and variance matrices should be either row or column matrices. The method will
+ generate |count| random row or column matrices, and return them in a single matrix.
+ As an example, if the sizes of |mean| and |variance| are mx1 and the value of the count parameter
+ is n, the return matrix will be mxn. Conversely, if |mean| and |variance| are 1xm and count is
+ n, the return matrix will be nxm.
+ 
+ @param mean The matrix containing the means of the normally distributed random numbers.
+ @param variance The matrix containing the variances of the normally distributed random numbers.
+ @param count The number of examples to generate.
+ 
+ @return The matrix containing the normally distributed random numbers.
+ 
+ @warning The mean and variance matrices should be either row or column matrices.
+ */
++ (instancetype)normalRandomMean:(Matrix *)mean
+                        variance:(Matrix *)variance
+                           count:(int)count;
 
 /**
  Returns a matrix of quasi-random values according to the Sobol sequence.
+ The parameter matrices should have the same dimensions, and the resulting
+ matrix will also be of the same dimensions as the parameters.
  
  @param lower Matrix containing values for the lower bounds.
  @param upper Matrix containing values for the upper bounds.
@@ -69,12 +138,14 @@
  
  @return A matrix of the values corresponding to the Sobol sequence.
  */
-+ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower
-                                 upperBound:(Matrix *)upper
-                                      count:(int)count;
++ (instancetype)sobolSequenceLowerBound:(Matrix *)lower
+                             upperBound:(Matrix *)upper
+                                  count:(int)count;
 
 /**
  Returns a matrix of quasi-random values according to the Halton sequence.
+ The parameter matrices should have the same dimensions, and the resulting 
+ matrix will also be of the same dimensions as the parameters.
  
  @param lower Matrix containing values for the lower bounds.
  @param upper Matrix containing values for the upper bounds.
@@ -279,7 +350,7 @@
 /**
  Returns the multidimensional Quadrance (square of Euclidean distance of the receiver to another matrix.
  
- @param other The matrix to claculate the distance to.
+ @param other The matrix to claculate the quadrance to.
  
  @return The calculated quadrance.
  

@@ -23,7 +23,7 @@
 #ifndef HALTON_SAMPLER_H
 #define HALTON_SAMPLER_H
 
-#include <algorithm>
+//#include <algorithm>
 #include <vector>
 
 // Compute points of the Halton sequence with with digit-permutations for different bases.

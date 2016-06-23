@@ -33,10 +33,15 @@
 #import "Constants.h"
 #import "HaltonInterface.h"
 
+#pragma mark - C Function Definitions
+
+static double boxMuller();
 static void SVDColumnMajor(double *A, __CLPK_integer rows, __CLPK_integer columns,
                            double **s, double **u, double **vt);
 static void pInv(double *A, int rows, int columns, double *Aplus);
 static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR);
+
+#pragma mark - Struct Definitions
 
 typedef struct nlopt_soboldata_s {
     unsigned sdim; /* dimension of sequence being generated */
@@ -53,9 +58,11 @@ static int sobol_init(soboldata *sd, unsigned sdim);
 static int sobol_gen(soboldata *sd, double *x);
 static void sobol_destroy(soboldata *sd);
 
+#pragma mark - Implementations
+
 @implementation Matrix (Advanced)
 
-+ (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper
++ (instancetype)uniformRandomLowerBound:(Matrix *)lower upperBound:(Matrix *)upper
 {
     NSAssert (lower.rows == upper.rows && lower.columns == upper.columns, @"Matrix size mismatch");
     
@@ -69,7 +76,7 @@ static void sobol_destroy(soboldata *sd);
     return result;
 }
 
-+ (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain
++ (instancetype)uniformRandomRows:(int)rows columns:(int)columns domain:(YCDomain)domain
 {
     Matrix *result = [Matrix matrixOfRows:rows columns:columns];
     for (int i=0, j=(int)[result count]; i<j; i++)
@@ -79,9 +86,113 @@ static void sobol_destroy(soboldata *sd);
     return result;
 }
 
-+ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower
-                                 upperBound:(Matrix *)upper
-                                      count:(int)count;
++ (instancetype)uniformRandomLowerBound:(Matrix *)lower upperBound:(Matrix *)upper count:(int)count
+{
+    NSAssert ((lower.rows == upper.rows && lower.columns == upper.columns == 1) ||
+              (lower.columns == upper.columns && lower.rows == upper.rows == 1),
+              @"Matrix size mismatch");
+    
+    if (lower.rows == 1)
+    {
+        // Columns mode
+        Matrix *result = [Matrix matrixOfRows:count columns:lower.columns];
+        Matrix *range = [upper matrixBySubtracting:lower];
+        
+        for (int i=0, k=(int)result.rows; i<k; i++)
+        {
+            for (int j=0, l=(int)result.columns; j<l; j++)
+            {
+                result->matrix[i*l + j] = lower->matrix[j] +
+                    ((double)arc4random() / ARC4RANDOM_MAX) * range->matrix[j];
+            }
+        }
+        return result;
+    }
+    else
+    {
+        // Rows mode
+        Matrix *result = [Matrix matrixOfRows:lower.rows columns:count];
+        Matrix *range = [upper matrixBySubtracting:lower];
+        
+        for (int i=0, k=(int)result.rows; i<k; i++)
+        {
+            for (int j=0, l=(int)result.columns; j<l; j++)
+            {
+                result->matrix[i*l + j] = lower->matrix[i] +
+                    ((double)arc4random() / ARC4RANDOM_MAX) * range->matrix[i];
+            }
+        }
+        return result;
+    }
+}
+
++ (instancetype)normalRandomMean:(Matrix *)mean variance:(Matrix *)variance
+{
+    NSAssert(mean.rows == variance.rows && mean.columns == variance.columns, @"Matrix size mismatch");
+    Matrix *result = [Matrix matrixLike:mean];
+    
+    for (int i=0, j=(int)mean.count; i<j; i++)
+    {
+        result->matrix[i] = mean->matrix[i] + sqrt(variance->matrix[i]) * boxMuller();
+    }
+    return result;
+}
+
++ (instancetype)normalRandomRows:(int)rows
+                           columns:(int)columns
+                              mean:(double)mean
+                          variance:(double)variance
+{
+    Matrix *result = [Matrix matrixOfRows:rows columns:columns];
+    double sigma = sqrt(variance);
+    
+    for (int i=0, j=(int)[result count]; i<j; i++)
+    {
+        result->matrix[i] = mean + sigma * boxMuller();
+    }
+    return result;
+}
+
++ (instancetype)normalRandomMean:(Matrix *)mean variance:(Matrix *)variance count:(int)count
+{
+    NSAssert ((mean.rows == variance.rows && mean.columns == variance.columns == 1) ||
+              (mean.columns == variance.columns && mean.rows == variance.rows == 1),
+              @"Matrix size mismatch");
+    
+    if (mean.rows == 1)
+    {
+        // Columns mode
+        Matrix *result = [Matrix matrixOfRows:count columns:mean.columns];
+        
+        for (int i=0, k=(int)result.rows; i<k; i++)
+        {
+            for (int j=0, l=(int)result.columns; j<l; j++)
+            {
+                result->matrix[i*l + j] = mean->matrix[j] + sqrt(variance->matrix[j]) * boxMuller();
+            }
+        }
+        return result;
+    }
+    else
+    {
+        // Rows mode
+        Matrix *result = [Matrix matrixOfRows:mean.rows columns:count];
+        
+        for (int i=0, k=(int)result.rows; i<k; i++)
+        {
+            double sigma = sqrt(variance->matrix[i]);
+            for (int j=0, l=(int)result.columns; j<l; j++)
+            {
+                result->matrix[i*l + j] = mean->matrix[i] + sigma * boxMuller();
+            }
+        }
+        return result;
+    }
+}
+
++ (instancetype)sobolSequenceLowerBound:(Matrix *)lower
+                             upperBound:(Matrix *)upper
+                                  count:(int)count;
 {
     NSAssert (lower.rows == upper.rows && 1 == lower.columns && 1 == upper.columns,
               @"Matrix size mismatch");
@@ -522,6 +633,33 @@ static void sobol_destroy(soboldata *sd);
 @end
 
 #pragma mark - C Functions definitions
+
+#pragma mark - Box-Muller transform
+
+static double boxMuller()
+{
+    static double x,y;
+    static bool t = NO;
+    if (!t)
+    {
+        // If even number, generate two i.i.d normal variables, and choose the first one
+        double u = (double)arc4random() / ARC4RANDOM_MAX;
+        double v = (double)arc4random() / ARC4RANDOM_MAX;
+        
+        double r = sqrt(-2*log(u));
+        double theta = 2*M_PI*v;
+        
+        x = r*cos(theta);
+        y = r*sin(theta);
+        t = YES;
+    }
+    else
+    {
+        x = y; // If odd number, choose the second i.i.d. normal variable
+        t = NO;
+    }
+    return x;
+}
 
 #pragma mark - Find eigenvalues of matrix A.
 
