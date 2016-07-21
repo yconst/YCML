@@ -102,6 +102,7 @@
 }
 
 #pragma mark - PMML Export
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 
 - (void)PMMLEncodeWithTargetElement:(NSXMLElement *)target
                               model:(YCFFN *)model
@@ -136,5 +137,6 @@
     }
     [target addChild:neuralLayer];
 }
+#endif
 
 @end

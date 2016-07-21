@@ -47,8 +47,11 @@
  To be overridden when subclassing.
  
  @param root The root XML Element.
+ @warning This method is only available on MacOS platforms.
  */
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 - (void)PMMLEncodeWithRootElement:(NSXMLElement *)root;
+#endif
 
 /**
  Produces a human-readable text description of the model,
@@ -59,7 +62,11 @@
 /**
  Produces a PMML (https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language)
  file of the model, including all of it's properties.
+ 
+ @warning This property is only available on MacOS platforms.
  */
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 @property (readonly) NSString *PMMLString;
+#endif
 
 @end

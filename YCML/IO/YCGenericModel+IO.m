@@ -88,6 +88,7 @@
 }
 
 #pragma mark - PMML Export
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 
 - (void)PMMLEncodeWithRootElement:(NSXMLElement *)root
 {
@@ -117,5 +118,6 @@
     
     return [[NSString alloc] initWithData:xmlData encoding:NSUTF8StringEncoding];
 }
+#endif
 
 @end

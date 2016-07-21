@@ -34,6 +34,7 @@
  */
 - (NSString *)textDescriptionWithModel:(YCFFN *)model layerIndex:(NSUInteger)index;
 
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 /**
  Encodes information of the receiver, given a model and a target XML element.
  To be overridden when subclassing.
@@ -41,9 +42,12 @@
  @param target The XML Element corresponding to the model.
  @param model The model that owns the receiving layer.
  @param index The index of the layer in the network.
+ 
+ @warning This method is only available on MacOS platforms.
  */
 - (void)PMMLEncodeWithTargetElement:(NSXMLElement *)target
                               model:(YCFFN *)model
                          layerIndex:(NSUInteger)index;
+#endif
 
 @end
