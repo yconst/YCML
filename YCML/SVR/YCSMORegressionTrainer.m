@@ -36,6 +36,7 @@
 #import "YCModelKernel.h"
 #import "YCLinearKernel.h"
 #import "YCRBFKernel.h"
+#import "YCSMOCache.h"
 @import YCMatrix;
 
 @interface NSMutableOrderedSet (Shuffling)
@@ -46,7 +47,7 @@
 
 @implementation YCSMORegressionTrainer
 {
-    Matrix *_kernelCache;
+    YCSMOCache *_cache;
 }
 
 + (Class)modelClass
@@ -219,26 +220,26 @@
         NSMutableOrderedSet *orderCopy = [order mutableCopy];
         [orderCopy shuffle];
         
-//        NSUInteger idx2 = NSNotFound;
-//        double maxErr = 0;
-//        for (NSNumber *n in orderCopy)
-//        {
-//            int ci = [n intValue];
-//            double e2 = [self errorForModel:model input:input output:output lambdas:lambdas
-//                                     exampleIndex:ci bias:*bias];
-//            if (ABS(e1 - e2) > maxErr)
-//            {
-//                maxErr = ABS(e1 - e2);
-//                idx2 = ci;
-//            }
-//        }
-//        
-//        if (idx2 != NSNotFound)
-//        {
-//            BOOL changed = [self step:model input:input output:output lambdas:lambdas
-//                               i1:idx1 i2:(int)idx2 bias:bias epsilon:epsilon C:C];
-//            if (changed) return 1;
-//        }
+        NSUInteger idx2 = NSNotFound;
+        double maxErr = 0;
+        for (NSNumber *n in orderCopy)
+        {
+            int ci = [n intValue];
+            double e2 = [self errorForModel:model input:input output:output lambdas:lambdas
+                                     exampleIndex:ci bias:*bias];
+            if (ABS(e1 - e2) > maxErr)
+            {
+                maxErr = ABS(e1 - e2);
+                idx2 = ci;
+            }
+        }
+        
+        if (idx2 != NSNotFound)
+        {
+            BOOL changed = [self step:model input:input output:output lambdas:lambdas
+                               i1:idx1 i2:(int)idx2 bias:bias epsilon:epsilon C:C];
+            if (changed) return 1;
+        }
         
         for (NSNumber *n in orderCopy)
         {
@@ -292,9 +293,11 @@
     
     double sum = lambdauo + lambdavo;
     
-    double kuu = [self kernelValueForModel:model input:input index:iu];
+    double kuu = [[model.kernel kernelValueForA:[input column:iu] b:[input column:iu] ] i:0 j:0];
+    //double kuu = [self kernelValueForModel:model input:input index:iu];
     double kuv = [[model.kernel kernelValueForA:[input column:iu] b:[input column:iv] ] i:0 j:0];
-    double kvv = [self kernelValueForModel:model input:input index:iv];
+    //double kvv = [self kernelValueForModel:model input:input index:iv];
+    double kvv = [[model.kernel kernelValueForA:[input column:iv] b:[input column:iv] ] i:0 j:0];
     
     double eta = kuu + kvv - 2*kuv;
     
@@ -397,22 +400,15 @@
     return o + bias;
 }
 
-#pragma mark - Helper Methods and Caches
+#pragma mark – Accessors
 
-- (double)kernelValueForModel:(YCSVR *)model input:(Matrix *)input index:(int)index
+- (YCSMOCache *)cache
 {
-    if (!_kernelCache)
+    if (!_cache)
     {
-        _kernelCache = [Matrix matrixOfRows:input.columns columns:1 value:-DBL_MAX];
+        _cache = [[YCSMOCache alloc] initWithSize:100];
     }
-    if (-DBL_MAX == [_kernelCache i:index j:0]) // Stupid nocache identifier
-    {
-        Matrix *column = [input column:index];
-        double newValue = [[model.kernel kernelValueForA:column b:column] i:0 j:0];
-        [_kernelCache i:index j:0 set:newValue];
-        return newValue;
-    }
-    return [_kernelCache i:index j:0];
+    return _cache;
 }
 
 @end

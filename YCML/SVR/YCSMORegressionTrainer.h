@@ -21,7 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "YCSupervisedTrainer.h"
-@class YCSVR, Matrix;
+@class YCSVR, YCSMOCache, Matrix;
 
 @interface YCSMORegressionTrainer : YCSupervisedTrainer
 
@@ -47,5 +47,7 @@
         bias:(double *)bias
      epsilon:(double)epsilon
            C:(double)C;
+
+@property (readonly) YCSMOCache *cache;
 
 @end
