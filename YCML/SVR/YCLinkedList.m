@@ -1,5 +1,5 @@
 //
-//  CKLinkedList.m
+//  YCLinkedList.m
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 11/12/15.
@@ -20,30 +20,9 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCLinkedList.h"
+// Adapted from CKLinkedList https://github.com/mschettler/CKLinkedList
 
-// 100% Support for both ARC and non-ARC projects
-#if __has_feature(objc_arc)
-    #define SAFE_ARC_PROP_RETAIN strong
-    #define SAFE_ARC_RETAIN(x) (x)
-    #define SAFE_ARC_RELEASE(x)
-    #define SAFE_ARC_AUTORELEASE(x) (x)
-    #define SAFE_ARC_BLOCK_COPY(x) (x)
-    #define SAFE_ARC_BLOCK_RELEASE(x)
-    #define SAFE_ARC_SUPER_DEALLOC()
-    #define SAFE_ARC_AUTORELEASE_POOL_START() @autoreleasepool {
-    #define SAFE_ARC_AUTORELEASE_POOL_END() }
-#else
-    #define SAFE_ARC_PROP_RETAIN retain
-    #define SAFE_ARC_RETAIN(x) ([(x) retain])
-    #define SAFE_ARC_RELEASE(x) ([(x) release])
-    #define SAFE_ARC_AUTORELEASE(x) ([(x) autorelease])
-    #define SAFE_ARC_BLOCK_COPY(x) (Block_copy(x))
-    #define SAFE_ARC_BLOCK_RELEASE(x) (Block_release(x))
-    #define SAFE_ARC_SUPER_DEALLOC() ([super dealloc])
-    #define SAFE_ARC_AUTORELEASE_POOL_START() NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    #define SAFE_ARC_AUTORELEASE_POOL_END() [pool release];
-#endif
+#import "YCLinkedList.h"
 
 LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method for creating a LNode
 
@@ -62,7 +41,7 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 + (id)listWithObject:(id)anObject
 {
     YCLinkedList *n = [[YCLinkedList alloc] initWithObject:anObject];
-    return SAFE_ARC_AUTORELEASE(n);
+    return n;
 }
 
 - (id)initWithObject:(id)anObject
@@ -223,44 +202,49 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 {
     if (size == 0) return nil;
 
-    id ret = SAFE_ARC_RETAIN(last->obj);
+    id ret = last->obj;
     [self removeNode:last];
-    return SAFE_ARC_AUTORELEASE(ret);
+    return ret;
 }
 
 - (id)popFront
 {
     if (size == 0) return nil;
 
-    id ret = SAFE_ARC_RETAIN(first->obj);
+    id ret = first->obj;
     [self removeNode:first];
-    return SAFE_ARC_AUTORELEASE(ret);
+    return ret;
 }
 
 - (void)removeNode:(LNode *)aNode
 {
     if (size == 0) return;
 
-    if (size == 1) {
+    if (size == 1)
+    {
         // delete first and only
         first = last = nil;
-    } else if (aNode->prev == nil) {
+    }
+    else if (aNode->prev == nil)
+    {
         // delete first of many
         first = first->next;
         first->prev = nil;
-    } else if (aNode->next == nil) {
+    }
+    else if (aNode->next == nil)
+    {
         // delete last
         last = last->prev;
         last->next = nil;
-    } else {
+    }
+    else
+    {
         // delete in the middle
         LNode *tmp = aNode->prev;
         tmp->next = aNode->next;
         tmp = aNode->next;
         tmp->prev = aNode->prev;
     }
-
-    SAFE_ARC_RELEASE(aNode->obj);
     aNode->obj = nil;
     free(aNode);
     size--;
@@ -270,8 +254,10 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 {
     LNode *n = nil;
 
-    for (n = first; n; n=n->next) {
-        if (n->obj == anObject) {
+    for (n = first; n; n=n->next)
+    {
+        if (n->obj == anObject)
+        {
             [self removeNode:n];
             return YES;
         }
@@ -285,7 +271,6 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 
     while (n) {
         LNode *next = n->next;
-        SAFE_ARC_RELEASE(n->obj);
         n->obj = nil;
         free(n);
         n = next;
@@ -313,7 +298,7 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 
 - (NSArray *)allObjects
 {
-    NSMutableArray *ret = SAFE_ARC_AUTORELEASE([[NSMutableArray alloc] initWithCapacity:size]);
+    NSMutableArray *ret = [[NSMutableArray alloc] initWithCapacity:size];
     LNode *n = nil;
 
     for (n = first; n; n=n->next)
@@ -325,7 +310,7 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 
 - (NSArray *)allObjectsReverse
 {
-    NSMutableArray *ret = SAFE_ARC_AUTORELEASE([[NSMutableArray alloc] initWithCapacity:size]);
+    NSMutableArray *ret = [[NSMutableArray alloc] initWithCapacity:size];
     LNode *n = nil;
 
     for (n = last; n; n=n->prev)
@@ -338,12 +323,6 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev);    // convenience method fo
 - (void)dealloc
 {
     [self removeAllObjects];
-    SAFE_ARC_SUPER_DEALLOC();
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"CKLinkedList with %d objects", size];
 }
 
 @end
@@ -353,7 +332,7 @@ LNode * LNodeMake(id obj, LNode *next, LNode *prev)
     LNode *n = malloc(sizeof(LNode));
     n->next = next;
     n->prev = prev;
-    n->obj = SAFE_ARC_RETAIN(obj);
+    n->obj = obj;
     return n;
 };
 

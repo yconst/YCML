@@ -1,5 +1,5 @@
 //
-//  CKLinkedList.m
+//  YCLinkedList.m
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 11/12/15.
@@ -19,6 +19,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
+
+// Adapted from CKLinkedList https://github.com/mschettler/CKLinkedList
 
 @import Foundation;
 
