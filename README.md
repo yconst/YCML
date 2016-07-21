@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 [![DOI](https://zenodo.org/badge/20003/yconst/YCML.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCML)
 
-YCML is an Artificial Intelligence, Machine Learning and Optimization framework written in Objective-C. YCML can be used both in Objective-C as well as in Swift. YCML runs on Mac OS X and iOS. 
+YCML is an Artificial Intelligence, Machine Learning and Optimization framework written in Objective-C. YCML can be used both in Objective-C as well as in Swift. YCML has been verified to run on MacOS and iOS. 
 
 Above all, YCML attempts to bring high-quality published algorithms to Swift/Objective-C, using optimized implementations. Referenced papers for the implementation of each algorithm are available at the end of this document.
 
@@ -96,7 +96,7 @@ In addition, a couple of basic optimization algorithms are impemented:
 
 ###Other
 
-- Exporting of generated models as [PMML](https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language) and Text Report (JSON to follow soon).
+- Exporting of generated models as [PMML](https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language) (MacOS only) and Text Report (JSON to follow soon).
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
 - NSMutableArray Subclass offering fast (cached) statistics (mean, median, quartiles, min and max, variance, sd etc.).
 - Tools for pseudorandom and quasi-random low discrepancy sequence generation.
@@ -223,9 +223,9 @@ Currently implemented FFN layers differ in their activation function. Linear, Si
 
 ### Input and Output 
 
-YCML models can be exported in various formats. Currently supported are PMML and Text formats (report). Plans for a JSON format are underway. The IO subsystem has been designed as a series of Objective-C Categories that follow the class hierarchy of the models in YCML. Categories of parent classes are responsible for the serialization of base properties, while subclasses add more specfic information. Implementation in Categories means that the whole subsystem can be implemented in separate source files, leaving the main model files containing only the actual model logic.
+YCML models can be exported in various formats. Currently supported are PMML and Text formats (report). Unfortunately, due to lack of support for NSXML in iOS, PMML export is setup to compile only under MacOS, and as such is only available under that platform. Plans for a JSON format are underway. The IO subsystem has been designed as a series of Objective-C Categories that follow the class hierarchy of the models in YCML. Categories of parent classes are responsible for the serialization of base properties, while subclasses add more specfic information. Implementation in Categories means that the whole subsystem can be implemented in separate source files, leaving the main model files containing only the actual model logic. Clean and efficient.
 
-This strategy has been currently implemented for most predictive models (subclasses of YCSupervisedModel). Plans are underway for the implementation throughout the framework.
+This strategy has been currently implemented for most predictive models (subclasses of YCSupervisedModel). Plans are underway for the implementation throughout the framework. Implementation of the PMML format are based on the definition and [this set of examples](http://dmg.org/pmml/pmml_examples/index.html). In case you find out any inconsistencies, please chime in!
 
 ##References
 
