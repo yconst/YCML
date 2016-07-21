@@ -53,6 +53,7 @@
     NSLog(@"%@", text);
 }
 
+#if (TARGET_OS_MAC && !(TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH))
 - (void)testFFN_PMMLExport
 {
     YCFullyConnectedLayer *hl = [YCSigmoidLayer layerWithInputSize:13 outputSize:2];
@@ -75,5 +76,6 @@
     
     NSLog(@"%@", PMML);
 }
+#endif
 
 @end
