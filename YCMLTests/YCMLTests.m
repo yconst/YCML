@@ -364,14 +364,14 @@
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-- (void)testRBFSVRSMOHousing
-{
-    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
-    trainer.settings[@"Kernel"]             = @"RBF";
-    trainer.settings[@"C"]                  = @0.5;
-    trainer.settings[@"Beta"]               = @1.4;
-    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
-}
+//- (void)testRBFSVRSMOHousing
+//{
+//    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
+//    trainer.settings[@"Kernel"]             = @"RBF";
+//    trainer.settings[@"C"]                  = @0.5;
+//    trainer.settings[@"Beta"]               = @1.4;
+//    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+//}
 
 - (void)testRBFNetOLSHousing
 {
