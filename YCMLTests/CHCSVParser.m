@@ -218,12 +218,15 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
     _streamEncoding = encoding;
 }
 
-- (void)_sniffDelimiter {
+- (void)_sniffDelimiter
+{
     NSInteger appendLength = DELIMITER_SNIFF_SIZE - [self totalBytesRead];
-    if (appendLength > 0) {
+    if (appendLength > 0)
+    {
         uint8_t bytes[appendLength];
         NSInteger readLength = [_stream read:bytes maxLength:appendLength];
-        if (readLength > 0 && readLength <= appendLength) {
+        if (readLength > 0 && readLength <= appendLength)
+        {
             [_stringBuffer appendBytes:bytes length:readLength];
             [self setTotalBytesRead:[self totalBytesRead] + readLength];
         }
@@ -231,15 +234,34 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
     
     NSString *csv = [[NSString alloc] initWithData:_stringBuffer encoding:_streamEncoding];
     
+    // Remove quoted strings from test string
+    NSMutableArray *target = [NSMutableArray array];
+    NSScanner *scanner = [NSScanner scannerWithString:csv];
+    NSString *tmp;
+    
+    while ([scanner isAtEnd] == NO)
+    {
+        [scanner scanUpToString:@"\"" intoString:NULL];
+        [scanner scanString:@"\"" intoString:NULL];
+        [scanner scanUpToString:@"\"" intoString:&tmp];
+        if ([scanner isAtEnd] == NO) [target addObject:tmp];
+        [scanner scanString:@"\"" intoString:NULL];
+    }
+    csv = [target componentsJoinedByString:@""];
+    
+    // Identify the most frequent delimiter
     NSError *error = NULL;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[^\"]+" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[^\"]+"
+                                                      options:NSRegularExpressionCaseInsensitive
+                                                        error:&error];
     
     const int delimiterCount = 3;
     unichar delimiters[delimiterCount] = {COMMA, TAB, SEMICOLON};
     long maxOccurences = 0;
     int delimiterIndex = 0; // COMMA by default
     
-    for (int i=0; i<delimiterCount; i++) {
+    for (int i=0; i<delimiterCount; i++)
+    {
         NSString *delimiterString = [NSString stringWithCharacters:&delimiters[i] length:1];
         regex = [NSRegularExpression regularExpressionWithPattern:delimiterString
                                                           options:NSRegularExpressionCaseInsensitive
@@ -248,12 +270,12 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
                                                         options:0
                                                           range:NSMakeRange(0, [csv length])];
         
-        if (currentOccurences > maxOccurences) {
+        if (currentOccurences > maxOccurences)
+        {
             maxOccurences = currentOccurences;
             delimiterIndex = i;
         }
     }
-    
     _delimiter = delimiters[delimiterIndex];
 }
 
