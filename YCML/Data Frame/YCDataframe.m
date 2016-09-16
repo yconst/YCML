@@ -29,9 +29,6 @@
 #import "YCMutableArray.h"
 
 @implementation YCDataframe
-{
-    NSNumberFormatter *_f;
-}
 
 + (instancetype)dataframe
 {
@@ -70,8 +67,6 @@
     {
         _data = [MutableOrderedDictionary dictionary];
         _attributeTypes = [NSMutableDictionary dictionary];
-        _f = [[NSNumberFormatter alloc] init];
-        [_f setAllowsFloats:YES];
     }
     return self;
 }
@@ -265,7 +260,7 @@
     {
         if ([value isKindOfClass:[NSString class]])
         {
-            NSNumber *numValue = [_f numberFromString:value];
+            NSNumber *numValue = [self.numberFormatter numberFromString:value];
             if (!numValue)
             {
                 currentType = @1;
@@ -487,6 +482,16 @@
     return [[self->_data allKeys] copy];
 }
 
+- (NSNumberFormatter *)numberFormatter
+{
+    static NSNumberFormatter *_f;
+    if (!_f)
+    {
+        _f = [[NSNumberFormatter alloc] init];
+    }
+    return _f;
+}
+
 #pragma mark value getter/setter Overrides
 
 - (id)valueForUndefinedKey:(NSString *)aKey
@@ -625,7 +630,7 @@
     }
     if ([value isKindOfClass:[NSString class]])
     {
-        NSNumber *numValue = [_f numberFromString:value];
+        NSNumber *numValue = [self.numberFormatter numberFromString:value];
         if (numValue)
         {
             return numValue;

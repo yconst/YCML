@@ -129,4 +129,6 @@ typedef enum AttributeType : int16_t {
 
 @property (readonly) NSArray *attributeKeys;
 
+@property (readonly) NSNumberFormatter *numberFormatter;
+
 @end
