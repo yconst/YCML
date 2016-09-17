@@ -25,6 +25,7 @@
 @import YCML;
 @import YCMatrix;
 #import "XCTestCase+Dataframe.h"
+#import "YCSMOCache.h"
 
 // Convenience logging function (without date/object)
 #define CleanLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -205,6 +206,112 @@
     CleanLog(@"Numerical: %@", [numericalGradients matrixByTransposing]);
     CleanLog(@"Difference: %@", [[theoreticalGradients matrixBySubtracting:numericalGradients] matrixByTransposing]);
     XCTAssert([numericalGradients isEqualToMatrix:theoreticalGradients tolerance:1E-8], @"Matrices are not equal");
+}
+
+#pragma mark - SMO Cache Tests
+
+- (void)testLinkedList
+{
+    int count = 50;
+    LNode *nodes = malloc(sizeof(LNode) * count);
+    YCLinkedList *list = [[YCLinkedList alloc] init];
+    
+    for (int i=0; i<count; i++)
+    {
+        if (arc4random_uniform(100) > 50)
+        {
+            [list pushTail:&nodes[i]];
+        }
+        else
+        {
+            [list pushHead:&nodes[i]];
+        }
+        
+    }
+    
+    for (int i=0; i<count; i++)
+    {
+        LNode *node;
+        if (arc4random_uniform(100) > 50)
+        {
+            node = [list popHead];
+        }
+        else
+        {
+            node = [list popTail];
+        }
+        XCTAssert(node->headSide == nil, @"Headside not nil");
+        XCTAssert(node->tailSide == nil, @"Tailside not nil");
+        if (list.count>0)
+        {
+            XCTAssert(list.headNode->headSide == nil, @"Head node's Headside not nil");
+            XCTAssert(list.tailNode->tailSide == nil, @"Tail node's Tailside not nil");
+        }
+    }
+    
+    XCTAssertEqual(list.count, 0, @"Count is incorrect");
+}
+
+- (void)testSMOCacheStore
+{
+    YCSMOCache *cache = [[YCSMOCache alloc] initWithDatasetSize:100 cacheSize:20];
+    
+    // Non-diagonal
+    XCTAssertEqual([cache queryI:2 j:5], notIncluded, @"Cache status query error");
+    
+    double reference = 7.5;
+    [cache setI:2 j:5 value:reference];
+    double test = [cache getI:2 j:5 tickle:YES];
+    
+    XCTAssertEqual(reference, test, @"Retrieved value not equal to reference");
+    
+    XCTAssertEqual([cache queryI:2 j:5], included, @"Cache status query error");
+    
+    reference = 1.2;
+    [cache setI:3 j:5 value:reference];
+    test = [cache getI:3 j:5 tickle:YES];
+    
+    XCTAssertEqual(reference, test, @"Retrieved value not equal to reference");
+    
+    XCTAssertEqual([cache queryI:3 j:5], included, @"Cache status query error");
+    
+    // Diagonal
+    reference = 1.6;
+    [cache setI:3 j:3 value:reference];
+    test = [cache getI:3 j:3 tickle:YES];
+    
+    XCTAssertEqual(reference, test, @"Retrieved value not equal to reference");
+    
+    XCTAssertEqual([cache queryI:3 j:3], included, @"Cache status query error");
+    
+    // Store several entries
+    for (int c=0; c<500; c++)
+    {
+        int i = arc4random_uniform(100);
+        int j = arc4random_uniform(100);
+        double value = ((double)arc4random() / 0x100000000);
+        
+        [cache setI:i j:j value:value];
+    }
+    
+    for (int c=0; c<10; c++)
+    {
+        int i = 99-c*5;
+        int j = c*6;
+        
+        [cache setI:i j:j value:c+1];
+    }
+    
+    for (int c=0; c<10; c++)
+    {
+        int i = 99-c*5;
+        int j = c*6;
+        
+        if ([cache queryI:i j:j] == included)
+        {
+            XCTAssertEqual([cache getI:i j:j tickle:YES], c+1, @"Retrieved value not equal to reference");
+        }
+    }
 }
 
 #pragma mark - SMO Tests
