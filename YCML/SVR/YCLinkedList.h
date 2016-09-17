@@ -2,7 +2,7 @@
 //  YCLinkedList.m
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 11/12/15.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 29/1/16.
 //  Copyright (c) 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
@@ -28,61 +28,38 @@ typedef struct LNode LNode;
 
 struct LNode
 {
-    __unsafe_unretained id obj;
-    LNode *next;
-    LNode *prev;
+    void *obj;
+    LNode *headSide;
+    LNode *tailSide;
 };
 
+/**
+ A linked list implementation
+ 
+ @warning: This list does not memory manage it's members at all!
+ */
 @interface YCLinkedList : NSObject
 {
-    LNode *first;
-    LNode *last;
+    LNode *head;
+    LNode *tail;
     unsigned int size;
 }
 
-+ (id)listWithObject:(id)anObject;          // init the linked list with a single object
+- (void)pushTail:(LNode *)n;           // adds a node object to the end of the list
 
-- (id)initWithObject:(id)anObject;          // init the linked list with a single object
+- (void)pushHead:(LNode *)n;           // adds a node object to the beginning of the list
 
-- (void)pushBack:(id)anObject;              // add an object to back of list
+- (void *)pop:(LNode *)aNode;       // remove and return a given node
 
-- (void)pushFront:(id)anObject;             // add an object to front of list
+- (void *)popTail;                     // pops a node object from the end of the list
 
-- (id)popBack;                              // remove object at end of list (returns it)
-
-- (id)popFront;                             // remove object at front of list (returns it)
-
-- (BOOL)removeObjectEqualTo:(id)anObject;   // removes object equal to anObject, returns (YES) on success
-
-- (void)removeAllObjects;                   // clear out the list
-
-- (BOOL)containsObject:(id)anObject;        // (YES) if passed object is in the list, (NO) otherwise
-
-- (void)pushNodeBack:(LNode *)n;            // adds a node object to the end of the list
-
-- (void)pushNodeFront:(LNode *)n;           // adds a node object to the beginning of the list
-
-- (void)removeNode:(LNode *)aNode;          // remove a given node
-
-- (id)objectAtIndex:(const int)idx;
-
-- (NSArray *)allObjects;
-
-- (NSArray *)allObjectsReverse;
-
-- (void)insertObject:(id)anObject beforeNode:(LNode *)node;
-
-- (void)insertObject:(id)anObject afterNode:(LNode *)node;
+- (void *)popHead;                     // pops a node object from the beginning of the list
 
 ///@ Properties
 
-@property (readonly) id firstObject;
+@property (readonly) LNode *headNode;
 
-@property (readonly) id lastObject;
-
-@property (readonly) LNode *firstNode;
-
-@property (readonly) LNode *lastNode;
+@property (readonly) LNode *tailNode;
 
 @property (readonly) NSUInteger count;
 

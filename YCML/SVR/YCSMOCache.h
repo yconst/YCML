@@ -2,38 +2,72 @@
 //  YCSMOCache.h
 //  YCML
 //
-//  Created by Ioannis Chatzikonstantinou on 29/1/16.
-//  Copyright © 2016 Yannis Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 29/1/16.
+//  Copyright (c) 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
+// This file is part of YCML.
+//
+// YCML is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// YCML is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 @import Foundation;
 #import "YCLinkedList.h"
 @class Matrix;
 
-typedef enum cacheStatus { notReserved, reserved, included } cacheStatus;
+typedef enum cacheStatus { notIncluded, included } cacheStatus;
 
 @interface YCSMOCache : NSObject
 
-- (instancetype)initWithSize:(NSUInteger)size;
+- (instancetype)initWithDatasetSize:(NSUInteger)datasetSize cacheSize:(NSUInteger)cacheSize;
 
 - (cacheStatus)queryI:(int)i j:(int)j;
 
 - (double)getI:(int)i j:(int)j tickle:(BOOL)tickle;
 
-- (double)setI:(int)i j:(int)j value:(double)value;
+- (void)setI:(int)i j:(int)j value:(double)value;
 
 ///@name Properties
 
-@property Matrix *index;
+/**
+ An array containing indexes in cache of each example in the dataset
+ i.e. index[i] == index in cache of example i
+ */
+@property unsigned *index;
 
-@property Matrix *inverseIndex;
+/**
+ An array containing all indexes in dataset for each cache element
+ i.e. inverseIndex[n] == index in dataset of cache element n
+ */
+@property unsigned *inverseIndex;
 
+/**
+ The cache values, MxM
+ */
 @property Matrix *values;
 
-@property Matrix *status;
+/**
+ The LRU nodes
+ */
+@property LNode *nodes; // LRU nodes
 
-@property LNode *nodes;
+/**
+ The order of LRU indexes
+ */
+@property YCLinkedList *order; // LRU order
 
-@property YCLinkedList *order;
+/**
+ The permanent diagonal kernel cache
+ */
+@property Matrix *diagonalCache;
 
 @end
