@@ -48,6 +48,7 @@
 @implementation YCSMORegressionTrainer
 {
     YCSMOCache *_cache;
+    NSUInteger _datasetSize;
 }
 
 + (Class)modelClass
@@ -90,6 +91,8 @@
     int S                   = scaledInput.rows;
     int changed             = 0;
     BOOL examineAll         = YES;
+    
+    _datasetSize = N;
     
     Matrix *lambdas = [Matrix matrixOfRows:1 columns:N];
     
@@ -406,7 +409,7 @@
 {
     if (!_cache)
     {
-        _cache = [[YCSMOCache alloc] initWithSize:100];
+        _cache = [[YCSMOCache alloc] initWithDatasetSize:_datasetSize cacheSize:200];
     }
     return _cache;
 }
