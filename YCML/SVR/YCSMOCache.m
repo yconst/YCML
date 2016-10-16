@@ -31,20 +31,20 @@ typedef struct node
 
 @implementation YCSMOCache
 {
-    unsigned _datasetSize;
-    unsigned _cacheSize;
+    NSUInteger _datasetSize;
+    NSUInteger _cacheSize;
 }
 
-static unsigned notFound = UINT_MAX;
+static NSUInteger notFound = NSUIntegerMax;
 
 - (instancetype)initWithDatasetSize:(NSUInteger)datasetSize cacheSize:(NSUInteger)cacheSize
 {
     self = [super init];
     if (self)
     {
-        self.index = malloc(sizeof(unsigned) * datasetSize);
-        self.inverseIndex = malloc(sizeof(unsigned) * cacheSize);
-        self.values = [Matrix matrixOfRows:(int)cacheSize columns:(int)cacheSize]; // -1
+        self.index = malloc(sizeof(NSUInteger) * datasetSize);
+        self.inverseIndex = malloc(sizeof(NSUInteger) * cacheSize);
+        self.values = [Matrix matrixOfRows:(int)cacheSize columns:(int)cacheSize value:-DBL_MAX];
         self.nodes = malloc(sizeof(LNode) * cacheSize);
         self.order = [[YCLinkedList alloc] init];
         
@@ -59,30 +59,41 @@ static unsigned notFound = UINT_MAX;
             self.inverseIndex[i] = notFound;
             
             LNode *node = &self.nodes[i];
-            node->obj = &self.inverseIndex[i];
+            node->index = i;
             
             [self.order pushTail:&self.nodes[i]];
         }
         
-        self.diagonalCache = [Matrix matrixOfRows:(int)datasetSize columns:1 value:DBL_MAX];
+        self.diagonalCache = [Matrix matrixOfRows:(int)datasetSize columns:1 value:-DBL_MAX];
         
-        _datasetSize = (unsigned)datasetSize;
-        _cacheSize = (unsigned)cacheSize;
+        _datasetSize = datasetSize;
+        _cacheSize = cacheSize;
     }
     return self;
 }
 
-- (cacheStatus)queryI:(int)i j:(int)j
+- (cacheStatus)queryI:(NSUInteger)i j:(NSUInteger)j
 {
     if (i == j)
     {
-        return [self.diagonalCache i:i j:0] == DBL_MAX ? notIncluded : included;
+        if ([self.diagonalCache i:(int)i j:0] == -DBL_MAX)
+        {
+            return notIncluded;
+        }
+        return included;
     }
     
-    unsigned ci = self.index[i];
-    unsigned cj = self.index[j];
+    NSUInteger ci = self.index[i];
+    NSUInteger cj = self.index[j];
     
-    if (ci == notFound || cj == notFound)
+    if (cj > ci)
+    {
+        NSUInteger swap = cj;
+        cj = ci;
+        ci = swap;
+    }
+    
+    if (ci == notFound || cj == notFound || [self.values i:(int)ci j:(int)cj] == -DBL_MAX)
     {
         return notIncluded;
     }
@@ -90,22 +101,25 @@ static unsigned notFound = UINT_MAX;
     return included;
 }
 
-- (double)getI:(int)i j:(int)j tickle:(BOOL)tickle
+- (double)getI:(NSUInteger)i j:(NSUInteger)j tickle:(BOOL)tickle
 {
     if (i == j)
     {
-        return [self.diagonalCache i:i j:0];
+        return [self.diagonalCache i:(int)i j:0];
     }
     
-    unsigned ci = self.index[i];
-    unsigned cj = self.index[j];
+    NSUInteger ci = self.index[i];
+    NSUInteger cj = self.index[j];
     
     if (cj > ci)
     {
-        unsigned swap = cj;
+        NSUInteger swap = cj;
         cj = ci;
         ci = swap;
     }
+    
+    NSAssert(ci != notFound && cj != notFound &&
+             [self.values i:(int)ci j:(int)cj] != -DBL_MAX, @"Invalid cache request");
     
     // Here also check if node->next exists, if not it is already last.
     if (tickle)
@@ -115,18 +129,18 @@ static unsigned notFound = UINT_MAX;
         [self.order pop:&self.nodes[cj]];
         [self.order pushTail:&self.nodes[cj]];
     }
-    return [self.values i:ci j:cj]; // -1
+    return [self.values i:(int)ci j:(int)cj];
 }
 
-- (void)setI:(int)i j:(int)j value:(double)value
+- (void)setI:(NSUInteger)i j:(NSUInteger)j value:(double)value
 {
     if (i == j)
     {
-        [self.diagonalCache i:i j:0 set:value];
+        [self.diagonalCache i:(int)i j:0 set:value];
         return;
     }
     
-    unsigned ci, cj;
+    NSUInteger ci, cj;
     
     if (self.index[i] == notFound)
     {
@@ -134,12 +148,16 @@ static unsigned notFound = UINT_MAX;
         LNode *node = [self.order popHead];
         
         // ci is the offset from inverseindex pointed by node->obj
-        ci = (unsigned) (((unsigned *)node->obj) - self.inverseIndex);
+        ci = node->index;
         
         // ci is now the location in the cache that is to be overwritten (LRU)
         for (int k = 0; k < ci; k++)
         {
-            [self.values i:ci j:k set:0]; // -1
+            [self.values i:(int)ci j:k set:-DBL_MAX];
+        }
+        for (int k = (int)ci; k < _cacheSize; k++)
+        {
+            [self.values i:k j:(int)ci set:-DBL_MAX];
         }
         
         if (self.inverseIndex[ci] != notFound) self.index[self.inverseIndex[ci]] = notFound;
@@ -160,12 +178,16 @@ static unsigned notFound = UINT_MAX;
         // index[j] does not exist in the cache
         LNode *node = [self.order popHead];
         
-        cj = (unsigned) (((unsigned *)node->obj) - self.inverseIndex);
+        cj = node->index;
         
         // cj is now the location in the cache that is to be overwritten (LRU)
         for (int k = 0; k < cj; k++)
         {
-            [self.values i:cj j:k set:0]; // -1
+            [self.values i:(int)cj j:k set:-DBL_MAX];
+        }
+        for (int k = (int)cj; k < _cacheSize; k++)
+        {
+            [self.values i:k j:(int)cj set:-DBL_MAX];
         }
         
         if (self.inverseIndex[cj] != notFound) self.index[self.inverseIndex[cj]] = notFound;
@@ -185,12 +207,12 @@ static unsigned notFound = UINT_MAX;
     
     if (cj > ci)
     {
-        unsigned swap = cj;
+        NSUInteger swap = cj;
         cj = ci;
         ci = swap;
     }
     
-    [self.values i:ci j:cj set:value]; // -1
+    [self.values i:(int)ci j:(int)cj set:value];
 }
 
 - (void)dealloc

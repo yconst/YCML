@@ -30,11 +30,11 @@ typedef enum cacheStatus { notIncluded, included } cacheStatus;
 
 - (instancetype)initWithDatasetSize:(NSUInteger)datasetSize cacheSize:(NSUInteger)cacheSize;
 
-- (cacheStatus)queryI:(int)i j:(int)j;
+- (cacheStatus)queryI:(NSUInteger)i j:(NSUInteger)j;
 
-- (double)getI:(int)i j:(int)j tickle:(BOOL)tickle;
+- (double)getI:(NSUInteger)i j:(NSUInteger)j tickle:(BOOL)tickle;
 
-- (void)setI:(int)i j:(int)j value:(double)value;
+- (void)setI:(NSUInteger)i j:(NSUInteger)j value:(double)value;
 
 ///@name Properties
 
@@ -42,13 +42,13 @@ typedef enum cacheStatus { notIncluded, included } cacheStatus;
  An array containing indexes in cache of each example in the dataset
  i.e. index[i] == index in cache of example i
  */
-@property unsigned *index;
+@property NSUInteger *index;
 
 /**
  An array containing all indexes in dataset for each cache element
  i.e. inverseIndex[n] == index in dataset of cache element n
  */
-@property unsigned *inverseIndex;
+@property NSUInteger *inverseIndex;
 
 /**
  The cache values, MxM

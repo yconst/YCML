@@ -28,26 +28,38 @@
 - (double)outputForModel:(YCSVR *)model
                    input:(Matrix *)input
                  lambdas:(Matrix *)lambdas
+         previousOutputs:(Matrix *)previousOutputs
+            lastModified:(Matrix *)lastModified
             exampleIndex:(int)index
-                    bias:(double)bias;
+                    bias:(double)bias
+             tickleCache:(BOOL)tickle;
 
 - (double)errorForModel:(YCSVR *)model
                   input:(Matrix *)input
-                 output:(Matrix *)output
+                 target:(Matrix *)output
                 lambdas:(Matrix *)lambdas
+        previousOutputs:(Matrix *)previousOutputs
+           lastModified:(Matrix *)lastModified
            exampleIndex:(int)index
-                   bias:(double)bias;
+                   bias:(double)bias
+            tickleCache:(BOOL)tickle;
 
 - (BOOL)step:(YCSVR *)model
        input:(Matrix *)input
       output:(Matrix *)output
      lambdas:(Matrix *)lambdas
+previousOutputs:(Matrix *)previousOutputs
+lastModified:(Matrix *)lastModified
           i1:(int)iu
           i2:(int)iv
         bias:(double *)bias
      epsilon:(double)epsilon
-           C:(double)C;
+           C:(double)C
+ tickleCache:(BOOL)tickle;
 
-@property (readonly) YCSMOCache *cache;
+- (double)kernelValueForA:(NSUInteger)a B:(NSUInteger)b input:(Matrix *)input
+                    model:(YCSVR *)model tickle:(BOOL)tickle replace:(BOOL)replace;
+
+@property YCSMOCache *cache;
 
 @end
