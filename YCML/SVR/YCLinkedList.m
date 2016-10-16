@@ -26,7 +26,7 @@
 
 #import "YCLinkedList.h"
 
-LNode * LNodeMake(void *obj, LNode *headSide, LNode *tailSide);    // convenience method for creating a LNode
+LNode * LNodeMake(NSUInteger index, LNode *headSide, LNode *tailSide);    // convenience method for creating a LNode
 
 @implementation YCLinkedList
 
@@ -161,12 +161,12 @@ LNode * LNodeMake(void *obj, LNode *headSide, LNode *tailSide);    // convenienc
 
 @end
 
-LNode * LNodeMake(void *obj, LNode *headSide, LNode *tailSide)
+LNode * LNodeMake(NSUInteger index, LNode *headSide, LNode *tailSide)
 {
     LNode *n = malloc(sizeof(LNode));
     n->tailSide = tailSide;
     n->headSide = headSide;
-    n->obj = obj;
+    n->index = index;
     return n;
 };
 

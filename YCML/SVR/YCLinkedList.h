@@ -28,7 +28,7 @@ typedef struct LNode LNode;
 
 struct LNode
 {
-    void *obj;
+    NSUInteger index;
     LNode *headSide;
     LNode *tailSide;
 };
@@ -42,7 +42,7 @@ struct LNode
 {
     LNode *head;
     LNode *tail;
-    unsigned int size;
+    NSUInteger size;
 }
 
 - (void)pushTail:(LNode *)n;           // adds a node object to the end of the list
