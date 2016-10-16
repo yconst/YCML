@@ -12,6 +12,8 @@ Above all, YCML attempts to bring high-quality published algorithms to Swift/Obj
 
 YCML contains currently more than 30 high-level unit tests, that cover every one of the implemented algorithms, not only in terms of functioning but also in terms of *performance*, i.e. each algorithm is tested to meet certain performance standards.
 
+Finally, YCML tries to maintain a scientific attitude throughout, and keep the AI "prose" to the minimum.
+
 ###At a glance
 
 - Seven Machine Learning Algorithm Implementations for Supervised Learning
