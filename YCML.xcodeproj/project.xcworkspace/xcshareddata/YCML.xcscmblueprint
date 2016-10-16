@@ -10,12 +10,12 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "257FD9D4-C475-4671-BC19-F6A9E5BFD9F5",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "89AB8B7AC69D45E8D6D9FF946DB3C994C65BB513" : "CHCSVParser",
-    "BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0" : "YCML",
+    "89AB8B7AC69D45E8D6D9FF946DB3C994C65BB513" : "CHCSVParser\/",
+    "BFDA3D4B500CCE27CB2E46E6101343F1B3B707F0" : "YCML\/",
     "AAEC269FD8AFFC2CC1EC21B94E683FF215C7A956" : "YCMLyconst\/YCMatrix"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "YCML",
-  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "YCML.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
