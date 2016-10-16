@@ -166,31 +166,31 @@
 
 - (double)valueAtRow:(int)row column:(int)column
 {
-	[self checkBoundsForRow:row column:column];
+	NSAssert(row < rows && column < columns, @"Index out of bounds");
 	return matrix[row*columns + column];
 }
 
 - (double)i:(int)i j:(int)j
 {
-	[self checkBoundsForRow:i column:j];
+	NSAssert(i < rows && j < columns, @"Index out of bounds");
 	return matrix[i*columns + j];
 }
 
 - (void)setValue:(double)value row:(int)row column:(int)column
 {
-	[self checkBoundsForRow:row column:column];
+	NSAssert(row < rows && column < columns, @"Index out of bounds");
 	matrix[row*columns + column] = value;
 }
 
 - (void)i:(int)i j:(int)j set:(double)value
 {
-	[self checkBoundsForRow:i column:j];
+	NSAssert(i < rows && j < columns, @"Index out of bounds");
 	matrix[i*columns + j] = value;
 }
 
 - (void)i:(int)i j:(int)j increment:(double)value
 {
-    [self checkBoundsForRow:i column:j];
+    NSAssert(i < rows && j < columns, @"Index out of bounds");
     matrix[i*columns + j] += value;
 }
 
@@ -200,26 +200,6 @@
     {
         matrix[i] += value;
     }
-}
-
-- (void)checkBoundsForRow:(int)row column:(int)column
-{
-	if(column >= columns)
-		@throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
-		        reason:@"Column index input is out of bounds."
-		        userInfo:nil];
-	if(row >= rows)
-		@throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
-		        reason:@"Rows index input is out of bounds."
-		        userInfo:nil];
-}
-
-- (void)checkSquare
-{
-    if(columns != rows)
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix is not square."
-                                     userInfo:nil];
 }
 
 - (Matrix *)matrixByAdding:(Matrix *)addend
@@ -436,7 +416,7 @@
 
 - (double)trace
 {
-	[self checkSquare];
+    NSAssert(columns == rows, @"Matrix not square");
 	double trace = 0;
 	for (int i=0; i<rows; i++)
 	{

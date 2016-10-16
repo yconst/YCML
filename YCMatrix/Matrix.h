@@ -340,7 +340,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (Matrix *)matrixBySquaring;
 
 /**
- Transposes the receiver.
+ Returns the transpose of the receiver.
  
  @return The result of the transposition.
  */
@@ -444,23 +444,6 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @return Boolean showing whether the matrix objects are equal or not.
  */
 - (BOOL)isEqualToMatrix:(Matrix *)aMatrix tolerance:(double)tolerance;
-
-
-/// @name Checks
-
-/**
- Checks if supplied indices are within bounds. Throws a YCMatrixException if not.
- 
- @param row    The row index to check.
- @param column The column index to check.
- */
-- (void)checkBoundsForRow:(int)row column:(int)column;
-
-/**
- Checks if the receiver is square. Throws YCMatrixException if not.
- */
-- (void)checkSquare;
-
 
 /**
  Returns the data array of the receiver.

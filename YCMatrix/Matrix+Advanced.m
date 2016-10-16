@@ -285,7 +285,7 @@ static void sobol_destroy(soboldata *sd);
 
 - (Matrix *)solve:(Matrix *)B
 {
-    [self checkSquare];
+    NSAssert(columns == rows, @"Matrix not square");
     Matrix *bTranspose = B;
     if (B->columns > 1)
     {
@@ -349,7 +349,7 @@ static void sobol_destroy(soboldata *sd);
 
 - (Matrix *)eigenvalues
 {
-    [self checkSquare];
+    NSAssert(columns == rows, @"Matrix not square");
     double *evArray = malloc(self->rows * sizeof(double));
     
     MEVV(self->matrix, self->rows, self->columns, evArray, nil, nil, nil);
@@ -359,7 +359,7 @@ static void sobol_destroy(soboldata *sd);
 
 - (NSDictionary *)eigenvaluesAndEigenvectors
 {
-    [self checkSquare];
+    NSAssert(columns == rows, @"Matrix not square");
     int m = self->rows;
     int n = self->columns;
     double *evArray = malloc(m * sizeof(double));
@@ -382,7 +382,7 @@ static void sobol_destroy(soboldata *sd);
     double det = 1.0;
     __CLPK_integer neg = 0;
     
-    [self checkSquare];
+    NSAssert(columns == rows, @"Matrix not square");
     
     __CLPK_integer m = self->rows;
     __CLPK_integer length = m*m;
