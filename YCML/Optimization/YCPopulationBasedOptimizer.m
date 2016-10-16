@@ -127,6 +127,7 @@
             individual.evaluated = YES;
         }];
     }
+    // Todo: handle the case where the problem supports concurrent evaluation
     else
     {
         Matrix *result = [Matrix matrixOfRows:(objectiveCount+constraintCount) columns:1];

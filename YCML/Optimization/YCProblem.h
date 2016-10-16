@@ -23,6 +23,18 @@
 @import Foundation;
 @class Matrix;
 
+/*
+ With respect to concurrency, there are three ways in which a
+ problem function can be evaluated:
+ 
+ 1. The function needs to be evaluated sequentially
+ 2. The function can be evaluated concurrently, but it's implementation is sequential
+ 3. The function itself provides an (optimized) parallel implementation
+ 
+ The latter case is the most favorable, as the problem may provide an optimized
+ parallel implementation that supersedes the performance of mere concurrent evaluation.
+ 
+ */
 typedef NS_ENUM(int, YCEvaluationMode) {
     YCRequiresSequentialEvaluation = 0,
     YCSupportsConcurrentEvaluation = 1,
