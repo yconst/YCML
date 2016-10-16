@@ -294,22 +294,138 @@
         [cache setI:i j:j value:value];
     }
     
-    for (int c=0; c<10; c++)
+    int count = 18;
+    Matrix *locations = [Matrix uniformRandomRows:2 columns:count domain:YCMakeDomain(0, count)];
+    
+    for (int c=0; c<count; c++)
     {
-        int i = 99-c*5;
-        int j = c*6;
+        int i = (int)[locations i:0 j:c];
+        int j = (int)[locations i:1 j:c];
         
-        [cache setI:i j:j value:c+1];
+        [cache setI:i j:j value:i*j];
     }
     
-    for (int c=0; c<10; c++)
+    for (int c=0; c<count; c++)
     {
-        int i = 99-c*5;
-        int j = c*6;
+        int i = (int)[locations i:0 j:c];
+        int j = (int)[locations i:1 j:c];
         
         if ([cache queryI:i j:j] == included)
         {
-            XCTAssertEqual([cache getI:i j:j tickle:YES], c+1, @"Retrieved value not equal to reference");
+            XCTAssertEqual([cache getI:i j:j tickle:YES], i*j,
+                           @"Retrieved value not equal to reference");
+            
+        }
+    }
+    
+    locations = [Matrix uniformRandomRows:2 columns:count domain:YCMakeDomain(0, count)];
+    
+    for (int c=0; c<count; c++)
+    {
+        int i = (int)[locations i:0 j:c];
+        int j = (int)[locations i:1 j:c];
+        
+        [cache setI:i j:j value:i*j];
+    }
+    
+    for (int c=0; c<count; c++)
+    {
+        int i = (int)[locations i:0 j:c];
+        int j = (int)[locations i:1 j:c];
+        
+        if ([cache queryI:i j:j] == included)
+        {
+            XCTAssertEqual([cache getI:i j:j tickle:YES], i*j,
+                           @"Retrieved value not equal to reference");
+            
+        }
+    }
+}
+
+- (void)testSMOCacheQuery
+{
+    YCSMOCache *cache = [[YCSMOCache alloc] initWithDatasetSize:100 cacheSize:10];
+    [cache setI:2 j:4 value:1];
+    [cache setI:3 j:5 value:1];
+    
+    // The following are included
+    XCTAssertTrue([cache queryI:2 j:4]);
+    XCTAssertTrue([cache queryI:3 j:5]);
+    XCTAssertTrue([cache queryI:4 j:2]);
+    XCTAssertTrue([cache queryI:5 j:3]);
+    
+    // The following are not included
+    XCTAssertFalse([cache queryI:2 j:5]);
+    XCTAssertFalse([cache queryI:5 j:2]);
+    XCTAssertFalse([cache queryI:3 j:4]);
+    XCTAssertFalse([cache queryI:4 j:3]);
+    XCTAssertFalse([cache queryI:2 j:2]);
+    XCTAssertFalse([cache queryI:3 j:3]);
+    XCTAssertFalse([cache queryI:4 j:4]);
+    XCTAssertFalse([cache queryI:5 j:5]);
+}
+
+- (void)testKernelCaching
+{
+    int inputSize = 100;
+    int sequenceSize = 10000;
+    int repetitions = 500;
+    int cacheSize = 30;
+    Matrix *input = [Matrix uniformRandomRows:25 columns:inputSize domain:YCMakeDomain(0, 1)];
+    Matrix *sequence = [Matrix uniformRandomRows:3 columns:sequenceSize domain:YCMakeDomain(0, inputSize)];
+    
+    YCSVR *model = [YCSVR model];
+    
+    // Calculate the kernel values using the model's kernel
+    for (int i=0; i<sequenceSize; i++)
+    {
+        unsigned a = (unsigned)[sequence i:0 j:i];
+        unsigned b = (unsigned)[sequence i:1 j:i];
+        double value = [[model.kernel kernelValueForA:[input column:a] b:[input column:b]] i:0 j:0];
+        [sequence i:2 j:i set:value];
+    }
+    
+    // Calculate the kernel values using the trainer mechanism
+    YCSMORegressionTrainer *trainer = [YCSMORegressionTrainer trainer];
+    trainer.cache = [[YCSMOCache alloc] initWithDatasetSize:inputSize cacheSize:cacheSize];
+    
+    for (int i=0; i<sequenceSize; i++)
+    {
+        unsigned a = (unsigned)[sequence i:0 j:i];
+        unsigned b = (unsigned)[sequence i:1 j:i];
+        double value = [sequence i:2 j:i];
+        double test = [trainer kernelValueForA:a B:b input:input
+                                         model:model tickle:NO replace:NO];
+        XCTAssertEqual(value, test, @"Values not equal");
+    }
+    
+    // Repeat store-retrieve of small batches of kernel calculations
+    sequenceSize = 15;
+    sequence = [Matrix uniformRandomRows:3 columns:sequenceSize domain:YCMakeDomain(0, inputSize)];
+    
+    for (int r=0; r<repetitions; r++)
+    {
+        for (int i=0; i<sequenceSize; i++)
+        {
+            unsigned a = (unsigned)[sequence i:0 j:i];
+            unsigned b = (unsigned)[sequence i:1 j:i];
+            double value = [[model.kernel kernelValueForA:[input column:a] b:[input column:b]] i:0 j:0];
+            [sequence i:2 j:i set:value];
+        }
+        
+        for (int k=0; k<20; k++)
+        {
+            for (int i=0; i<sequenceSize; i++)
+            {
+                unsigned a = (unsigned)[sequence i:0 j:i];
+                unsigned b = (unsigned)[sequence i:1 j:i];
+                double value = [sequence i:2 j:i];
+                double test = [trainer kernelValueForA:a B:b input:input
+                                                 model:model tickle:YES replace:YES];
+                double cacheResult = [trainer.cache getI:a j:b tickle:NO];
+                XCTAssertEqual(value, test, @"Values not equal");
+                XCTAssertEqual(cacheResult, test, @"Values not equal");
+            }
         }
     }
 }
@@ -364,15 +480,17 @@
 
 - (void)testSVMAndSMOOutput
 {
-    YCSVR *model = [YCSVR model];
-    model.kernel = [[YCLinearKernel alloc] init];
-    Matrix *input = [Matrix matrixFromNSArray:@[@1, @0, @1,
-                                                @1, @0, @1,
-                                                @1, @1, @0] rows:3 columns:3];
-    Matrix *l = [Matrix matrixFromNSArray:@[@0.1, @-0.3, @1.0] rows:1 columns:3];
+    YCSVR *model         = [YCSVR model];
+    model.kernel         = [[YCLinearKernel alloc] init];
+    Matrix *input        = [Matrix matrixFromNSArray:@[@1, @0, @1,
+                                                       @1, @0, @1,
+                                                       @1, @1, @0] rows:3 columns:3];
+    Matrix *l            = [Matrix matrixFromNSArray:@[@0.1, @-0.3, @1.0] rows:1 columns:3];
+    Matrix *lastModified = [Matrix matrixOfRows:1 columns:4 value:-1];
     
     YCSMORegressionTrainer *trainer = [YCSMORegressionTrainer trainer];
-    double y = [trainer outputForModel:model input:input lambdas:l exampleIndex:1 bias:0.5];
+    double y = [trainer outputForModel:model input:input lambdas:l previousOutputs:nil
+                          lastModified:lastModified exampleIndex:1 bias:0.5 tickleCache:NO];
     XCTAssertEqualWithAccuracy(0.3, y, 1E-8);
     
     model.sv = input;
@@ -385,16 +503,15 @@
 
 - (void)testSMOStep
 {
-    YCSVR *model    = [YCSVR model];
-    model.kernel    = [[YCLinearKernel alloc] init];
-    Matrix *input   = [Matrix matrixFromNSArray:@[@1, @0, @1, @0,
-                                                  @1, @1, @0, @0] rows:2 columns:4];
-    
-    Matrix *output  = [Matrix matrixFromNSArray:@[@1, @0, @0, @-1] rows:1 columns:4];
-    
-    Matrix *lambdas = [Matrix matrixFromNSArray:@[@0, @0, @0, @0] rows:1 columns:4];
+    YCSVR *model         = [YCSVR model];
+    model.kernel         = [[YCLinearKernel alloc] init];
+    Matrix *input        = [Matrix matrixFromNSArray:@[@1, @0, @1, @0,
+                                                       @1, @1, @0, @0] rows:2 columns:4];
+    Matrix *output       = [Matrix matrixFromNSArray:@[@1, @0, @0, @-1] rows:1 columns:4];
+    Matrix *lambdas      = [Matrix matrixFromNSArray:@[@0, @0, @0, @0] rows:1 columns:4];
     
     YCSMORegressionTrainer *trainer = [YCSMORegressionTrainer trainer];
+    trainer.settings[@"Disable Cache"] = @YES;
     
     double bias = 0.0;
     
@@ -403,8 +520,8 @@
         int i1 = arc4random_uniform(4);
         int i2 = arc4random_uniform(4);
         
-        [trainer step:model input:input output:output lambdas:lambdas 
-                   i1:i1 i2:i2 bias:&bias epsilon:0.1 C:1.0];
+        [trainer step:model input:input output:output lambdas:lambdas previousOutputs:nil
+         lastModified:nil i1:i1 i2:i2 bias:&bias epsilon:0.1 C:1.0 tickleCache:NO];
     }
     
     NSLog(@"Lambdas:%@, bias:%f", lambdas, bias);
@@ -468,17 +585,18 @@
 - (void)testLinearSVRSMOHousing
 {
     YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
+    trainer.settings[@"Disable Cache"] = @YES;
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
 }
 
-//- (void)testRBFSVRSMOHousing
-//{
-//    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
-//    trainer.settings[@"Kernel"]             = @"RBF";
-//    trainer.settings[@"C"]                  = @0.5;
-//    trainer.settings[@"Beta"]               = @1.4;
-//    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
-//}
+- (void)testRBFSVRSMOHousing
+{
+    YCSMORegressionTrainer *trainer         = [YCSMORegressionTrainer trainer];
+    trainer.settings[@"Kernel"]             = @"RBF";
+    trainer.settings[@"C"]                  = @0.5;
+    trainer.settings[@"Beta"]               = @1.4;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:6.0];
+}
 
 - (void)testRBFNetOLSHousing
 {
