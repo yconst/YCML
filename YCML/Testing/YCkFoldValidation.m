@@ -57,11 +57,7 @@
     int folds = [self.settings[@"Folds"] intValue];
     
     int foldLength = (int)([input dataCount] / folds);
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleTrainingStep:)
-                                                 name:@"TrainingStep"
-                                               object:trainer];
+        
     for (int i=0; i<folds; i++)
     {
         @autoreleasepool
@@ -100,8 +96,6 @@
         }
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     self.results = [allStats copy];
     self.models = models;
     
@@ -115,16 +109,17 @@
     return trainer.shouldStop ? nil : cumulativeStats;
 }
 
-#pragma mark Notifications
+#pragma mark YCTrainerDelegate Implementation
 
-- (void)handleTrainingStep:(NSNotification *)aNotification
+- (void)stepComplete:(NSDictionary *)info
 {
-    NSMutableDictionary *userInfo = [aNotification.userInfo mutableCopy];
-    userInfo[@"Total Folds"] = self.settings[@"Folds"];
-    userInfo[@"Current Fold"] = @(_currentFold);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CVStep"
-                                                        object:self
-                                                      userInfo:userInfo];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        NSMutableDictionary *userInfo = [info mutableCopy];
+        userInfo[@"Total Folds"] = self.settings[@"Folds"];
+        userInfo[@"Current Fold"] = @(_currentFold);
+        [self.delegate stepComplete:userInfo];
+    }
 }
 
 @end

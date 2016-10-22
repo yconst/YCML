@@ -179,14 +179,16 @@
             // Here add the real regressor and associated width!
             [selectedRegressors addObject:[model.centers column:chosenRegressorIndex]];
             
-            // Notify
-            NSDictionary *netStats = @{@"Status"        : @"Forward Selection",
+            // Notify delegate
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+            {
+                NSDictionary *info = @{@"Status"        : @"Forward Selection",
                                        @"Error"         : @(totalError),
                                        @"Step"          : @(k),
                                        @"Width"         : @(basisFunctionWidth)};
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                                object:self
-                                                              userInfo:netStats];
+                [self.delegate stepComplete:info];
+            }
             
             // Break if maximum number of regressors reached
             if (maxRegressors > 0 && k > maxRegressors) break;

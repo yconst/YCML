@@ -28,6 +28,10 @@
 #import "YCOptimizer.h"
 #import "YCGradientDescent.h"
 
+@interface YCCDTrainer () <YCOptimizerDelegate>
+
+@end
+
 @implementation YCCDTrainer
 
 + (Class)optimizerClass
@@ -98,16 +102,11 @@
     p.lambda                          = [self.settings[@"Lambda"] doubleValue];
     p.sampleCount                     = [self.settings[@"Samples"] intValue];
     YCOptimizer *optimizer      = [[[[self class] optimizerClass] alloc] initWithProblem:p];
+    optimizer.delegate                = self;
     [optimizer.settings addEntriesFromDictionary:self.settings];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(respondToIterationNotification:) name:@"iterationComplete"
-                                               object:nil];
     
     // Step IV. Optimizing
     [optimizer run];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // Step V. Copying statistics, weight and bias matrices.
     model.statistics[@"Iterations"] = optimizer.state[@"currentIteration"];
@@ -126,15 +125,15 @@
     model.hiddenBiases = [Matrix matrixOfRows:hiddenSize columns:1];
 }
 
-- (void)respondToIterationNotification:(NSNotification *)notification
+- (void)stepComplete:(NSDictionary *)info
 {
-    NSDictionary *state = notification.userInfo;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                        object:self
-                                                      userInfo:@{@"Status" : @"Optimizing Weights",
-                                                                 @"Hidden Units" : self.settings[@"Hidden Layer Size"],
-                                                                 @"Iteration" : state[@"currentIteration"]}];
+    NSDictionary *uInfo = @{@"Status" : @"Optimizing Weights",
+                            @"Hidden Units" : self.settings[@"Hidden Layer Size"],
+                            @"Iteration" : info[@"currentIteration"]};
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        [self.delegate stepComplete:uInfo];
+    }
 }
-
 
 @end

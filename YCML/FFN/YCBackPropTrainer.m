@@ -33,6 +33,10 @@
 // S: Number of samples
 // O: Size of output
 
+@interface YCBackPropTrainer () <YCOptimizerDelegate>
+
+@end
+
 @implementation YCBackPropTrainer
 {
     YCOptimizer *_currentOptimizer;
@@ -102,27 +106,21 @@
     }
     
     // Step III. Defining the Backprop problem and GD properties
-    YCBackPropProblem *p      = [[[[self class] problemClass] alloc] initWithInputMatrix:scaledInput
-                                                                            outputMatrix:scaledOutput
-                                                                                   model:model];
-    p.sampleCount             = [self.settings[@"Samples"] intValue];
-    p.batchSize               = [self.settings[@"Batch Size"] intValue];
-    _currentOptimizer         = [[[[self class] optimizerClass] alloc] initWithProblem:p];
+    YCBackPropProblem *p       = [[[[self class] problemClass] alloc] initWithInputMatrix:scaledInput
+                                                                             outputMatrix:scaledOutput
+                                                                                    model:model];
+    p.sampleCount              = [self.settings[@"Samples"] intValue];
+    p.batchSize                = [self.settings[@"Batch Size"] intValue];
+    _currentOptimizer          = [[[[self class] optimizerClass] alloc] initWithProblem:p];
+    _currentOptimizer.delegate = self;
     [_currentOptimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)
     {
         [_currentOptimizer.settings removeObjectForKey:@"Target"];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(respondToIterationNotification:)
-                                                 name:@"iterationComplete"
-                                               object:_currentOptimizer];
-    
     // Step IV. Optimizing
     [_currentOptimizer run];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // Step V. Copying statistics, weight and bias matrices.
     model.statistics[@"Iterations"] = _currentOptimizer.state[@"currentIteration"];
@@ -182,15 +180,15 @@
     model.layers = layers;
 }
 
-- (void)respondToIterationNotification:(NSNotification *)notification
+- (void)stepComplete:(NSDictionary *)info
 {
-    NSDictionary *state = notification.userInfo;
     NSDictionary *uInfo = @{@"Status" : @"Optimizing Weights",
                             @"Hidden Units" : self.settings[@"Hidden Layer Size"],
-                            @"Iteration" : state[@"currentIteration"]};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                        object:self
-                                                      userInfo:uInfo];
+                            @"Iteration" : info[@"currentIteration"]};
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        [self.delegate stepComplete:uInfo];
+    }
 }
 
 - (void)stop

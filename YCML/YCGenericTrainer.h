@@ -22,6 +22,12 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol YCTrainerDelegate <NSObject>
+
+- (void)stepComplete:(NSDictionary *)info;
+
+@end
+
 @interface YCGenericTrainer : NSObject
 
 /**
@@ -53,5 +59,7 @@
  Holds training algorithm settings.
  */
 @property NSMutableDictionary *settings;
+
+@property NSObject<YCTrainerDelegate> *delegate;
 
 @end

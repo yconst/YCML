@@ -58,17 +58,18 @@
     Matrix *scaledOutput = [output matrixByRowWiseMapUsing:outputScaling];
     
     // Step II. Determining Centers and Widths
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                        object:self
-                                                      userInfo:@{@"Status" : @"Initializing Regressor Selection"}];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        [self.delegate stepComplete:@{@"Status" : @"Initializing Regressor Selection"}];
+    }
     
     [self centersAndWidthsFor:model input:scaledInput output:scaledOutput];
     
     // Step III. Determining Output (Linear) Weights -> DxO
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                        object:self
-                                                      userInfo:@{@"Status" : @"Calculating Linear Weights",
-                                                                 @"Regressor Count" : @(model.weights.columns)}];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        [self.delegate stepComplete:@{@"Status" : @"Calculating Output Weights"}];
+    }
     
     [self weightsFor:model input:scaledInput output:scaledOutput];
 }
@@ -177,15 +178,18 @@
             // Here add the real regressor! From the inp matrix!
             [selectedRegressors addObject:[inp column:maxERRIndex]];
             
-            // Update error and send notification
+            // Update error
             totalError -= maxERR;
-            NSDictionary *netStats = @{@"Status"        : @"Forward Selection",
+            
+            // Notify delegate
+            if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+            {
+                NSDictionary *info = @{@"Status"        : @"Forward Selection",
                                        @"Error"         : @(totalError),
                                        @"Step"          : @(k),
                                        @"Width"         : @(basisFunctionWidth)};
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"TrainingStep"
-                                                                object:self
-                                                              userInfo:netStats];
+                [self.delegate stepComplete:info];
+            }
             
             // Break if tolerance is reached or stopping command is issued
             if (totalError <= tolerance || self.shouldStop) break;

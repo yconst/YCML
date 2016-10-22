@@ -7,9 +7,16 @@
 //
 
 @import Foundation;
+#import "YCGenericTrainer.h"
 @class YCSupervisedTrainer, YCDataframe;
 
-@interface YCValidation : NSObject
+@protocol YCValidationDelegate <NSObject>
+
+- (void)stepComplete:(NSDictionary *)info;
+
+@end
+
+@interface YCValidation : NSObject <YCTrainerDelegate>
 
 + (instancetype)validationWithSettings:(NSDictionary *)settings;
 
@@ -37,5 +44,7 @@ YCDataframe *);
 @property NSArray *models;
 
 @property YCSupervisedTrainer *activeTrainer;
+
+@property NSObject<YCValidationDelegate> *delegate;
 
 @end

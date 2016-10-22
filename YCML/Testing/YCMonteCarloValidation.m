@@ -64,10 +64,6 @@
     
     int testSize = (int)([input dataCount] * [self.settings[@"TestFactor"] doubleValue]);
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleTrainingStep:)
-                                                 name:@"TrainingStep"
-                                               object:trainer];
     for (int i=0; i<iterations; i++)
     {
         @autoreleasepool
@@ -109,8 +105,6 @@
         }
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     self.results = [allStats copy];
     self.models = models;
     
@@ -124,16 +118,17 @@
     return trainer.shouldStop ? nil : cumulativeStats;
 }
 
-#pragma mark Notifications
+#pragma mark YCTrainerDelegate Implementation
 
-- (void)handleTrainingStep:(NSNotification *)aNotification
+- (void)stepComplete:(NSDictionary *)info
 {
-    NSMutableDictionary *userInfo = [aNotification.userInfo mutableCopy];
-    userInfo[@"Total Iterations"] = self.settings[@"Iterations"];
-    userInfo[@"Current Iteration"] = @(_currentIteration);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CVStep"
-                                                        object:self
-                                                      userInfo:userInfo];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)])
+    {
+        NSMutableDictionary *userInfo = [info mutableCopy];
+        userInfo[@"Total Iterations"] = self.settings[@"Iterations"];
+        userInfo[@"Current Iteration"] = @(_currentIteration);
+        [self.delegate stepComplete:userInfo];
+    }
 }
 
 @end

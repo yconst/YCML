@@ -24,6 +24,12 @@
 @import Foundation;
 #import "YCProblem.h"
 
+@protocol YCOptimizerDelegate <NSObject>
+
+- (void)stepComplete:(NSDictionary *)info;
+
+@end
+
 @interface YCOptimizer : NSObject <NSCopying, NSCoding>
 
 - (instancetype)initWithProblem:(NSObject<YCProblem> *)aProblem;
@@ -62,5 +68,7 @@
 @property (readonly) NSArray *bestObjectives;
 
 @property (readonly) NSArray *bestConstraints;
+
+@property NSObject<YCOptimizerDelegate> *delegate;
 
 @end

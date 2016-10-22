@@ -56,6 +56,7 @@
     int notificationInterval = [self.settings[@"Notification Interval"] intValue];
     int currentIteration     = [self.state[@"currentIteration"] intValue] + 1;
     int endIteration         = [self.settings[@"Iterations"] intValue] + currentIteration;
+    BOOL hasDelegate = self.delegate && [self.delegate respondsToSelector:@selector(stepComplete:)];
     
     for (; currentIteration<endIteration; currentIteration++)
     {
@@ -63,9 +64,10 @@
         {
             BOOL shouldContinue = [self iterate:currentIteration];
             self.state[@"currentIteration"] = @(currentIteration);
-            if (notificationInterval > 0 && currentIteration % notificationInterval == 0)
+            if (hasDelegate && notificationInterval > 0 &&
+                currentIteration % notificationInterval == 0)
             {
-                [self postIterationNotification];
+                [self.delegate stepComplete:self.state];
             }
             if (!shouldContinue || self.shouldStop) break;
         }
@@ -89,13 +91,6 @@
 - (void)stop
 {
     self.shouldStop = YES;
-}
-
-- (void)postIterationNotification
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"iterationComplete"
-                                                        object:self
-                                                      userInfo:self.state];
 }
 
 - (NSArray *)bestParameters

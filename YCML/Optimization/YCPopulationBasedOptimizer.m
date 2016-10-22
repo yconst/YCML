@@ -38,6 +38,7 @@
     if (self)
     {
         self.settings[@"Population Size"] = @100;
+        self.settings[@"Notification Interval"] = @1;
     }
     return self;
 }
