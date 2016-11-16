@@ -167,7 +167,7 @@
             // Check if a regressor has been selected
             if (maxERRIndex < 0)
             {
-                NSLog(@"Unable to select %ith regressor.", k);
+                NSLog(@"Unable to select %ith regressor", k);
                 break;
             }
             

@@ -86,7 +86,7 @@ double RSquared(id trueData, id predictedData)
 Matrix *conditionalConvertToMatrix(id object)
 {
     if ([object isKindOfClass:[Matrix class]]) return object;
-    NSCAssert([object isKindOfClass:[YCDataframe class]], @"Wrong parameter type.");
+    NSCAssert([object isKindOfClass:[YCDataframe class]], @"Wrong parameter type");
     YCDataframe *df = object;
     NSArray *ca = [df conversionArray];
     return [df getMatrixUsingConversionArray:ca];
