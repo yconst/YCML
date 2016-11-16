@@ -68,6 +68,19 @@
     _mean = mean;
     _variance = c>0 ? M2/n : 0;
     _sd = sqrt(_variance);
+    
+    if (_min > _max)
+    {
+        // Array is empty or something else has gone wrong (e.g. no numerical values)
+        // This is kind of a quick workaround.
+        // TODO: Revise/refactor with more robust solution.
+        _min = 0;
+        _max = 0;
+        _mean = 0;
+        _sum = 0;
+        _variance = 0;
+        _sd = 0;
+    }
 }
 
 @end
