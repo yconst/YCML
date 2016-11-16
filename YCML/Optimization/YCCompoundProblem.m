@@ -147,8 +147,10 @@
         Matrix *pModes = p.modes;
         for (int i=0, j=p.objectiveCount; i<j; i++)
         {
-            [modes i:count++ j:0 set:[pModes i:i j:0]];
+            [modes i:count j:0 set:[pModes i:i j:0]];
+            count++;
         }
+        
     }
     return modes;
 }
