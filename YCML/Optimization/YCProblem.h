@@ -72,4 +72,6 @@ typedef NS_ENUM(int, YCObjectiveTarget) {
 
 @property (readonly) NSArray *constraintLabels;
 
+@property (readonly) NSDictionary *metaProperties;
+
 @end
