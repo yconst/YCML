@@ -102,8 +102,10 @@
     _transposedInput = [scaledInput matrixByTransposing];
     if ([self.settings[@"Disable Cache"] boolValue])
     {
+        NSUInteger cacheSize = MIN([self.settings[@"Cache Size"] unsignedIntValue],
+                                   scaledInput.columns);
         _cache = [[YCSMOCache alloc] initWithDatasetSize:scaledInput.columns
-                                               cacheSize:[self.settings[@"Cache Size"] unsignedIntValue]];
+                                               cacheSize:cacheSize];
     }
     
     Matrix *lambdas = [Matrix matrixOfRows:1 columns:N];
