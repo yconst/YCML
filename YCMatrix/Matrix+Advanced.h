@@ -200,21 +200,25 @@
 - (Matrix *)matrixByCholesky;
 
 /**
- Returns a row matrix containing the Eigenvalues of the receiver.
+ Returns a row matrix containing the real Eigenvalues of the receiver.
  
  @return The resulting row matrix.
  */
-- (Matrix *)eigenvalues;
+- (Matrix *)realEigenvalues;
 
 /**
  Returns an NSDictionary with the results of performing an Eigenvalue decomposition on the receiver.
  
  @return    A dictionary with the following key/value assignments:
- "Eigenvalues" : nx1 vector containing the matrix eigenvalues.
+ "Real Eigenvalues" : nx1 vector containing the matrix real eigenvalues.
+ "Imaginary Eigenvalues" : nx1 vector containing the matrix imaginary eigenvalues.
  "Left Eigenvectors" : nxn matrix containing the matrix left eigenvectors, one per row.
  "Right Eigenvectors" : nxn matrix containing the matrix right eigenvectors, one per row.
+ 
+ @warning The eigenvectors appear per ROW in the result. If you wish to obtain per column
+ results, yuo need to transpose the resulting eigenvector matrix.
  */
-- (NSDictionary *)eigenvaluesAndEigenvectors;
+- (NSDictionary *)eigenvectorsAndEigenvalues;
 
 /**
  Returns the determinant of the receiver.

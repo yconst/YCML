@@ -285,6 +285,13 @@
 - (void)multiplyRow:(Matrix *)row;
 
 /**
+ Divides every row of the receiver with row matrix |row|.
+ 
+ @param row The row matrix to multiply
+ */
+- (void)divideRow:(Matrix *)row;
+
+/**
  Adds column matrix |column| to every column of the receiver.
  
  @param column The column matrix to add
@@ -304,6 +311,13 @@
  @param column The column matrix to multiply
  */
 - (void)multiplyColumn:(Matrix *)column;
+
+/**
+ Divides every column of the receiver with column matrix |column|.
+ 
+ @param column The column matrix to multiply
+ */
+- (void)divideColumn:(Matrix *)column;
 
 /**
  Returns a new matrix by appending row matrix |row|.

@@ -18,6 +18,8 @@ Finally, YCML tries to maintain a scientific attitude throughout, and keep the A
 
 - Seven Machine Learning Algorithm Implementations for Supervised Learning
 - Two Multi-Objective Genetic Algorithm Variants
+- One Ranking Algorithm (Rank Centrality)
+- Helper classes & tools for validation and testing
 
 ###Introduction
 

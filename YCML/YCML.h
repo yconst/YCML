@@ -75,6 +75,8 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCSurrogateModel.h"
 #import "YCCompoundProblem.h"
 
+#import "YCRankCentrality.h"
+
 #import "YCDataframe.h"
 #import "YCDataframe+Matrix.h"
 #import "YCDataframe+Transform.h"

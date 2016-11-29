@@ -138,6 +138,9 @@
 		CBC7A4FE1ABB7F1000464DD2 /* YCBackPropProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */; };
 		CBC7A4FF1ABB7F1000464DD2 /* YCBackPropTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBC7A5001ABB7F1000464DD2 /* YCBackPropTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */; };
+		CBD428201DE7059000303A83 /* YCRankCentrality.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD4281E1DE7059000303A83 /* YCRankCentrality.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBD428211DE7059000303A83 /* YCRankCentrality.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD4281F1DE7059000303A83 /* YCRankCentrality.m */; };
+		CBD428231DEADB8B00303A83 /* YCMLRankingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD428221DEADB8B00303A83 /* YCMLRankingTests.m */; };
 		CBD606821B0FC48300DCA6AD /* YCOLSPRESSTrainer.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBD606831B0FC48300DCA6AD /* YCOLSPRESSTrainer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */; };
 		CBE67F561D3E4C01008BBA00 /* YCLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = CBE67F541D3E4C01008BBA00 /* YCLinkedList.h */; };
@@ -178,42 +181,42 @@
 /* Begin PBXFileReference section */
 		CB02F7C01AAF653C00EF1E02 /* YCML Tests (Swift).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "YCML Tests (Swift).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB02F7C31AAF653C00EF1E02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YCML_Tests__Swift_.swift; sourceTree = "<group>"; };
-		CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRBFKernel.h; path = Kernels/YCRBFKernel.h; sourceTree = "<group>"; };
-		CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRBFKernel.m; path = Kernels/YCRBFKernel.m; sourceTree = "<group>"; };
-		CB0B6D3A1C5B6377002A76E2 /* YCSMOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCSMOCache.h; path = SVR/YCSMOCache.h; sourceTree = "<group>"; };
-		CB0B6D3B1C5B6377002A76E2 /* YCSMOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCSMOCache.m; path = SVR/YCSMOCache.m; sourceTree = "<group>"; };
-		CB17B6771C289F6100F36E0F /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = halton_sampler.h; sourceTree = "<group>"; };
+		CB02F7C41AAF653C00EF1E02 /* YCML_Tests__Swift_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = YCML_Tests__Swift_.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		CB0B6D341C5923F4002A76E2 /* YCRBFKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCRBFKernel.h; path = Kernels/YCRBFKernel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB0B6D351C5923F4002A76E2 /* YCRBFKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCRBFKernel.m; path = Kernels/YCRBFKernel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB0B6D3A1C5B6377002A76E2 /* YCSMOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCSMOCache.h; path = SVR/YCSMOCache.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB0B6D3B1C5B6377002A76E2 /* YCSMOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCSMOCache.m; path = SVR/YCSMOCache.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB17B6771C289F6100F36E0F /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = halton_sampler.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB17B6781C289F6100F36E0F /* HaltonInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaltonInterface.h; sourceTree = "<group>"; };
 		CB17B6791C289F6100F36E0F /* HaltonInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HaltonInterface.mm; sourceTree = "<group>"; };
-		CB17B67A1C289F6100F36E0F /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
-		CB1802C41ABE192600A2927B /* YCRProp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRProp.h; path = Optimization/RProp/YCRProp.h; sourceTree = "<group>"; };
-		CB1802C51ABE192600A2927B /* YCRProp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRProp.m; path = Optimization/RProp/YCRProp.m; sourceTree = "<group>"; };
-		CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRpropTrainer.h; sourceTree = "<group>"; };
-		CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRpropTrainer.m; sourceTree = "<group>"; };
-		CB2790341B495D4F00F3F77E /* YCSurrogateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCSurrogateModel.h; path = "Surrogate Modeling/YCSurrogateModel.h"; sourceTree = "<group>"; };
+		CB17B67A1C289F6100F36E0F /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = soboldata.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB1802C41ABE192600A2927B /* YCRProp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCRProp.h; path = Optimization/RProp/YCRProp.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB1802C51ABE192600A2927B /* YCRProp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCRProp.m; path = Optimization/RProp/YCRProp.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB1802C91ABE19DF00A2927B /* YCRpropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCRpropTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB1802CA1ABE19DF00A2927B /* YCRpropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCRpropTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB2790341B495D4F00F3F77E /* YCSurrogateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCSurrogateModel.h; path = "Surrogate Modeling/YCSurrogateModel.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB2790351B495D4F00F3F77E /* YCSurrogateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCSurrogateModel.m; path = "Surrogate Modeling/YCSurrogateModel.m"; sourceTree = "<group>"; };
-		CB2A4AB51B61248100770421 /* YCCompoundProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCompoundProblem.h; path = Optimization/YCCompoundProblem.h; sourceTree = "<group>"; };
-		CB2A4AB61B61248100770421 /* YCCompoundProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCompoundProblem.m; path = Optimization/YCCompoundProblem.m; sourceTree = "<group>"; };
+		CB2A4AB51B61248100770421 /* YCCompoundProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCCompoundProblem.h; path = Optimization/YCCompoundProblem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB2A4AB61B61248100770421 /* YCCompoundProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCCompoundProblem.m; path = Optimization/YCCompoundProblem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB3174B11BF5F9C90036CF8D /* YCMLDataframeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLDataframeTests.m; sourceTree = "<group>"; };
-		CB3DCF2D1C73B13000A72578 /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = halton_sampler.h; sourceTree = "<group>"; };
+		CB3DCF2D1C73B13000A72578 /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = halton_sampler.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB3DCF2E1C73B13000A72578 /* HaltonInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaltonInterface.h; sourceTree = "<group>"; };
 		CB3DCF2F1C73B13000A72578 /* HaltonInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HaltonInterface.mm; sourceTree = "<group>"; };
-		CB3DCF301C73B13000A72578 /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
+		CB3DCF301C73B13000A72578 /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = soboldata.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB41BE171B3838DC004E2522 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB41BE1A1B3838DC004E2522 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB41BE301B383934004E2522 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		CB41BE311B383934004E2522 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
-		CB41BE321B383934004E2522 /* Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix.m; sourceTree = "<group>"; };
+		CB41BE301B383934004E2522 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Constants.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB41BE311B383934004E2522 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Matrix.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB41BE321B383934004E2522 /* Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Matrix.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB41BE331B383934004E2522 /* Matrix+Advanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Advanced.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB41BE341B383934004E2522 /* Matrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Advanced.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CB41BE351B383934004E2522 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; };
-		CB41BE361B383934004E2522 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; };
-		CB41BE371B383934004E2522 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Map.h"; sourceTree = "<group>"; };
-		CB41BE381B383934004E2522 /* Matrix+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Map.m"; sourceTree = "<group>"; };
-		CB41BE391B383934004E2522 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
-		CB41BE3A1B383934004E2522 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
-		CB41BE3B1B383934004E2522 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMatrix.h; sourceTree = "<group>"; };
+		CB41BE351B383934004E2522 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB41BE361B383934004E2522 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB41BE371B383934004E2522 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Map.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB41BE381B383934004E2522 /* Matrix+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Map.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB41BE391B383934004E2522 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSArray+Matrix.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB41BE3A1B383934004E2522 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSArray+Matrix.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB41BE3B1B383934004E2522 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCMatrix.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CB4F956E1CC558D1008AF847 /* YCMutableArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCMutableArray.h; path = "Data Frame/YCMutableArray.h"; sourceTree = "<group>"; };
 		CB4F956F1CC558D1008AF847 /* YCMutableArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCMutableArray.m; path = "Data Frame/YCMutableArray.m"; sourceTree = "<group>"; };
 		CB504D2A1BD4FE6B00272855 /* YCReLULayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCReLULayer.h; path = Layers/YCReLULayer.h; sourceTree = "<group>"; };
@@ -222,26 +225,26 @@
 		CB504D341BD54DD500272855 /* YCMonteCarloValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCMonteCarloValidation.m; path = Testing/YCMonteCarloValidation.m; sourceTree = "<group>"; };
 		CB504D371BD54DF000272855 /* YCValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCValidation.h; path = Testing/YCValidation.h; sourceTree = "<group>"; };
 		CB504D381BD54DF000272855 /* YCValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCValidation.m; path = Testing/YCValidation.m; sourceTree = "<group>"; };
-		CB52160C1B415B4900A4AF01 /* YCPopulationBasedOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCPopulationBasedOptimizer.h; path = Optimization/YCPopulationBasedOptimizer.h; sourceTree = "<group>"; };
-		CB52160D1B415B4900A4AF01 /* YCPopulationBasedOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCPopulationBasedOptimizer.m; path = Optimization/YCPopulationBasedOptimizer.m; sourceTree = "<group>"; };
-		CB5216101B415B8100A4AF01 /* YCIndividual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCIndividual.h; path = Optimization/YCIndividual.h; sourceTree = "<group>"; };
-		CB5216111B415B8100A4AF01 /* YCIndividual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCIndividual.m; path = Optimization/YCIndividual.m; sourceTree = "<group>"; };
-		CB5216141B4179B600A4AF01 /* YCNSGAII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCNSGAII.h; path = "Optimization/Genetic Algorithms/YCNSGAII.h"; sourceTree = "<group>"; };
-		CB5216151B4179B600A4AF01 /* YCNSGAII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCNSGAII.m; path = "Optimization/Genetic Algorithms/YCNSGAII.m"; sourceTree = "<group>"; };
-		CB5216181B43FEEF00A4AF01 /* NSIndexSet+Sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+Sampling.h"; path = "Data Frame/NSIndexSet+Sampling.h"; sourceTree = "<group>"; };
-		CB5216191B43FEEF00A4AF01 /* NSIndexSet+Sampling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+Sampling.m"; path = "Data Frame/NSIndexSet+Sampling.m"; sourceTree = "<group>"; };
-		CB5D4C281B6A8F6B00B00B84 /* YCCDTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCDTrainer.h; path = RBM/YCCDTrainer.h; sourceTree = "<group>"; };
-		CB5D4C291B6A8F6B00B00B84 /* YCCDTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCDTrainer.m; path = RBM/YCCDTrainer.m; sourceTree = "<group>"; };
-		CB5D4C2C1B6A8F7C00B00B84 /* YCCDProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCCDProblem.h; path = RBM/YCCDProblem.h; sourceTree = "<group>"; };
-		CB5D4C2D1B6A8F7C00B00B84 /* YCCDProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCCDProblem.m; path = RBM/YCCDProblem.m; sourceTree = "<group>"; };
+		CB52160C1B415B4900A4AF01 /* YCPopulationBasedOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCPopulationBasedOptimizer.h; path = Optimization/YCPopulationBasedOptimizer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB52160D1B415B4900A4AF01 /* YCPopulationBasedOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCPopulationBasedOptimizer.m; path = Optimization/YCPopulationBasedOptimizer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB5216101B415B8100A4AF01 /* YCIndividual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCIndividual.h; path = Optimization/YCIndividual.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB5216111B415B8100A4AF01 /* YCIndividual.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCIndividual.m; path = Optimization/YCIndividual.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB5216141B4179B600A4AF01 /* YCNSGAII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCNSGAII.h; path = "Optimization/Genetic Algorithms/YCNSGAII.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB5216151B4179B600A4AF01 /* YCNSGAII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCNSGAII.m; path = "Optimization/Genetic Algorithms/YCNSGAII.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB5216181B43FEEF00A4AF01 /* NSIndexSet+Sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "NSIndexSet+Sampling.h"; path = "Data Frame/NSIndexSet+Sampling.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB5216191B43FEEF00A4AF01 /* NSIndexSet+Sampling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "NSIndexSet+Sampling.m"; path = "Data Frame/NSIndexSet+Sampling.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB5D4C281B6A8F6B00B00B84 /* YCCDTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCCDTrainer.h; path = RBM/YCCDTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB5D4C291B6A8F6B00B00B84 /* YCCDTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCCDTrainer.m; path = RBM/YCCDTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB5D4C2C1B6A8F7C00B00B84 /* YCCDProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCCDProblem.h; path = RBM/YCCDProblem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB5D4C2D1B6A8F7C00B00B84 /* YCCDProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCCDProblem.m; path = RBM/YCCDProblem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB6494B31B972EF000BA3FE2 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = "Data Frame/OrderedDictionary.h"; sourceTree = "<group>"; };
 		CB6494B41B972EF000BA3FE2 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OrderedDictionary.m; path = "Data Frame/OrderedDictionary.m"; sourceTree = "<group>"; };
 		CB6ECD401AEFB6DF000E70A7 /* YCkFoldValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCkFoldValidation.h; path = Testing/YCkFoldValidation.h; sourceTree = "<group>"; };
 		CB6ECD411AEFB6DF000E70A7 /* YCkFoldValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCkFoldValidation.m; path = Testing/YCkFoldValidation.m; sourceTree = "<group>"; };
-		CB723AF71C45B7C100600043 /* YCHypE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCHypE.h; path = "Optimization/Genetic Algorithms/YCHypE.h"; sourceTree = "<group>"; };
-		CB723AF81C45B7C100600043 /* YCHypE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCHypE.m; path = "Optimization/Genetic Algorithms/YCHypE.m"; sourceTree = "<group>"; };
-		CB723AFE1C4CF1A300600043 /* YCHypervolumeMetric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCHypervolumeMetric.h; path = Optimization/Metrics/YCHypervolumeMetric.h; sourceTree = "<group>"; };
-		CB723AFF1C4CF1A300600043 /* YCHypervolumeMetric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCHypervolumeMetric.m; path = Optimization/Metrics/YCHypervolumeMetric.m; sourceTree = "<group>"; };
+		CB723AF71C45B7C100600043 /* YCHypE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCHypE.h; path = "Optimization/Genetic Algorithms/YCHypE.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB723AF81C45B7C100600043 /* YCHypE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCHypE.m; path = "Optimization/Genetic Algorithms/YCHypE.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB723AFE1C4CF1A300600043 /* YCHypervolumeMetric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCHypervolumeMetric.h; path = Optimization/Metrics/YCHypervolumeMetric.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB723AFF1C4CF1A300600043 /* YCHypervolumeMetric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCHypervolumeMetric.m; path = Optimization/Metrics/YCHypervolumeMetric.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB72CD471BCAB64800A4A772 /* YCModelLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCModelLayer.h; path = Layers/YCModelLayer.h; sourceTree = "<group>"; };
 		CB72CD481BCAB64800A4A772 /* YCModelLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCModelLayer.m; path = Layers/YCModelLayer.m; sourceTree = "<group>"; };
 		CB72CD4B1BCADDAF00A4A772 /* YCFullyConnectedLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCFullyConnectedLayer.h; path = Layers/YCFullyConnectedLayer.h; sourceTree = "<group>"; };
@@ -252,14 +255,14 @@
 		CB72CD541BCAE40F00A4A772 /* YCTanhLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCTanhLayer.m; path = Layers/YCTanhLayer.m; sourceTree = "<group>"; };
 		CB72CD571BCAE45D00A4A772 /* YCLinearLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCLinearLayer.h; path = Layers/YCLinearLayer.h; sourceTree = "<group>"; };
 		CB72CD581BCAE45D00A4A772 /* YCLinearLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCLinearLayer.m; path = Layers/YCLinearLayer.m; sourceTree = "<group>"; };
-		CB7E6D051AE1226F00B37EA4 /* YCRegressionMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRegressionMetrics.h; path = "Regression Metrics/YCRegressionMetrics.h"; sourceTree = "<group>"; };
-		CB7E6D061AE1226F00B37EA4 /* YCRegressionMetrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRegressionMetrics.m; path = "Regression Metrics/YCRegressionMetrics.m"; sourceTree = "<group>"; };
-		CB7E6D0B1AE7D00100B37EA4 /* YCRBFNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRBFNet.h; path = RBF/YCRBFNet.h; sourceTree = "<group>"; };
-		CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRBFNet.m; path = RBF/YCRBFNet.m; sourceTree = "<group>"; };
-		CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOLSTrainer.h; path = RBF/YCOLSTrainer.h; sourceTree = "<group>"; };
-		CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOLSTrainer.m; path = RBF/YCOLSTrainer.m; sourceTree = "<group>"; };
-		CB7E6D311AEA382400B37EA4 /* YCDataframe+Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "YCDataframe+Transform.h"; path = "Data Frame/YCDataframe+Transform.h"; sourceTree = "<group>"; };
-		CB7E6D321AEA382400B37EA4 /* YCDataframe+Transform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "YCDataframe+Transform.m"; path = "Data Frame/YCDataframe+Transform.m"; sourceTree = "<group>"; };
+		CB7E6D051AE1226F00B37EA4 /* YCRegressionMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCRegressionMetrics.h; path = "Regression Metrics/YCRegressionMetrics.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB7E6D061AE1226F00B37EA4 /* YCRegressionMetrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCRegressionMetrics.m; path = "Regression Metrics/YCRegressionMetrics.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB7E6D0B1AE7D00100B37EA4 /* YCRBFNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCRBFNet.h; path = RBF/YCRBFNet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB7E6D0C1AE7D00100B37EA4 /* YCRBFNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCRBFNet.m; path = RBF/YCRBFNet.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB7E6D0F1AE7D01A00B37EA4 /* YCOLSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCOLSTrainer.h; path = RBF/YCOLSTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB7E6D101AE7D01A00B37EA4 /* YCOLSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCOLSTrainer.m; path = RBF/YCOLSTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB7E6D311AEA382400B37EA4 /* YCDataframe+Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "YCDataframe+Transform.h"; path = "Data Frame/YCDataframe+Transform.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB7E6D321AEA382400B37EA4 /* YCDataframe+Transform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "YCDataframe+Transform.m"; path = "Data Frame/YCDataframe+Transform.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB80FA7A1CC6B34C00C83D81 /* YCMLModelExportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLModelExportTests.m; sourceTree = "<group>"; };
 		CB80FA821CC7B5E400C83D81 /* YCModelIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCModelIO.h; path = YCML/IO/YCModelIO.h; sourceTree = "<group>"; };
 		CB80FAB81CC7BFF400C83D81 /* YCGenericModel+IO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "YCGenericModel+IO.h"; path = "YCML/IO/YCGenericModel+IO.h"; sourceTree = "<group>"; };
@@ -280,64 +283,67 @@
 		CB80FAD61CC7CBD600C83D81 /* YCGenericTrainer+IO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "YCGenericTrainer+IO.m"; path = "YCML/IO/YCGenericTrainer+IO.m"; sourceTree = "<group>"; };
 		CB80FAD91CC8264800C83D81 /* XCTestCase+Dataframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+Dataframe.h"; sourceTree = "<group>"; };
 		CB80FADA1CC8264800C83D81 /* XCTestCase+Dataframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+Dataframe.m"; sourceTree = "<group>"; };
-		CB92068A1C43F00600F93E3A /* YCModelKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCModelKernel.h; path = Kernels/YCModelKernel.h; sourceTree = "<group>"; };
-		CB92068B1C43F00600F93E3A /* YCModelKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCModelKernel.m; path = Kernels/YCModelKernel.m; sourceTree = "<group>"; };
-		CB92068E1C43F02F00F93E3A /* YCLinearKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCLinearKernel.h; path = Kernels/YCLinearKernel.h; sourceTree = "<group>"; };
-		CB92068F1C43F02F00F93E3A /* YCLinearKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCLinearKernel.m; path = Kernels/YCLinearKernel.m; sourceTree = "<group>"; };
+		CB92068A1C43F00600F93E3A /* YCModelKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCModelKernel.h; path = Kernels/YCModelKernel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB92068B1C43F00600F93E3A /* YCModelKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCModelKernel.m; path = Kernels/YCModelKernel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB92068E1C43F02F00F93E3A /* YCLinearKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCLinearKernel.h; path = Kernels/YCLinearKernel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB92068F1C43F02F00F93E3A /* YCLinearKernel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCLinearKernel.m; path = Kernels/YCLinearKernel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB96955D1AAEEB64003BAE48 /* YCML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9695611AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9695681AAEEB64003BAE48 /* YCMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB96956E1AAEEB64003BAE48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB96956F1AAEEB64003BAE48 /* YCMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YCMLTests.m; sourceTree = "<group>"; };
+		CB96956F1AAEEB64003BAE48 /* YCMLTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMLTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB9695791AAEEB96003BAE48 /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		CB96957A1AAEEBAA003BAE48 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
-		CB96957B1AAEEBB3003BAE48 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		CB96957C1AAEEBDB003BAE48 /* YCML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCML.h; sourceTree = "<group>"; };
-		CB96957E1AAEEBE5003BAE48 /* YCSupervisedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSupervisedModel.h; sourceTree = "<group>"; };
-		CB96957F1AAEEBE5003BAE48 /* YCSupervisedModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSupervisedModel.m; sourceTree = "<group>"; };
-		CB9695801AAEEBE5003BAE48 /* YCSupervisedTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCSupervisedTrainer.h; sourceTree = "<group>"; };
-		CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCSupervisedTrainer.m; sourceTree = "<group>"; };
-		CB9695871AAEEBF0003BAE48 /* YCELMTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCELMTrainer.h; sourceTree = "<group>"; };
-		CB9695881AAEEBF0003BAE48 /* YCELMTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCELMTrainer.m; sourceTree = "<group>"; };
-		CB96958A1AAEEBF0003BAE48 /* YCFFN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCFFN.h; sourceTree = "<group>"; };
-		CB96958B1AAEEBF0003BAE48 /* YCFFN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCFFN.m; sourceTree = "<group>"; };
+		CB96957A1AAEEBAA003BAE48 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; path = COPYING; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
+		CB96957B1AAEEBB3003BAE48 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
+		CB96957C1AAEEBDB003BAE48 /* YCML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCML.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB96957E1AAEEBE5003BAE48 /* YCSupervisedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCSupervisedModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB96957F1AAEEBE5003BAE48 /* YCSupervisedModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCSupervisedModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB9695801AAEEBE5003BAE48 /* YCSupervisedTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCSupervisedTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB9695811AAEEBE5003BAE48 /* YCSupervisedTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCSupervisedTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB9695871AAEEBF0003BAE48 /* YCELMTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCELMTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB9695881AAEEBF0003BAE48 /* YCELMTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCELMTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CB96958A1AAEEBF0003BAE48 /* YCFFN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCFFN.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB96958B1AAEEBF0003BAE48 /* YCFFN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCFFN.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB9695911AAEECA8003BAE48 /* housing.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = housing.csv; sourceTree = "<group>"; };
 		CBACE2401C1ACB61008B0FB1 /* YCSVR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCSVR.h; path = SVR/YCSVR.h; sourceTree = "<group>"; };
 		CBACE2411C1ACB61008B0FB1 /* YCSVR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCSVR.m; path = SVR/YCSVR.m; sourceTree = "<group>"; };
-		CBACE2441C1DA05F008B0FB1 /* YCSMORegressionTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCSMORegressionTrainer.h; path = SVR/YCSMORegressionTrainer.h; sourceTree = "<group>"; };
-		CBACE2451C1DA05F008B0FB1 /* YCSMORegressionTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCSMORegressionTrainer.m; path = SVR/YCSMORegressionTrainer.m; sourceTree = "<group>"; };
+		CBACE2441C1DA05F008B0FB1 /* YCSMORegressionTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCSMORegressionTrainer.h; path = SVR/YCSMORegressionTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBACE2451C1DA05F008B0FB1 /* YCSMORegressionTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCSMORegressionTrainer.m; path = SVR/YCSMORegressionTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CBACE52A1BA1A6A800CAF160 /* mnist_train_1_to_37.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = mnist_train_1_to_37.csv; sourceTree = "<group>"; };
-		CBB1C3DD1B939FFE00CB9762 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
-		CBB1C3DE1B939FFE00CB9762 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
-		CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLMetricsTests.m; sourceTree = "<group>"; };
-		CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDerivativeProblem.h; path = Optimization/YCDerivativeProblem.h; sourceTree = "<group>"; };
-		CBC7A4ED1ABA330300464DD2 /* YCProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCProblem.h; path = Optimization/YCProblem.h; sourceTree = "<group>"; };
-		CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOptimizer.h; path = Optimization/YCOptimizer.h; sourceTree = "<group>"; };
-		CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOptimizer.m; path = Optimization/YCOptimizer.m; sourceTree = "<group>"; };
-		CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCGradientDescent.h; path = "Optimization/Gradient Descent/YCGradientDescent.h"; sourceTree = "<group>"; };
-		CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCGradientDescent.m; path = "Optimization/Gradient Descent/YCGradientDescent.m"; sourceTree = "<group>"; };
-		CBC7A4F91ABB7F1000464DD2 /* YCBackPropProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCBackPropProblem.h; sourceTree = "<group>"; };
-		CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropProblem.m; sourceTree = "<group>"; };
-		CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCBackPropTrainer.h; sourceTree = "<group>"; };
-		CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCBackPropTrainer.m; sourceTree = "<group>"; };
-		CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCOLSPRESSTrainer.h; path = RBF/YCOLSPRESSTrainer.h; sourceTree = "<group>"; };
-		CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCOLSPRESSTrainer.m; path = RBF/YCOLSPRESSTrainer.m; sourceTree = "<group>"; };
-		CBE67F541D3E4C01008BBA00 /* YCLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCLinkedList.h; path = SVR/YCLinkedList.h; sourceTree = "<group>"; };
-		CBE67F551D3E4C01008BBA00 /* YCLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCLinkedList.m; path = SVR/YCLinkedList.m; sourceTree = "<group>"; };
-		CBF75B141AC747E400495246 /* YCMLOptimizationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLOptimizationTest.m; sourceTree = "<group>"; };
-		CBF75B261AC774D000495246 /* YCDataframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCDataframe.h; path = "Data Frame/YCDataframe.h"; sourceTree = "<group>"; };
-		CBF75B271AC774D000495246 /* YCDataframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCDataframe.m; path = "Data Frame/YCDataframe.m"; sourceTree = "<group>"; };
-		CBF75B281AC774D000495246 /* YCDataframe+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "YCDataframe+Matrix.h"; path = "Data Frame/YCDataframe+Matrix.h"; sourceTree = "<group>"; };
-		CBF75B291AC774D000495246 /* YCDataframe+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "YCDataframe+Matrix.m"; path = "Data Frame/YCDataframe+Matrix.m"; sourceTree = "<group>"; };
-		CBF75B2A1AC774D000495246 /* YCMissingValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCMissingValue.h; path = "Data Frame/YCMissingValue.h"; sourceTree = "<group>"; };
-		CBF75B2B1AC774D000495246 /* YCMissingValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCMissingValue.m; path = "Data Frame/YCMissingValue.m"; sourceTree = "<group>"; };
-		CBF7B4451B6A696900F25DF8 /* YCBinaryRBM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCBinaryRBM.h; path = RBM/YCBinaryRBM.h; sourceTree = "<group>"; };
-		CBF7B4461B6A696900F25DF8 /* YCBinaryRBM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCBinaryRBM.m; path = RBM/YCBinaryRBM.m; sourceTree = "<group>"; };
-		CBFCED091B832F98002A19CC /* YCMLRBMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLRBMTests.m; sourceTree = "<group>"; };
-		CBFCED0B1B8331BE002A19CC /* YCGenericModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCGenericModel.h; sourceTree = "<group>"; };
-		CBFCED0C1B8331BE002A19CC /* YCGenericModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCGenericModel.m; sourceTree = "<group>"; };
-		CBFCED0F1B833317002A19CC /* YCGenericTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCGenericTrainer.h; sourceTree = "<group>"; };
-		CBFCED101B833317002A19CC /* YCGenericTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCGenericTrainer.m; sourceTree = "<group>"; };
+		CBB1C3DD1B939FFE00CB9762 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CHCSVParser.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBB1C3DE1B939FFE00CB9762 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CHCSVParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMLMetricsTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBC7A4EC1ABA330300464DD2 /* YCDerivativeProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCDerivativeProblem.h; path = Optimization/YCDerivativeProblem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4ED1ABA330300464DD2 /* YCProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCProblem.h; path = Optimization/YCProblem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4F01ABA35D200464DD2 /* YCOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCOptimizer.h; path = Optimization/YCOptimizer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4F11ABA35D200464DD2 /* YCOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCOptimizer.m; path = Optimization/YCOptimizer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBC7A4F51ABA36AD00464DD2 /* YCGradientDescent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCGradientDescent.h; path = "Optimization/Gradient Descent/YCGradientDescent.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4F61ABA36AD00464DD2 /* YCGradientDescent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCGradientDescent.m; path = "Optimization/Gradient Descent/YCGradientDescent.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBC7A4F91ABB7F1000464DD2 /* YCBackPropProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCBackPropProblem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4FA1ABB7F1000464DD2 /* YCBackPropProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCBackPropProblem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBC7A4FB1ABB7F1000464DD2 /* YCBackPropTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCBackPropTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBC7A4FC1ABB7F1000464DD2 /* YCBackPropTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCBackPropTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBD4281E1DE7059000303A83 /* YCRankCentrality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YCRankCentrality.h; path = Ranking/YCRankCentrality.h; sourceTree = "<group>"; };
+		CBD4281F1DE7059000303A83 /* YCRankCentrality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YCRankCentrality.m; path = Ranking/YCRankCentrality.m; sourceTree = "<group>"; };
+		CBD428221DEADB8B00303A83 /* YCMLRankingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMLRankingTests.m; sourceTree = "<group>"; };
+		CBD606801B0FC48300DCA6AD /* YCOLSPRESSTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCOLSPRESSTrainer.h; path = RBF/YCOLSPRESSTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBD606811B0FC48300DCA6AD /* YCOLSPRESSTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCOLSPRESSTrainer.m; path = RBF/YCOLSPRESSTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBE67F541D3E4C01008BBA00 /* YCLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCLinkedList.h; path = SVR/YCLinkedList.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBE67F551D3E4C01008BBA00 /* YCLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCLinkedList.m; path = SVR/YCLinkedList.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBF75B141AC747E400495246 /* YCMLOptimizationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMLOptimizationTest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBF75B261AC774D000495246 /* YCDataframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCDataframe.h; path = "Data Frame/YCDataframe.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBF75B271AC774D000495246 /* YCDataframe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCDataframe.m; path = "Data Frame/YCDataframe.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBF75B281AC774D000495246 /* YCDataframe+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = "YCDataframe+Matrix.h"; path = "Data Frame/YCDataframe+Matrix.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBF75B291AC774D000495246 /* YCDataframe+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "YCDataframe+Matrix.m"; path = "Data Frame/YCDataframe+Matrix.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBF75B2A1AC774D000495246 /* YCMissingValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCMissingValue.h; path = "Data Frame/YCMissingValue.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBF75B2B1AC774D000495246 /* YCMissingValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCMissingValue.m; path = "Data Frame/YCMissingValue.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBF7B4451B6A696900F25DF8 /* YCBinaryRBM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = YCBinaryRBM.h; path = RBM/YCBinaryRBM.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBF7B4461B6A696900F25DF8 /* YCBinaryRBM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = YCBinaryRBM.m; path = RBM/YCBinaryRBM.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBFCED091B832F98002A19CC /* YCMLRBMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMLRBMTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBFCED0B1B8331BE002A19CC /* YCGenericModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCGenericModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBFCED0C1B8331BE002A19CC /* YCGenericModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCGenericModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBFCED0F1B833317002A19CC /* YCGenericTrainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCGenericTrainer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBFCED101B833317002A19CC /* YCGenericTrainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCGenericTrainer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -596,6 +602,7 @@
 				CB72CD461BCAB61400A4A772 /* Layers */,
 				CBF75B191AC7739400495246 /* Data Frame */,
 				CBC7A4EA1ABA327C00464DD2 /* Optimization */,
+				CBD4281D1DE7044F00303A83 /* Ranking */,
 				CB7E6CFF1AE121F700B37EA4 /* Metrics */,
 				CB6ECD3F1AEFB296000E70A7 /* Testing */,
 				CB80FABC1CC7BFFF00C83D81 /* IO */,
@@ -622,6 +629,7 @@
 				CBC345C81BC3B62D00241339 /* YCMLMetricsTests.m */,
 				CB3174B11BF5F9C90036CF8D /* YCMLDataframeTests.m */,
 				CB80FA7A1CC6B34C00C83D81 /* YCMLModelExportTests.m */,
+				CBD428221DEADB8B00303A83 /* YCMLRankingTests.m */,
 				CB80FAD91CC8264800C83D81 /* XCTestCase+Dataframe.h */,
 				CB80FADA1CC8264800C83D81 /* XCTestCase+Dataframe.m */,
 				CB96956D1AAEEB64003BAE48 /* Supporting Files */,
@@ -724,6 +732,15 @@
 				CB1802C51ABE192600A2927B /* YCRProp.m */,
 			);
 			name = "Gradient Descent";
+			sourceTree = "<group>";
+		};
+		CBD4281D1DE7044F00303A83 /* Ranking */ = {
+			isa = PBXGroup;
+			children = (
+				CBD4281E1DE7059000303A83 /* YCRankCentrality.h */,
+				CBD4281F1DE7059000303A83 /* YCRankCentrality.m */,
+			);
+			name = Ranking;
 			sourceTree = "<group>";
 		};
 		CBF75B191AC7739400495246 /* Data Frame */ = {
@@ -837,6 +854,7 @@
 				CB80FAC31CC7C1AE00C83D81 /* YCFFN+IO.h in Headers */,
 				CBC7A4FD1ABB7F1000464DD2 /* YCBackPropProblem.h in Headers */,
 				CB5D4C2A1B6A8F6B00B00B84 /* YCCDTrainer.h in Headers */,
+				CBD428201DE7059000303A83 /* YCRankCentrality.h in Headers */,
 				CB96958C1AAEEBF0003BAE48 /* YCELMTrainer.h in Headers */,
 				CBD606821B0FC48300DCA6AD /* YCOLSPRESSTrainer.h in Headers */,
 				CB5D4C2E1B6A8F7C00B00B84 /* YCCDProblem.h in Headers */,
@@ -1030,6 +1048,7 @@
 			files = (
 				CB5216131B415B8100A4AF01 /* YCIndividual.m in Sources */,
 				CB96958F1AAEEBF0003BAE48 /* YCFFN.m in Sources */,
+				CBD428211DE7059000303A83 /* YCRankCentrality.m in Sources */,
 				CB723B011C4CF1A300600043 /* YCHypervolumeMetric.m in Sources */,
 				CB1802CC1ABE19DF00A2927B /* YCRpropTrainer.m in Sources */,
 				CB80FAC81CC7C20500C83D81 /* YCRBFNet+IO.m in Sources */,
@@ -1097,6 +1116,7 @@
 				CBB1C3DF1B939FFE00CB9762 /* CHCSVParser.m in Sources */,
 				CB9695701AAEEB64003BAE48 /* YCMLTests.m in Sources */,
 				CBC345C91BC3B62D00241339 /* YCMLMetricsTests.m in Sources */,
+				CBD428231DEADB8B00303A83 /* YCMLRankingTests.m in Sources */,
 				CB80FA7B1CC6B34C00C83D81 /* YCMLModelExportTests.m in Sources */,
 				CBF75B151AC747E400495246 /* YCMLOptimizationTest.m in Sources */,
 				CBFCED0A1B832F98002A19CC /* YCMLRBMTests.m in Sources */,
