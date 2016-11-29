@@ -35,8 +35,30 @@
 
 @interface YCRankCentrality : NSObject
 
+/**
+ Calculates the transition matrix for a given matrix containing the number
+ of losses for each individual.
+ 
+ @param comparisons: Matrix containing the number
+    of losses for each individual. The value in cell at i,j refers to the number
+    of times j lost to i. Conversely, the value at j, i refers to the number of
+    times i lost to j. Summing these up gives us the total number of matches played.
+ 
+ @return The transition matrix containing the probabilities of the Markov chain
+ */
 + (Matrix *)transitionMatrixWithComparisons:(Matrix *)comparisons;
 
+/**
+ Calculates the scores of a population of individuals according to the 
+ Bradley-Terry-Luce model of comparative judgement.
+ 
+ @param comparisons: Matrix containing the number
+ of losses for each individual. The value in cell at i,j refers to the number
+ of times j lost to i. Conversely, the value at j, i refers to the number of
+ times i lost to j. Summing these up gives us the total number of matches played.
+ 
+ @return Vector containing the scores
+ */
 + (Matrix *)scoresWithComparisons:(Matrix *)comparisons;
 
 @end
