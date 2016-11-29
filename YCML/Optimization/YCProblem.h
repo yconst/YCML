@@ -48,30 +48,78 @@ typedef NS_ENUM(int, YCObjectiveTarget) {
 
 @protocol YCProblem
 
+/**
+ Requests a problem function evaluation from the receiver
+ 
+ @param target: The target for the objective function and constraint values.
+ First all objective function values, then constraints.
+ @param parameters: The decision variable values for which to evaluate
+ */
 - (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters;
 
+/**
+ The numerical bounds for the decision variables
+ */
 @property (readonly) Matrix *parameterBounds;
 
+/**
+ Optional array correponding to initial value ranges
+ */
 @property (readonly) Matrix *initialValuesRangeHint;
 
+/**
+ The number of decision variables
+ */
 @property (readonly) int parameterCount;
 
+/**
+ The number of objectives
+ */
 @property (readonly) int objectiveCount;
 
+/**
+ The number of constraints
+ */
 @property (readonly) int constraintCount;
 
+/**
+ A matrix denoting targets for optimization, per objective: Minimization or Maximization
+ */
 @property (readonly) Matrix *modes;
 
+/**
+ A value showing how the receiver treats cases where more than one solutions
+ needs to be evaluated. The receiver may return the following values:
+ i. YCRequiresSequentialEvaluation: the receiver requires that solutions are
+ presented sequentially for evaluation
+ ii. YCSupportsConcurrentEvaluation: the receiver allows concurrent evaluation 
+ of more than one solutions
+ iii. YCProvidesParallelImplementation: the receiver provides its own
+ evaluation implementation and solutions should be presented all at once, as
+ part of a single matrix
+ */
 @property (readonly) YCEvaluationMode supportedEvaluationMode;
 
 @optional
 
+/**
+ Labels associated with decision variables
+ */
 @property (readonly) NSArray *parameterLabels;
 
+/**
+ Labels associated with objectives
+ */
 @property (readonly) NSArray *objectiveLabels;
 
+/**
+ Labels associated with constraints
+ */
 @property (readonly) NSArray *constraintLabels;
 
+/**
+ Additional properties associated with the
+ */
 @property (readonly) NSDictionary *metaProperties;
 
 @end
