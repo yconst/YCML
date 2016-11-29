@@ -57,7 +57,7 @@ The following algorithms are currently available:
 
 - Gradient Descent Backpropagation [1]
 - Resilient Backpropagation (RProp) [2]
-- Support Vector Machine Regression using SMO (Currently only linear kernel is available) [3, 4]
+- Support Vector Machine Regression (SVR) using SMO (Linear & RBF kernels) [3, 4]
 - Extreme Learning Machines (ELM) [5]
 - Forward Selection using Orthogonal Least Squares (for RBF Net) [6, 7]
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [8]
