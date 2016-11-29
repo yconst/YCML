@@ -347,6 +347,13 @@
     return result;
 }
 
+- (Matrix *)matrixByAbsolute
+{
+    Matrix *result = [Matrix dirtyMatrixOfRows:self->rows columns:self->columns];
+    vDSP_vabsD(self->matrix, 1, result->matrix, 1, self.count);
+    return result;
+}
+
 - (Matrix *)matrixByTransposing
 {
 	Matrix *trans = [Matrix dirtyMatrixOfRows:columns columns:rows];
@@ -396,6 +403,11 @@
     vDSP_vsqD(self->matrix, 1, self->matrix, 1, self.count);
 }
 
+- (void)absolute
+{
+    vDSP_vabsD(self->matrix, 1, self->matrix, 1, self.count);
+}
+
 - (void)elementWiseMultiply:(Matrix *)mt
 {
 	NSAssert(columns == mt->columns && rows == mt->rows, @"Matrix size error");
@@ -414,13 +426,21 @@
     }
 }
 
+- (void)setDiagonalTo:(double)value
+{
+    for (int i=0, j=MIN(rows, columns); i<j; i++)
+    {
+        self->matrix[i * (columns + 1)] = value;
+    }
+}
+
 - (double)trace
 {
     NSAssert(columns == rows, @"Matrix not square");
 	double trace = 0;
 	for (int i=0; i<rows; i++)
 	{
-		trace += matrix[i*(columns + 1)];
+		trace += matrix[i * (columns + 1)];
 	}
 	return trace;
 }
@@ -562,6 +582,29 @@
 		if (matrix[i] != other->matrix[i]) return NO;
 	}
 	return YES;
+}
+
+- (NSUInteger)hash
+{
+    unsigned long hash = 5381;
+    int c;
+    char ch[10];
+    
+    for (int i=0, k=(int)self.count; i<k; i++)
+    {
+        double d = self->matrix[i];
+        sprintf(ch , "%lf" , d);
+        c = 0;
+        
+        for (int j=0; j<8; j++)
+        {
+            c += ch[j] - '0';
+        }
+        
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    }
+    
+    return hash;
 }
 
 - (BOOL)isEqualToMatrix:(Matrix *)aMatrix tolerance:(double)tolerance

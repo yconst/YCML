@@ -347,7 +347,7 @@ static void sobol_destroy(soboldata *sd);
     return newMatrix;
 }
 
-- (Matrix *)eigenvalues
+- (Matrix *)realEigenvalues
 {
     NSAssert(columns == rows, @"Matrix not square");
     double *evArray = malloc(self->rows * sizeof(double));
@@ -357,21 +357,32 @@ static void sobol_destroy(soboldata *sd);
     return [Matrix matrixFromArray:evArray rows:1 columns:self->columns];
 }
 
-- (NSDictionary *)eigenvaluesAndEigenvectors
+- (NSDictionary *)eigenvectorsAndEigenvalues
 {
+    // DGEEV accepts column-major matrices, so a transpose of both
+    // input and output would be necessary here.
+    // We do away with one of the transpositions, by considering the
+    // eigenvectors of A^T at the input, and then switching between
+    // left and right eigenvectors as a result.
+    // Still we need to do a transposition of the outputs though.
+    // TODO: Avoid unnecessary transposing of output matrices
     NSAssert(columns == rows, @"Matrix not square");
     int m = self->rows;
-    int n = self->columns;
-    double *evArray = malloc(m * sizeof(double));
-    double *leVecArray = malloc(m * n * sizeof(double));
-    double *reVecArray = malloc(m * n * sizeof(double));
+    double *revArray = malloc(m * sizeof(double));
+    double *ievArray = malloc(m * sizeof(double));
+    double *leVecArray = malloc(m * m * sizeof(double));
+    double *reVecArray = malloc(m * m * sizeof(double));
     
-    MEVV(self->matrix, m, n, evArray, nil, leVecArray, reVecArray);
+    MEVV(self->matrix, m, m, revArray, ievArray, leVecArray, reVecArray);
     
-    Matrix *evMatrix = [Matrix matrixFromArray:evArray rows:1 columns:n];
-    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray rows:m columns:n];
-    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray rows:m columns:n];
-    return @{@"Eigenvalues":evMatrix,
+    Matrix *revMatrix = [Matrix matrixFromArray:revArray rows:1 columns:m];
+    Matrix *ievMatrix = [Matrix matrixFromArray:ievArray rows:1 columns:m];
+    
+    // Column-wise left eigenvector = Row-wise right eigenvector (transpose) and vice versa
+    Matrix *leVecMatrix = [[Matrix matrixFromArray:reVecArray rows:m columns:m] matrixByTransposing];
+    Matrix *reVecMatrix = [[Matrix matrixFromArray:leVecArray rows:m columns:m] matrixByTransposing];
+    return @{@"Real Eigenvalues":revMatrix,
+             @"Imaginary Eigenvalues":ievMatrix,
              @"Left Eigenvectors":leVecMatrix,
              @"Right Eigenvectors":reVecMatrix};
 }
@@ -687,21 +698,28 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     dup = malloc(m * n * sizeof(double));
     memcpy(dup, A, m * n * sizeof(double));
     
-    lwork = 3 * rank;
+    /* query workspace size */
+    lwork = -1;
+    work = malloc(sizeof(double));
+    
+    dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
+           wr, wi, vecL, &vecLSize, vecR, &vecRSize, work, &lwork, &info);
+    
+    assert(info == 0 && work[0] > 0);
+    lwork = work[0];
+    free(work);
+    
+    /* perform calculation */
     work = malloc(lwork *sizeof(double));
     
     dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
            wr, wi, vecL, &vecLSize, vecR, &vecRSize, work, &lwork, &info);
+    
+    assert(info == 0);
     free(dup);
     free(work);
     if(vr == NULL) free(wr);
     if(vi == NULL) free(wi);
-    if(info > 0)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while calculating Eigenvalues."
-                                     userInfo:nil];
-    }
 }
 
 #pragma mark - Compute the Singular Value Decomposition of *column-major* matrix A

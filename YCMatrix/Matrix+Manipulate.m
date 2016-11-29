@@ -374,6 +374,23 @@
     }
 }
 
+- (void)divideRow:(Matrix *)row
+{
+    NSAssert(row->rows == 1 && row->columns == self->columns, @"Matrix size mismatch");
+    double *productarray = self->matrix;
+    double *factorarray = row->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            productarray[i*cols + j] /= factorarray[j]; //j!
+        }
+    }
+
+}
+
 - (void)addColumn:(Matrix *)column
 {
     NSAssert(column->columns == 1 && column->rows == self->rows, @"Matrix size mismatch");
@@ -418,6 +435,22 @@
         for (int j=0; j<cols; j++)
         {
             productarray[i*cols + j] *= factorarray[i]; //i!
+        }
+    }
+}
+
+- (void)divideColumn:(Matrix *)column
+{
+    NSAssert(column->columns == 1 && column->rows == self->rows, @"Matrix size mismatch");
+    double *productarray = self->matrix;
+    double *factorarray = column->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            productarray[i*cols + j] /= factorarray[i]; //i!
         }
     }
 }
