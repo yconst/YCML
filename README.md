@@ -89,6 +89,10 @@ In addition, a couple of basic optimization algorithms are impemented:
 - Separate optimization routines for single- and multi-objective problems.
 - Surrogate class that exposes a predictive model as an objective function, useful for optimization.
 
+###Ranking
+
+- Rank Centrality [12]
+
 ###Sampling
 
 - Several different methods for multi-dimensional random number generation, including low-discrepancy sequence generation.
@@ -254,6 +258,8 @@ This strategy has been currently implemented for most predictive models (subclas
 [10] K. Deb, A. Pratap, S. Agarwal, T. Meyarivan. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Trans Evol Comput. vol. 6, pp. 182–97, 2002.
 
 [11] J. Bader, E. Zitzler. HypE: An algorithm for fast hypervolume-based many-objective optimization. Evol Comput 19, pp. 45–76, 2011.
+
+[12] S. Negahban, S. Oh, and D. Shah, “Iterative Ranking from Pair-wise Comparisons,” Adv. Neural Inf. Process. Syst. 25, pp. 2474–2482, 2012.
 
 ##License 
 
