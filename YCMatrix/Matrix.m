@@ -586,6 +586,8 @@
 
 - (NSUInteger)hash
 {
+    // An implementation of
+    // http://www.cse.yorku.ca/~oz/hash.html
     unsigned long hash = 5381;
     int c;
     char ch[10];
@@ -598,11 +600,12 @@
         
         for (int j=0; j<8; j++)
         {
-            c += ch[j] - '0';
+            c = ch[j] - '0';
+            hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
         }
-        
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
     }
+    hash = ((hash << 5) + hash) + self.rows;
+    hash = ((hash << 5) + hash) + self.columns;
     
     return hash;
 }
