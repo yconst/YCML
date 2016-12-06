@@ -518,6 +518,23 @@
     return [Matrix matrixFromArray:newArray rows:newRows columns:columns];
 }
 
+- (void)applyMatrix:(Matrix *)other i:(int)i j:(int)j
+{
+    NSAssert(other.rows + 1 <= self.rows && other.columns + j <= self.columns,
+             @"Matrix out of bounds");
+    int ma = self.rows;
+    int na = self.columns;
+    int mo = other.rows;
+    int no = other.columns;
+    for (int io = 0; io<mo; io++)
+    {
+        for (int jo = 0; jo<no; jo++)
+        {
+            self->matrix[(io + i) * na + (jo + j)] = other->matrix[io * no + jo];
+        }
+    }
+}
+
 // Fisher-Yates Inside-out Shuffle
 - (Matrix *)matrixByShufflingRows
 {

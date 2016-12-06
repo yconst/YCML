@@ -366,6 +366,9 @@
  */
 - (Matrix *)appendValueAsRow:(double)value;
 
+
+- (void)applyMatrix:(Matrix *)other i:(int)i j:(int)j;
+
 /**
  Returns a matrix with shuffled rows
  
