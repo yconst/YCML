@@ -64,16 +64,11 @@
     return transitions;
 }
 
-+ (Matrix *)scoresWithComparisons:(Matrix *)comparisons
++ (Matrix *)scoresWithTransitionMatrix:(Matrix *)transitionMatrix
 {
-    NSAssert(comparisons.rows == comparisons.columns && comparisons.rows >= 2,
-             @"Incorrect Matrix size");
-    
-    Matrix *transitions = [self transitionMatrixWithComparisons:comparisons];
-    
     // Acquire top left eigenvector and return
     // Note that eigenvectors are returned on per row, so we need to transpose
-    NSDictionary *eigenDictionary = [transitions eigenvectorsAndEigenvalues];
+    NSDictionary *eigenDictionary = [transitionMatrix eigenvectorsAndEigenvalues];
     Matrix *values = eigenDictionary[@"Real Eigenvalues"];
     
     // Eigenvalue is not exactly 1.0 so we need to make a comparison
@@ -97,6 +92,15 @@
         return ret;
     }
     return nil;
+}
+
++ (Matrix *)scoresWithComparisons:(Matrix *)comparisons
+{
+    NSAssert(comparisons.rows == comparisons.columns && comparisons.rows >= 2,
+             @"Incorrect Matrix size");
+    
+    Matrix *transitions = [self transitionMatrixWithComparisons:comparisons];
+    return [self scoresWithTransitionMatrix:transitions];
 }
 
 @end

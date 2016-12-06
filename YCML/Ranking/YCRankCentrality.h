@@ -49,6 +49,16 @@
 + (Matrix *)transitionMatrixWithComparisons:(Matrix *)comparisons;
 
 /**
+ Calculates the scores of a population of individuals according to the
+ Bradley-Terry-Luce model of comparative judgement.
+ 
+ @param transitionMatrix: Matrix containing the probabilities of Markov chain transitions.
+ 
+ @return Vector containing the scores
+ */
++ (Matrix *)scoresWithTransitionMatrix:(Matrix *)transitionMatrix;
+
+/**
  Calculates the scores of a population of individuals according to the 
  Bradley-Terry-Luce model of comparative judgement.
  
