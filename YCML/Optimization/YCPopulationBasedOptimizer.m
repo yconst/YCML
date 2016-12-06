@@ -82,14 +82,15 @@
     NSAssert(individuals, @"Passed individuals parameter is nil");
     
     // Pick out only the individuals that have not been evaluated
-    NSArray *ne = [individuals objectsAtIndexes:[individuals indexesOfObjectsPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx,BOOL * _Nonnull stop) {
+    NSIndexSet *indices = [individuals indexesOfObjectsPassingTest:^BOOL(id  _Nonnull obj, NSUInteger idx,BOOL * _Nonnull stop) {
         return !((YCIndividual *)obj).evaluated;
-    }]];
+    }];
+    NSArray *individualsToEvaluate = [individuals objectsAtIndexes:indices];
     
     int parameterCount = self.problem.parameterCount;
     int objectiveCount = self.problem.objectiveCount;
     int constraintCount = self.problem.constraintCount;
-    int populationCount = (int)ne.count;
+    int populationCount = (int)individualsToEvaluate.count;
     
     if (populationCount == 0) return; // Nothing to evaluate really..
     
@@ -97,7 +98,7 @@
     {
         Matrix *parameters = [Matrix matrixOfRows:parameterCount
                                           columns:populationCount];
-        [ne enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [individualsToEvaluate enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             YCIndividual *individual = obj;
             [parameters setColumn:(int)idx value:individual.decisionVariableValues];
         }];
@@ -105,17 +106,22 @@
         Matrix *results = [Matrix matrixOfRows:(objectiveCount+constraintCount)
                                       columns:populationCount];
         
-        [self.problem evaluate:results parameters:parameters];
+        if ([self.problem respondsToSelector:@selector(evaluate:parameters:indices:)])
+        {
+            [self.problem evaluate:results parameters:parameters indices:indices];
+        }
+        else
+        {
+            [self.problem evaluate:results parameters:parameters];
+        }
         
-        // If a stop signal has been received, stop early and do not
-        // update objective and constraint values. This is sub-optimal,
-        // i.e. it does not store the function evaluations already
-        // performed to their respective individuals, however it is
-        // necessary to ensure consistency of individuals performance
-        // values.
+        // If a stop signal has been received, stop early and do not update objective and constraint
+        // values. This is sub-optimal, i.e. it does not store the function evaluations already
+        // performed to their respective individuals, however it is necessary to ensure consistency
+        // of individuals performance values.
         if (self.shouldStop) return;
         
-        [ne enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [individualsToEvaluate enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             YCIndividual *individual = obj;
             Matrix *result = [results column:(int)idx];
             
@@ -133,7 +139,7 @@
     {
         Matrix *result = [Matrix matrixOfRows:(objectiveCount+constraintCount) columns:1];
         
-        for (YCIndividual *individual in ne)
+        for (YCIndividual *individual in individualsToEvaluate)
         {
             if (self.shouldStop) return;
             
