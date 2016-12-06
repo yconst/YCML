@@ -75,7 +75,7 @@
     return self;
 }
 
-- (YCSupervisedModel *)train:(YCSVR *)inputModel
+- (void)performTrainingModel:(YCSVR *)model
                  inputMatrix:(Matrix *)input
                 outputMatrix:(Matrix *)output
 {
@@ -112,7 +112,6 @@
     Matrix *previousOutputs = [Matrix matrixOfRows:1 columns:N value:0];
     Matrix *lastModified = [Matrix matrixOfRows:1 columns:N value:_globalChange];
     
-    YCSVR *model = inputModel ? inputModel : [YCSVR model];
     if (!model.kernel)
     {
         if ([self.settings[@"Kernel"] isEqualToString:@"RBF"])
@@ -221,8 +220,6 @@
     _ivl = 0;
     _dul = 0;
     _dvl = 0;
-
-    return model;
 }
 
 - (BOOL)examine:(int)idx1
