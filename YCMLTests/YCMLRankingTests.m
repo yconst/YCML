@@ -60,6 +60,18 @@
     NSLog(@"%@", scores);
 }
 
+- (void)testSt
+{
+    double comparison_array[16] = {0.0, 1.0, 1.0, 0.0,  // Beginner
+                                   0.0, 0.0, 1.0, 0.0,   // Advanced
+                                   0.0 ,0.0, 0.0, 0.0,   // Master
+                                   1.0, 0.0, 0.0, 0.0};  // New player
+    Matrix *comparisons = [Matrix matrixFromArray:comparison_array rows:4 columns:4];
+    [comparisons incrementAll:1.0];
+    Matrix *scores = [YCRankCentrality scoresWithComparisons:comparisons];
+    NSLog(@"%@", scores);
+}
+
 
 /**
  Simulation-based experimens for n players of different skill level
