@@ -19,11 +19,6 @@ alt="GPL v3 License">
 </a>
 </p>
 
-# YCML 
-
-[![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
-[![DOI](https://zenodo.org/badge/20003/yconst/YCML.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCML)
-
 YCML is an Artificial Intelligence, Machine Learning and Optimization framework written in Objective-C. YCML can be used both in Objective-C as well as in Swift. YCML has been verified to run on MacOS and iOS. 
 
 Above all, YCML attempts to bring high-quality published algorithms to Swift/Objective-C, using optimized implementations. Referenced papers for the implementation of each algorithm are available at the end of this document.
