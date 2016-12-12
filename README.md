@@ -16,7 +16,7 @@ Finally, YCML tries to maintain a scientific attitude throughout, and keep the A
 
 ###At a glance
 
-- Seven Machine Learning Algorithm Implementations for Supervised Learning
+- Nine Machine Learning Algorithm Implementations for Supervised Learning
 - Two Multi-Objective Genetic Algorithm Variants
 - One Ranking Algorithm (Rank Centrality)
 - Helper classes & tools for validation and testing
@@ -55,12 +55,19 @@ YCML implements a couple Multi-Objective Evolutionary Algorithms (MOEAs). MOEAs 
 
 The following algorithms are currently available:
 
+####Supervised 
+
+- Linear Regression
 - Gradient Descent Backpropagation [1]
 - Resilient Backpropagation (RProp) [2]
 - Support Vector Machine Regression (SVR) using SMO (Linear & RBF kernels) [3, 4]
 - Extreme Learning Machines (ELM) [5]
 - Forward Selection using Orthogonal Least Squares (for RBF Net) [6, 7]
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [8]
+- Kernel Process Regression
+
+####Unsupervised
+
 - Binary Restricted Boltzmann Machines (CD) [9] 
 
 ####Learning features:
