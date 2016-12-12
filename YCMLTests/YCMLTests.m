@@ -540,15 +540,13 @@
     NSLog(@"%@", prediction);
 }
 
-#pragma mark - kNN Tests
+#pragma mark - Cross-Validation Tests
 
-- (void)testkNN
+- (void)testKPM
 {
-    YCkNNTrainer *trainer = [YCkNNTrainer trainer];
+    YCKPMTrainer *trainer = [YCKPMTrainer trainer];
     [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:8.0];
 }
-
-#pragma mark - Cross-Validation Tests
 
 - (void)testELMHousing
 {

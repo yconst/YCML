@@ -21,16 +21,16 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "YCKPMTrainer.h"
-#import "YCkNN.h"
+#import "YCKPM.h"
 
 @implementation YCKPMTrainer
 
 + (Class)modelClass
 {
-    return [YCkNN class];
+    return [YCKPM class];
 }
 
-- (void)performTrainingModel:(YCkNN *)model
+- (void)performTrainingModel:(YCKPM *)model
                  inputMatrix:(Matrix *)input
                 outputMatrix:(Matrix *)output
 {
