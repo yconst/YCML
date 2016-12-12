@@ -1,5 +1,5 @@
 //
-//  YCkNN.h
+//  YCkNNTrainer.h
 //  YCML
 //
 //  Created by Ioannis (Yannis) Chatzikonstantinou on 6/12/16.
@@ -21,22 +21,7 @@
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <YCML/YCML.h>
-@class Matrix;
 
-@interface YCkNN : YCSupervisedModel
-
-@property Matrix *prototypes;
-
-@property Matrix *targets;
-
-/**
- Returns the input transformation matrix of the receiver.
- */
-@property Matrix *inputTransform;
-
-/**
- Returns the output reverse transformation matrix of the receiver.
- */
-@property Matrix *outputTransform;
+@interface YCKPMTrainer : YCSupervisedTrainer
 
 @end

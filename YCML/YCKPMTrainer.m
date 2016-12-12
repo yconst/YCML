@@ -20,10 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import "YCkNNTrainer.h"
+#import "YCKPMTrainer.h"
 #import "YCkNN.h"
 
-@implementation YCkNNTrainer
+@implementation YCKPMTrainer
 
 + (Class)modelClass
 {
