@@ -34,6 +34,9 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCSupervisedModel.h"
 #import "YCSupervisedTrainer.h"
 
+#import "YCLinRegModel.h"
+#import "YCLinRegTrainer.h"
+
 #import "YCSVR.h"
 #import "YCSMORegressionTrainer.h"
 #import "YCModelKernel.h"
@@ -85,6 +88,7 @@ FOUNDATION_EXPORT const unsigned char YCMLVersionString[];
 #import "YCDataframe+Transform.h"
 #import "OrderedDictionary.h"
 #import "YCMissingValue.h"
+#import "NSIndexSet+Sampling.h"
 
 #import "YCMutableArray.h"
 #import "YCRegressionMetrics.h"
