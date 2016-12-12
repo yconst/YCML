@@ -106,14 +106,7 @@
         Matrix *results = [Matrix matrixOfRows:(objectiveCount+constraintCount)
                                       columns:populationCount];
         
-        if ([self.problem respondsToSelector:@selector(evaluate:parameters:indices:)])
-        {
-            [self.problem evaluate:results parameters:parameters indices:indices];
-        }
-        else
-        {
-            [self.problem evaluate:results parameters:parameters];
-        }
+        [self.problem evaluate:results parameters:parameters];
         
         // If a stop signal has been received, stop early and do not update objective and constraint
         // values. This is sub-optimal, i.e. it does not store the function evaluations already
