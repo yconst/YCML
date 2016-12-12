@@ -103,17 +103,6 @@ typedef NS_ENUM(int, YCObjectiveTarget) {
 @optional
 
 /**
- Requests a problem function evaluation from the receiver
- 
- @param target: The target for the objective function and constraint values.
- First all objective function values, then constraints.
- @param parameters: The decision variable values for which to evaluate
- @param indices: The indices of the elements passed. Helpful for stateful algorithms
-                 or problem definitions.
- */
-- (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters indices:(NSIndexSet *)indices;
-
-/**
  Labels associated with decision variables
  */
 @property (readonly) NSArray *parameterLabels;

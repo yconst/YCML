@@ -1,9 +1,9 @@
 //
-//  NSIndexSet+Sampling.h
+//  YCkNNTrainer.h
 //  YCML
 //
-//  Created by Ioannis (Yannis) Chatzikonstantinou on 1/7/15.
-//  Copyright © 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+//  Created by Ioannis (Yannis) Chatzikonstantinou on 6/12/16.
+//  Copyright © 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 //
 // This file is part of YCML.
 //
@@ -20,10 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with YCML.  If not, see <http://www.gnu.org/licenses/>.
 
-#import <Foundation/Foundation.h>
+#import <YCML/YCML.h>
 
-@interface NSIndexSet (Sampling)
-
-+ (instancetype)indexesForSampling:(NSUInteger)samples inRange:(NSRange)range replacement:(BOOL)replacement;
+@interface YCkNNTrainer : YCSupervisedTrainer
 
 @end
