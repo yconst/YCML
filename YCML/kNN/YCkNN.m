@@ -47,14 +47,16 @@
         Matrix *example = examples[i];
         Matrix *diff = [self.prototypes matrixBySubtractingColumn:example];
         [diff square];
-        Matrix *sums = [diff sumsOfColumns];
-        [sums applyFunction:^double(double value) {
-            return 1.0/(sqrt(value) + bias);
+        Matrix *weights = [diff sumsOfColumns];
+        [weights applyFunction:^double(double value) {
+            return 1.0/(value*value*value + bias); // FIXME: Use YCKernel!!!
         }];
-        Matrix *weights = [sums matrixByUnitizing];
         
-        Matrix *singleOutput = [[self.targets matrixByMultiplyingWithRow:weights] sumsOfColumns];
-        [singleOutput setColumn:i value:singleOutput];
+        double sum = [weights sum];
+        [weights multiplyWithScalar:1/sum];
+        
+        Matrix *singleOutput = [[self.targets matrixByMultiplyingWithRow:weights] sumsOfRows];
+        [output setColumn:i value:singleOutput];
     }
     
     // 4. Reverse-scale output and return
