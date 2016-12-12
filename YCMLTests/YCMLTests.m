@@ -542,6 +542,15 @@
 
 #pragma mark - Cross-Validation Tests
 
+- (void)testLinearModel
+{
+    YCLinRegTrainer *trainer = [YCLinRegTrainer trainer];
+    trainer.settings[@"L2"]                = @0.001;
+    trainer.settings[@"Iterations"]        = @10000;
+    trainer.settings[@"Alpha"]             = @0.5;
+    [self testWithTrainer:trainer dataset:@"housing" dependentVariableLabel:@"MedV" rmse:8.0];
+}
+
 - (void)testKPM
 {
     YCKPMTrainer *trainer = [YCKPMTrainer trainer];
