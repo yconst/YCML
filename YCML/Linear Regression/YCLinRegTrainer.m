@@ -12,21 +12,26 @@
 
 @implementation YCLinRegTrainer
 
++ (Class)modelClass
+{
+    return [YCLinRegModel class];
+}
+
 - (instancetype)init
 {
     if (self = [super init])
     {
-        self.settings[@"Lambda"]             = @0.0001;
-        self.settings[@"Iterations"]         = @500;
-        self.settings[@"Alpha"]              = @0.001;
+        self.settings[@"L2"]                 = @0.001;
+        self.settings[@"Iterations"]         = @2000;
+        self.settings[@"Alpha"]              = @0.2;
         self.settings[@"Target"]             = @-1;
     }
     return self;
 }
 
-- (void)performTrainingWithModel:(YCLinRegModel *)model
-                           input:(Matrix *)input
-                          output:(Matrix *)output
+- (void)performTrainingModel:(YCLinRegModel *)model
+                 inputMatrix:(Matrix *)input
+                outputMatrix:(Matrix *)output
 {
     // Input: One sample per column
     // Output: One sample per column
@@ -44,7 +49,7 @@
                                                                    outputMatrix:scaledOutput
                                                                           model:model];
     
-    p.lambda                          = [self.settings[@"Lambda"] doubleValue];
+    p.l2                              = [self.settings[@"L2"] doubleValue];
     YCGradientDescent *optimizer      = [[YCGradientDescent alloc] initWithProblem:p];
     [optimizer.settings addEntriesFromDictionary:self.settings];
     if ([self.settings[@"Target"] doubleValue] <= 0)

@@ -22,8 +22,13 @@
         scaledInput = [matrix matrixByRowWiseMapUsing:self.inputTransform];
     }
     
-    // 2. Calculate outputs
-    Matrix *output = [self.theta matrixByMultiplyingWithRight:scaledInput];
+    // 2. Augment with bias term and multiply with weights
+    // O = W * N
+    int M = scaledInput->columns;
+    // TODO: Optimize this to not add a whole row to the
+    // input!
+    Matrix *inputWithBias = [scaledInput appendRow:[Matrix matrixOfRows:1 columns:M value:1]];
+    Matrix *output = [self.theta matrixByTransposingAndMultiplyingWithRight:inputWithBias];
     
     // 5. Scale output and return
     if (self.outputTransform)
@@ -35,12 +40,12 @@
 
 - (int)inputSize
 {
-    return self.theta.columns;
+    return self.theta.rows - 1;
 }
 
 - (int)outputSize
 {
-    return self.theta.rows;
+    return self.theta.columns;
 }
 
 @end
