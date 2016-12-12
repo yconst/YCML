@@ -130,31 +130,7 @@ In addition, it is possible to import the YCMatrix library, bundled together wit
 
     @import YCMatrix;
 
-###Your first predictive model
-
-Here's a simple training call to an YCML trainer, which returns a trained model, given existing input and output datasets:
-
-    YCFFN *theModel = [[YCRpropTrainer trainer] train:nil input:trainingInput output:trainingOutput];
-
-YCML models and trainers may use YCMatrix instances in place of a dataframe. In such a case, YCML models accept matrices where each matrix column defines a single training example. Here is an example that uses matrices in place of Dataframes:
-
-    YCFFN *theModel = [[YCRpropTrainer trainer] train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
-
-The resulting model may subsequently be used to make predictions, given a dataset or matrix:
-
-    YCDataframe *prediction = [theModel predict:testInput];
-
-###Working with YCML Dataframes
-
-Using the YCDataframe class, it is easy to prepare your data. To add examples to an instance of YCDataframe, call the -addSampleWithData: method, passing a NSDictionary with the data to be added. If the attributes indicated in the supplied dictionary are not in the dataframe yet, they are created automatically (including data). The example below shows how to create a new dataframe, and add a couple of records:
-
-    YCDataframe *frame = [YCDataframe dataframe];
-    [frame addSampleWithData:@{@"X1" : @1.0, @"X2" : @2.0, @"X3" : @-5.0}];
-    [frame addSampleWithData:@{@"X1" : @5.5, @"X2" : @-3.0, @"X3" : @-1.5}];
-
-With two dataframes, one for input (independent variables) and one for output (dependent variables), you may easily train a predictive model, as described previously.
-
-###Further Help
+Take a look at the [YCML Wiki](https://github.com/yconst/YCML/wiki) for more tutorials and examples.
 
 For the complete reference, you may compile YCML documentation using Appledoc. 
 
