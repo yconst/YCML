@@ -1,7 +1,7 @@
 
 
 
-#YCML 
+# YCML 
 
 [![Build Status](https://travis-ci.org/yconst/YCML.svg?branch=master)](https://travis-ci.org/yconst/YCML)
 [![DOI](https://zenodo.org/badge/20003/yconst/YCML.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCML)
@@ -14,18 +14,18 @@ YCML contains currently more than 30 high-level unit tests, that cover every one
 
 Finally, YCML tries to maintain a scientific attitude throughout, and keep the AI "prose" to the minimum.
 
-###At a glance
+### At a glance
 
 - Nine Machine Learning Algorithm Implementations for Supervised Learning
 - Two Multi-Objective Genetic Algorithm Variants
 - One Ranking Algorithm (Rank Centrality)
 - Helper classes & tools for validation and testing
 
-###Introduction
+### Introduction
 
 YCML can be used to tackle problems in the field of Machine Learning, the field of Computational Optimization, as well as the intersection of the two fields.
 
-####Machine Learning
+#### Machine Learning
 
 The scientific field of Machine Learning is studying ways in which we may enable computers to, broadly speaking, learn by experience, instead of the more conventional explicit programming approach. Machine Learning algorithms enable machines to learn a task by being exposed to examples, and subsequently generalize the behavior suggested by the seen examples to unseen ones.
 
@@ -41,7 +41,7 @@ YCML mainly focuses on regression problems, which is a class of problems where t
 
 Despite the focus on regression, however, classification problems can be tackled equally well using YCML, by making a few changes to the input and output data.
 
-####Computational (Multi-Objective) Optimization
+#### Computational (Multi-Objective) Optimization
 
 YCML offers a few algorithms that allow tackling Optimization problems. Specifically, it focuses on Multi-Objective problems. 
 
@@ -49,13 +49,13 @@ Multi-Objective problems are a class of problems where more than one goals exist
 
 YCML implements a couple Multi-Objective Evolutionary Algorithms (MOEAs). MOEAs are a class of stochastic optimization algorithms that work using a population of solutions, which they gradually evolve towards optimality. They are using a carefully calculated combination of randomization on the one hand, and "distilling" of the best design features on the other hand. Through such strategies, they are able to efficiently search the space of possible design solutions for "optimal" ones.
 
-##Features
+## Features
 
-###Learning
+### Learning
 
 The following algorithms are currently available:
 
-####Supervised 
+#### Supervised 
 
 - Linear Regression
 - Gradient Descent Backpropagation [1]
@@ -66,11 +66,11 @@ The following algorithms are currently available:
 - Forward Selection using Orthogonal Least Squares with the PRESS statistic [8]
 - Kernel Process Regression
 
-####Unsupervised
+#### Unsupervised
 
 - Binary Restricted Boltzmann Machines (CD) [9] 
 
-####Learning features:
+#### Learning features:
 
 - Embedded model input/output normalization facility.
 - Generic Supervised Learning base class that can accommodate a variety of algorithms.
@@ -79,7 +79,7 @@ The following algorithms are currently available:
 - Powerful Dataframe class, with numerous editing functions, that can be converted to/from Matrix.
 - Where applicable, regularized versions of the algrithms have been implemented.
 
-###Optimization
+### Optimization
 
 The following MO optimization algorithms are implemented:
 
@@ -91,34 +91,34 @@ In addition, a couple of basic optimization algorithms are impemented:
 - Gradient Descent (Single-Objective, Unconstrained)
 - RProp Gradient Descent (Single-Objective, Unconstrained)
 
-####Optimization features:
+#### Optimization features:
 
 - Separate optimization routines for single- and multi-objective problems.
 - Surrogate class that exposes a predictive model as an objective function, useful for optimization.
 
-###Ranking
+### Ranking
 
 - Rank Centrality [12]
 
-###Sampling
+### Sampling
 
 - Several different methods for multi-dimensional random number generation, including low-discrepancy sequence generation.
 - Several methods for sampling from, splitting and shuffling Dataframes.
 
-###Validation & Testing
+### Validation & Testing
 
 - Facilities for k-fold cross validation and Monte Carlo cross-validation.
 
-###Other
+### Other
 
 - Exporting of generated models as [PMML](https://en.wikipedia.org/wiki/Predictive_Model_Markup_Language) (MacOS only) and Text Report (JSON to follow soon).
 - Based on [YCMatrix](https://github.com/yconst/YCMatrix), a matrix library that makes use of the Accelerate Framework for improved performance.
 - NSMutableArray Subclass offering fast (cached) statistics (mean, median, quartiles, min and max, variance, sd etc.).
 - Tools for pseudorandom and quasi-random low discrepancy sequence generation.
 
-##Getting started
+## Getting started
 
-###Setting Up
+### Setting Up
 
 Import the project in your workspace by dragging the .xcodeproj file. YCML depends on YCMatrix. Since version 0.2.0, YCML includes YCMatrix as a separate target (including copies of YCMatrix files), so you practically don't need to include anything apart from the framework itself.
 
@@ -130,79 +130,13 @@ In addition, it is possible to import the YCMatrix library, bundled together wit
 
     @import YCMatrix;
 
-Take a look at the [YCML Wiki](https://github.com/yconst/YCML/wiki) for more tutorials and examples.
+## Learning YCML
+
+Take a look at the [YCML Wiki](https://github.com/yconst/YCML/wiki) for tutorials and examples.
 
 For the complete reference, you may compile YCML documentation using Appledoc. 
 
-##Examples
-
-###Training and activation (Objective-C, using Matrices):
-
-    YCMatrix *trainingData   = [self matrixWithCSVName:@"housing" removeFirst:YES];
-    YCMatrix *trainingOutput = [trainingData getRow:13]; // Output row == 13
-    YCMatrix *trainingInput  = [trainingData removeRow:13];
-    YCELMTrainer *trainer    = [YCELMTrainer trainer];
-
-    YCFFN *model = (YCFFN *)[trainer train:nil inputMatrix:trainingInput outputMatrix:trainingOutput];
-
-    YCMatrix *predictedOutput = [model activateWithMatrix:trainingInput];
-
-Cross-validation example, from data input to presentation of results:
-    
-    // Change "filePath" with your file path
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:filePath]; 
-    NSMutableArray *dataarray = [[NSArray arrayWithContentsOfCSVURL: url] mutableCopy];
-    
-    // First row is taken as header
-    NSArray *header = [dataarray firstObject];
-    [dataarray removeObjectAtIndex:0];
-
-    YCDataframe *input = [YCDataframe dataframe];
-    for (NSArray *record in dataarray)
-    {
-        NSDictionary *recordDictionary = [NSDictionary dictionaryWithObjects:record forKeys:header];
-        [input addSampleWithData:recordDictionary];
-    }
-
-    YCDataframe *output = [YCDataframe dataframe];
-
-    // Change outputAttribute with your target (dependent) variable
-    NSArray *outputData = [input allValuesForAttribute:outputAttribute];
-    [input removeAttributeWithIdentifier:eAttribute];
-    [output addAttributeWithIdentifier:eAttribute data:outputData];
-
-    YCkFoldValidation *cv = [[YCkFoldValidation alloc] initWithSettings:@{@"Folds" : @10}];
-    
-    // Choose the trainer/model that you wish to test
-    YCBackPropTrainer *trainer = [YCRpropTrainer trainer];
-
-    NSLog(@"Results:\n %@", [cv test:trainer input:input output:output]);
-
-###Training and activation (Swift, using Matrices):
-
-    var trainingData = self.matrixWithCSVName("housing", removeFirst: true)
-    trainingData.shuffleColumns()
-    var cvData = trainingData.matrixWithColumnsInRange(NSMakeRange(trainingData.columns-20, 19))
-    trainingData = trainingData.matrixWithColumnsInRange(NSMakeRange(0, trainingData.columns-20))
-    var trainingOutput = trainingData.getRow(13)
-    var trainingInput = trainingData.removeRow(13)
-    var cvOutput = cvData.getRow(13)
-    var cvInput = cvData.removeRow(13)
-    var trainer = YCELMTrainer()
-    trainer.settings["C"] = 8
-    trainer.settings["Hidden Layer Size"] = 1000
-
-    var model = trainer.train(nil, inputMatrix: trainingInput, outputMatrix: trainingOutput)
-
-    var predictedOutput = model.activateWithMatrix(cvInput)
-
-    predictedOutput.subtract(cvOutput)
-    predictedOutput.elementWiseMultiply(predictedOutput)
-    var RMSE = sqrt(1.0 / Double(predictedOutput.columns) * predictedOutput.sum)
-    NSLog("%@", RMSE)
-    XCTAssertLessThan(RMSE, 9.0, "RMSE above threshold")
-
-##Framework Architecture
+## Framework Architecture
 
 The basic predictive model building block is the `YCGenericModel` class. It's training algorithm counterpart inherits from the `YCGenericTrainer` class. Most of the models included in the library are supervised learning models, and they inherit from a subclass of `YCGenericModel`, `YCSupervisedModel`. Their corresponding training algorithms inherit from the `YCSupervisedTrainer` class. These classes offer basic infrastructure to support training and activation, such as optional scaling and normalization of inputs, conversion between datasets and matrices etc. As such, the models and trainers themselves only contain algorithm implementations (for the most part).
 
@@ -218,7 +152,7 @@ YCML models can be exported in various formats. Currently supported are PMML and
 
 This strategy has been currently implemented for most predictive models (subclasses of YCSupervisedModel). Plans are underway for the implementation throughout the framework. Implementation of the PMML format are based on the definition and [this set of examples](http://dmg.org/pmml/pmml_examples/index.html). In case you find out any inconsistencies, please chime in!
 
-##References
+## References
 
 [1] D. Rumelhart, G. Hinton and R. Williams. Learning Internal Representations by Error Propagation, Parallel Distrib. Process. Explor. Microstruct. Cogn. Vol. 1, Cambridge, MA, USA: MIT Press; pp. 318–362, 1985.
 
@@ -244,7 +178,7 @@ This strategy has been currently implemented for most predictive models (subclas
 
 [12] S. Negahban, S. Oh, and D. Shah, “Iterative Ranking from Pair-wise Comparisons,” Adv. Neural Inf. Process. Syst. 25, pp. 2474–2482, 2012.
 
-##License 
+## License 
 
 Copyright (c) 2015-2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 
