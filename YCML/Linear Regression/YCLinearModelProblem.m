@@ -59,7 +59,7 @@
     return 0;
 }
 
-- (Matrix *)evaluateWithParameters:(Matrix *)parameters
+- (void)evaluate:(Matrix *)target parameters:(Matrix *)parameters
 {
     self.model.theta = [self thetaWithParameters:parameters];
     Matrix *residual      = [self.model activateWithMatrix:self->_inputMatrix];
@@ -75,15 +75,15 @@
     int s = self->_outputMatrix->rows;
     // Ignore bias (last element)
     Matrix *weights = [parameters matrixWithRowsInRange:NSMakeRange(0, [self weightParameterCount] - 1)];
-    [weights elementWiseMultiply:weights];
+    [weights square];
     double ws2 = [weights sum];
     
-    // add and return
-    double cost = [residual sum] / (n * s) + self.lambda * ws2/n;
-    return [Matrix matrixOfRows:1 columns:1 value:cost];
+    // add and assign
+    double cost = [residual sum] / (n * s) + self.l2 * ws2/n;
+    [target i:0 j:0 set:cost];
 }
 
-- (Matrix *)derivativeWithParameters:(Matrix *)parameters
+- (void)derivatives:(Matrix *)target parameters:(Matrix *)parameters
 {
     int n                   = self->_outputMatrix->columns;
     self.model.theta = [self thetaWithParameters:parameters];
@@ -95,7 +95,7 @@
     [gradients multiplyWithScalar:1.0/n];
     
     // add regularization term
-    Matrix *scaledWeights = [self.model.theta matrixByMultiplyingWithScalar:self.lambda];
+    Matrix *scaledWeights = [self.model.theta matrixByMultiplyingWithScalar:self.l2];
     scaledWeights = [scaledWeights removeRow:scaledWeights.rows - 1];
     [scaledWeights multiplyWithScalar:1.0/n];
     
@@ -104,7 +104,7 @@
     [biases multiplyWithScalar:1.0/n];
     gradients = [gradients appendRow:biases];
     
-    return [self parametersWithTheta:gradients];
+    [target copyValuesFrom:gradients];
 }
 
 - (Matrix *)thetaWithParameters:(Matrix *)parameters
@@ -127,6 +127,11 @@
 - (YCEvaluationMode)supportedEvaluationMode
 {
     return YCProvidesParallelImplementation;
+}
+
+- (Matrix *)modes
+{
+    return [Matrix matrixOfRows:1 columns:1 value:YCObjectiveMinimize];
 }
 
 @end

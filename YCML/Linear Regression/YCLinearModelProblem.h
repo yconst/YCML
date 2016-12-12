@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "YCProblem.h"
+#import "YCDerivativeProblem.h"
 @class Matrix, YCLinRegModel;
 
-@interface YCLinearModelProblem : NSObject <YCProblem>
+@interface YCLinearModelProblem : NSObject <YCDerivativeProblem>
 
 - (instancetype)initWithInputMatrix:(Matrix *)input
                        outputMatrix:(Matrix *)output
@@ -20,6 +20,6 @@
 
 @property YCLinRegModel *model;
 
-@property double lambda;
+@property double l2;
 
 @end
