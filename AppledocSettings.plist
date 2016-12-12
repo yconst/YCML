@@ -5,7 +5,7 @@
 	<key>--project-name</key>
 	<string>YCML</string>
 	<key>--project-version</key>
-	<string>0.4.12</string>
+	<string>0.5.0</string>
 	<key>--project-company</key>
 	<string>Ioannis (Yannis) Chatzikonstantinou / yconst.com</string>
 	<key>--create-html</key>
