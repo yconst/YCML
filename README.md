@@ -1,5 +1,23 @@
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/yconst/YCML/master/Logo.png"
+width=600 height=167>
+</p>
 
+<p align="center">
+<a href="https://travis-ci.org/yconst/YCML">
+<img src="https://travis-ci.org/yconst/YCML.svg?branch=master"
+alt="Build Status">
+</a>
+<a href="https://zenodo.org/badge/latestdoi/20003/yconst/YCML">
+<img src="https://zenodo.org/badge/20003/yconst/YCML.svg"
+alt="DOI">
+</a>
+<a href="https://raw.githubusercontent.com/yconst/YCML/master/COPYING">
+<img src="https://img.shields.io/badge/license-GPL-blue.svg"
+alt="GPL v3 License">
+</a>
+</p>
 
 # YCML 
 
