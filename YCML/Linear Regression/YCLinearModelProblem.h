@@ -7,7 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YCProblem.h"
+@class Matrix, YCLinRegModel;
 
-@interface YCLinearModelProblem : NSObject
+@interface YCLinearModelProblem : NSObject <YCProblem>
+
+- (instancetype)initWithInputMatrix:(Matrix *)input
+                       outputMatrix:(Matrix *)output
+                              model:(YCLinRegModel *)model;
+
+- (Matrix *)thetaWithParameters:(Matrix *)parameters;
+
+@property YCLinRegModel *model;
+
+@property double lambda;
 
 @end

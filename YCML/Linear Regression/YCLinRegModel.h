@@ -7,7 +7,14 @@
 //
 
 #import <YCML/YCML.h>
+@class Matrix;
 
 @interface YCLinRegModel : YCSupervisedModel
+
+@property (strong) Matrix *theta;
+
+@property (strong) Matrix *inputTransform;
+
+@property (strong) Matrix *outputTransform;
 
 @end
