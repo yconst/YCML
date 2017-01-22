@@ -56,7 +56,7 @@ Despite the focus on regression, however, classification problems can be tackled
 
 #### Computational (Multi-Objective) Optimization
 
-YCML offers a few algorithms that allow tackling Optimization problems. Specifically, it focuses on Multi-Objective problems. 
+YCML offers a few algorithms that allow tackling Optimization problems. Specifically, it focuses on Multi-Objective Real Parameter Optimization problems. 
 
 Multi-Objective problems are a class of problems where more than one goals exist, and which are conflicting to each other. That means that by improving design performance of one goal, performance on at least one other goal is sacrificed. This characteristic of Multi-Objective problems gives birth to the fact that there are no all-round optimzal solutions to be found in this type of problems. Rather, what we are usually looking for are best-tradeoffs. A best-tradeoff design is one for which there does not exist any other that performs better in all aspects. In the context of Multi-Objective optimization, these are also called Non-Dominated design solutions.
 
